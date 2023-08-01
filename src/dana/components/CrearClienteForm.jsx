@@ -32,7 +32,7 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
     }
 
   return (
-    <Dialog header='DAR DE ALTA NUEVO CLIENTE' visible={dialogNuevoClienteForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setDialogNuevoClienteForm(false)} className='mx-4 xl:mx-20 my-4 px-4 mt-16 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+    <Dialog header='DAR DE ALTA NUEVO CLIENTE' visible={dialogNuevoClienteForm} baseZIndex={-1} style={{ width: '70vw', height: '36vw' }} onHide={() => setDialogNuevoClienteForm(false)} className='mx-4 xl:mx-20 my-4 px-4 mt-20 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form>   

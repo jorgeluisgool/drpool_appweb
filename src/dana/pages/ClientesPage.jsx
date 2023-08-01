@@ -49,7 +49,7 @@ export const ClientesPage = () => {
             </div>
             {
               clientes.map((cliente, index) => (
-                <Link key={index} to='/registropage' onClick={() => setClienteSeleccionado(cliente)}>
+                <Link key={index} onClick={() => {setClienteSeleccionado(cliente), setDialogNuevoClienteForm(true)}}>
                   <div className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer">
                     <div className="px-6 py-2 bg-[#E2E2E2]">
                       <div className="font-bold text-sm xl:text-sm mb-2 text-[#245A95]">{cliente.cliente}</div>

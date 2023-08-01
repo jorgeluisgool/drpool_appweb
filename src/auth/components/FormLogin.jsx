@@ -91,7 +91,7 @@ export const FormLogin = () => {
 
   return (
         <>
-        <div className='drop-shadow-lg bg-slate-50 px-6 py-12 rounded-3xl border-2 border-[#245A95]'>
+        <div className='drop-shadow-lg bg-slate-50 px-6 py-12 rounded-3xl border border-[#245A95]'>
             <div className='flex items-center justify-center pb-6'>
                 <img src="https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool-black.png?alt=media&token=a9161a39-9ed7-472e-af7f-ba8dcd856d62" alt="Your Company" className='h-32'/>
             </div>
