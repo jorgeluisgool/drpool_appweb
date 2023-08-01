@@ -26,7 +26,7 @@ export const HomeScreem = ({titulo}) => {
       {
         usuarioLogiado[0].perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0].perfile.perfil === "COORDINADOR" ? 
         <div className="place-self-center ...">
-          <Link to='/'>
+          <Link to='/usuarios'>
             <BotonMenu titulo='USUARIOS' icono='person-add-outline'/>
           </Link>
           <div className='pt-5'>
