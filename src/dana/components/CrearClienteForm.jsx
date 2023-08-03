@@ -2,34 +2,118 @@ import { Field, Form, Formik } from 'formik'
 import { Dialog } from 'primereact/dialog'
 import { FileUpload } from 'primereact/fileupload'
 import { InputText } from 'primereact/inputtext'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone';
+import { api } from '../helpers/variablesGlobales'
 
 export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteForm}) => {
 
     const [nombreCliente, setNombreCliente] =useState ('NUEVO CLIENTE');
     const [uploadedImage, setUploadedImage] = useState(null);
+    const [file, setFile] = useState(null);
+    const [imagenByte, setImagenByte] = useState([]);
+    
 
     const onDrop = (acceptedFiles) => {
         const file = acceptedFiles[0];
+        setFile(acceptedFiles[0])
         setUploadedImage(URL.createObjectURL(file));
     };
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop, accept: 'image/*', maxFiles: 1 });
 
     const initialValues = {
-        nombrecliente: '',
+        cliente: '',
         direccion: '',
         telefono: ''
     };
     
-    const onSubmit = (values, { resetForm }) => {
-        values.nombrecliente = values.nombrecliente.toUpperCase();
-        console.log(values);
 
-        resetForm();
-        setDialogNuevoClienteForm(false);
-    }
+    // const convertirUrlaBytes = (data) => {
+    //   const reader = new FileReader();
+    //   let arreglo = [];
+    //   reader.onload = () => {
+    //     const arrayBuffer = reader.result;
+    //     const byteArray = new Uint8Array(arrayBuffer);
+    //     arreglo = Array.from(byteArray);
+    //     console.log(arreglo)
+    //   };
+    
+    //   reader.readAsArrayBuffer(data);
+
+    //   return arreglo;
+    // };
+    
+    
+    // const onSubmit = (values, { resetForm }) => {
+    //     values.cliente = values.cliente.toUpperCase();
+        
+    //     const nuevoCliente = {
+    //       cliente: values,
+    //       imagen: convertirUrlaBytes(file),
+    //     }
+    //     console.log(nuevoCliente);
+
+    //     fetch(`${api}/nuevo/cliente`, {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json' 
+    //       },
+    //       body: JSON.stringify(nuevoCliente)
+    //     })
+    //       .then(response => response.text())
+    //       .then(responseData => {
+    //         console.log(responseData);
+    //       })
+    //       .catch(error => {
+    //         console.log(error);
+    //       });
+    // }
+
+    const convertirUrlaBytes = (data, onSubmitCallback) => {
+      const reader = new FileReader();
+    
+      reader.onload = () => {
+        const arrayBuffer = reader.result;
+        const byteArray = new Uint8Array(arrayBuffer);
+        const arreglo = Array.from(byteArray);
+        console.log(arreglo);
+    
+        // Llamar al callback onSubmit con el arreglo de imagen como argumento
+        onSubmitCallback(arreglo);
+      };
+    
+      reader.readAsArrayBuffer(data);
+    };
+    
+    const onSubmit = (values, { resetForm }) => {
+      values.cliente = values.cliente.toUpperCase();
+    
+      // Pasar una función de callback que maneje la creación de nuevoCliente
+      convertirUrlaBytes(file, (arregloImagen) => {
+        const nuevoCliente = {
+          cliente: values,
+          imagen: arregloImagen,
+        };
+        console.log(nuevoCliente);
+    
+        fetch(`${api}/nuevo/cliente`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(nuevoCliente),
+        })
+          .then((response) => response.text())
+          .then((responseData) => {
+            console.log(responseData);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    };
+    
 
   return (
     <Dialog header='DAR DE ALTA NUEVO CLIENTE' visible={dialogNuevoClienteForm} baseZIndex={-1} style={{ width: '70vw', height: '36vw' }} onHide={() => setDialogNuevoClienteForm(false)} className='mx-4 xl:mx-20 my-4 px-4 mt-20 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
@@ -56,8 +140,8 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={InputText}
-                                    name="nombrecliente"
-                                    value={values.nombrecliente.toUpperCase()}
+                                    name="cliente"
+                                    value={values.cliente.toUpperCase()}
                                     onChange={(e) => {
                                         handleChange(e);
                                         setNombreCliente(e.target.value.toUpperCase());

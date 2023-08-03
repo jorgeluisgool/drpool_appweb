@@ -89,7 +89,7 @@ export const ClientesPage = () => {
                         // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                     /> 
                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                      <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
                     </span>
                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
                       Busca el cliente
@@ -149,16 +149,15 @@ export const ClientesPage = () => {
                         // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                     /> 
                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                      <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
                     </span>
                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                      Busca el cliente
+                      Busca la sede
                     </label>
                 </span>
               </div>
             </div>
 
-            <div>
             <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
               <thead className="bg-[#245A95] text-white uppercase">
                 <tr className='text-left'>
@@ -236,7 +235,7 @@ export const ClientesPage = () => {
                 ))} 
               </tbody>
             </table>
-              <div className="flex items-center justify-between mt-4">
+              <div className="flex items-center justify-between mt-4 mb-6">
                 <div className="flex items-center">
                   <span className="mr-2 text-[#245A95] font-bold text-lg">Filas por página:</span>
                   <select
@@ -285,7 +284,7 @@ export const ClientesPage = () => {
                   </nav>
                 </div>
               </div>
-            </div>
+            
         </div>
 
         {/* Modales de formularios */}
