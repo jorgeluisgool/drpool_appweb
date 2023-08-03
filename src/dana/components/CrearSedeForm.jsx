@@ -24,7 +24,7 @@ const onSubmit = (values, { resetForm }) => {
 }
 
   return (
-    <Dialog header='DAR DE ALTA NUEVA SEDE' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setDialogNuevaSedeForm(false)} className='mx-4 xl:mx-20 my-4 px-4 mt-16 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+    <Dialog header='DAR DE ALTA NUEVA SEDE' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setDialogNuevaSedeForm(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form>  
