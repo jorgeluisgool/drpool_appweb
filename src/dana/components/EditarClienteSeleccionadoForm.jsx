@@ -5,16 +5,8 @@ import { InputText } from 'primereact/inputtext'
 import React, { useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone';
 import { api } from '../helpers/variablesGlobales'
-import useAuth from '../hooks/useAuth'
 
-export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteForm, setVentanaCarga, setVentanaConfirmacion}) => {
-
-  const { userAuth: usuarioLogiado} = useAuth();
-
-    const [nombreCliente, setNombreCliente] =useState ('NUEVO CLIENTE');
-    const [uploadedImage, setUploadedImage] = useState(null);
-    const [file, setFile] = useState(null);
-    const [imagenByte, setImagenByte] = useState([]);
+export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClienteForm, setDialogEditatarClienteForm}) => {
 
     const onDrop = (acceptedFiles) => {
         const file = acceptedFiles[0];
@@ -24,70 +16,13 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop, accept: 'image/*', maxFiles: 1 });
 
-    const initialValues = {
-        clienteAplicacion: usuarioLogiado.clienteAplicacion,
-        cliente: '',
-        direccion: '',
-        telefono: ''
-    };
-
-    const convertirUrlaBytes = (data, onSubmitCallback) => {
-      const reader = new FileReader();
-    
-      reader.onload = () => {
-        const arrayBuffer = reader.result;
-        const byteArray = new Uint8Array(arrayBuffer);
-        const arreglo = Array.from(byteArray);
-        console.log(arreglo);
-    
-        // Llamar al callback onSubmit con el arreglo de imagen como argumento
-        onSubmitCallback(arreglo);
-      };
-    
-      reader.readAsArrayBuffer(data);
-    };
-    
-
     const onSubmit = (values, { resetForm }) => {
-      setVentanaCarga(true);
-
-      values.cliente = values.cliente.toUpperCase();
-      values.clienteAplicacion = usuarioLogiado[0].clienteAplicacion;
-      //clienteAplicacion: usuarioLogiado.clienteAplicacion,
-    
-      // Pasar una función de callback que maneje la creación de nuevoCliente
-      convertirUrlaBytes(file, (arregloImagen) => {
-        //const values2 = {clienteAplicacion: usuarioLogiado[0].clienteAplicacion, ...values}
-        const nuevoCliente = {
-          cliente: values,
-          imagen: arregloImagen,
-        };
-        console.log(usuarioLogiado[0].clienteAplicacion);
-        console.log(nuevoCliente);
-    
-        fetch(`${api}/nuevo/cliente`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(nuevoCliente),
-        })
-          .then((response) => response.text())
-          .then((responseData) => {
-            setVentanaCarga(false);
-            setVentanaConfirmacion(true);
-            console.log(responseData);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
-    };
-    
-
+        // values.cliente = values.cliente.toUpperCase();
+        console.log(values);
+      };
   return (
-    <Dialog header='DAR DE ALTA NUEVO CLIENTE' visible={dialogNuevoClienteForm} baseZIndex={-1} style={{ width: '70vw', height: '36vw' }} onHide={() => setDialogNuevoClienteForm(false)} className='mx-4 xl:mx-20 my-4 px-4 mt-20 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+    <Dialog header='' visible={dialogEditatarClienteForm} baseZIndex={-1} style={{ width: '70vw', height: '36vw' }} onHide={() => setDialogEditatarClienteForm(false)} className='mx-4 xl:mx-20 my-4 px-4 mt-20 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+        <Formik initialValues={clienteState} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form>   
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
@@ -96,10 +31,10 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
                             className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl"
                         >
                             <div className="px-6 py-2 bg-[#E2E2E2]">
-                              <div className="font-bold text-sm xl:text-sm mb-2 text-[#245A95]">{nombreCliente}</div>
+                              <div className="font-bold text-sm xl:text-sm mb-2 text-[#245A95]">{''}</div>
                             </div>
                             <div className="grid place-items-center">
-                                {uploadedImage && <img src={uploadedImage} alt="Imagen Cargada"/>}
+                                {/* {uploadedImage && <img src={uploadedImage} alt="Imagen Cargada"/>} */}
                                 {/* <i className="pi pi-plus-circle text-[#245A95] inset-0 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-75" style={{ fontSize: '2.5rem' }}></i> */}
                             </div>
                         </div>
@@ -112,10 +47,10 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
                                     as={InputText}
                                     name="cliente"
                                     value={values.cliente.toUpperCase()}
-                                    onChange={(e) => {
-                                        handleChange(e);
-                                        setNombreCliente(e.target.value.toUpperCase());
-                                      }}
+                                    // onChange={(e) => {
+                                    //     handleChange(e);
+                                    //     setNombreCliente(e.target.value.toUpperCase());
+                                    //   }}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
