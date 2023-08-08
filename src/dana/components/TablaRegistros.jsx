@@ -21,8 +21,6 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
   // Función para cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // console.log(usuariosSeleccionados[0].idusuario)
-
   return (
     <>
     {cargando && (

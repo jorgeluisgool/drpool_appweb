@@ -8,6 +8,7 @@ export default function ExampleContexProvider({children}) {
     const [dataCrearProyecto, setDataCrearProyecto] = useState('');
     const [dataArchivoExcel, setDataArchivoExcel] = useState([]);
     const [clienteSeleccionado, setClienteSeleccionado] = useState([]);
+    const [clientes, setClientes] = useState([]);
 
     return (
         <ExampleContex.Provider 
@@ -19,7 +20,9 @@ export default function ExampleContexProvider({children}) {
             dataArchivoExcel,
             setDataArchivoExcel,
             clienteSeleccionado,
-            setClienteSeleccionado
+            setClienteSeleccionado,
+            clientes, 
+            setClientes
         }}>
             {children}
         </ExampleContex.Provider>

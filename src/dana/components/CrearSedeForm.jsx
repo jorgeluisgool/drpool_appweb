@@ -2,53 +2,57 @@ import { Field, Form, Formik } from 'formik'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import React, { useState } from 'react'
+import { api } from '../helpers/variablesGlobales'
 
-export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm}) => {
+export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setVentanaCarga, setModalRegistroGuardado, setSedeSeleccionada, sedeSeleccionada}) => {
 
   const [nombreSede, setNombreSede] = useState('NUEVA SEDE')
 
   const initialValues = {
-    nombresede: '',
+    nombre: '',
     direccion: '',
     encargado: '',
     telefono: '',
     correo: ''
 };
 
-const onSubmit = (values, { resetForm }) => {
-  values.nombresede = values.nombresede.toUpperCase();
-    console.log(values);
 
-    resetForm();
-    setDialogNuevaSedeForm(false);    
-}
+const onSubmit = (values, { resetForm }) => {
+  // setVentanaCarga(true);
+  // values.cliente = values.nombre.toUpperCase();
+ 
+    fetch(`${api}/nueva/sede`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    })
+      .then((response) => response.text())
+      .then((responseData) => {
+        setVentanaCarga(false);
+        setModalRegistroGuardado(true);
+        setDialogNuevaSedeForm(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+};
 
   return (
-    <Dialog header='DAR DE ALTA NUEVA SEDE' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setDialogNuevaSedeForm(false)} className='mx-4 xl:mx-20 my-4 px-4 mt-16 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+    <Dialog header='' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setDialogNuevaSedeForm(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+        <Formik initialValues={sedeSeleccionada === undefined?  initialValues : sedeSeleccionada} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form>  
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                    <div className='grid place-items-center'>
-                        <div 
-                            className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl"
-                        >
-                            <div className="px-6 py-2 bg-[#E2E2E2]">
-                              <div className="font-bold text-sm xl:text-sm mb-2 text-[#245A95]">{nombreSede}</div>
-                            </div>
-                            <div className="grid place-items-center" style={{ height: '100px' }}>
-                              <i className="pi pi-plus-circle text-[#245A95] inset-0 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-75" style={{ fontSize: '2.5rem' }}></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="p-inputgroup mb-5 mt-8">
+                    {/* <div className='grid place-items-center'> */}
+                      <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={InputText}
-                                    name="nombresede"
-                                    value={values.nombresede.toUpperCase()}
+                                    name="nombre"
+                                    value={values.nombre.toUpperCase()}
                                     onChange={(e) => {
                                       handleChange(e);
                                       setNombreSede(e.target.value.toUpperCase());
@@ -59,23 +63,6 @@ const onSubmit = (values, { resetForm }) => {
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
                                   Nombre de la sede
-                                </label>
-                            </span>
-                        </div>
-                        <div className="p-inputgroup mb-5 mt-8">
-                            <span className='p-float-label relative'>
-                                <Field
-                                    className="w-full appearance-none focus:outline-none bg-transparent"
-                                    as={InputText}
-                                    name="direccion"
-                                    value={values.direccion}
-                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
-                                /> 
-                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                </span>
-                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Dirección
                                 </label>
                             </span>
                         </div>
@@ -95,6 +82,26 @@ const onSubmit = (values, { resetForm }) => {
                                 </label>
                             </span>
                         </div>
+                    {/* </div> */}
+                    {/* <div> */}
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={InputText}
+                                    name="direccion"
+                                    value={values.direccion}
+                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Dirección
+                                </label>
+                            </span>
+                        </div>
+                        
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
                                 <Field
@@ -130,7 +137,7 @@ const onSubmit = (values, { resetForm }) => {
                             </span>
                         </div>
                     </div>
-                </div> 
+                {/* </div>  */}
                 <div className="pt-4 flex justify-end">
                   <button
                     type='submit'

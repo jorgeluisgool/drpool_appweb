@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export const ClientesRegistrosPage = () => {
 
-  const { userAuth, setUserAuth, setClienteSeleccionado } = useAuth();
+  const { userAuth, setUserAuth, setClienteSeleccionado,  } = useAuth();
 
   const [clientes, setClientes] = useState([]);
 

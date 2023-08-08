@@ -13,7 +13,7 @@ export const HomeScreem = ({titulo}) => {
     <>
     <div className="bg-[#E2E2E2] h-full grid grid-cols-2 sm:grid-cols-3 gap-14 pt-20">
       {
-        usuarioLogiado[0].perfile.perfil === "ADMINISTRADOR" ?
+        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" ?
         <div className="place-self-center ...">
           <Link to='/Proyectos'>
             <BotonMenu titulo='PROYECTOS' icono='library-outline'/>
@@ -24,7 +24,7 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       }
       {
-        usuarioLogiado[0].perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0].perfile.perfil === "COORDINADOR" ? 
+        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ? 
         <div className="place-self-center ...">
           <Link to='/usuarios'>
             <BotonMenu titulo='USUARIOS' icono='person-add-outline'/>
@@ -35,7 +35,7 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       }
       {
-        usuarioLogiado[0].perfile.perfil === "ADMINISTRADOR" ? 
+        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" ? 
         <div className="place-self-center">
           <Link to='/clientes'>
             <BotonMenu titulo='CATALOGO' icono='business-outline'/>
@@ -46,7 +46,7 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       }
       {
-        usuarioLogiado[0].perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0].perfile.perfil === "COORDINADOR" ?
+        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="place-self-center">
           <Link to='/'>
             <BotonMenu titulo='CATALOGO' icono='clipboard-outline'/>
@@ -57,7 +57,7 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       }
       {
-        usuarioLogiado[0].perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0].perfile.perfil === "COORDINADOR" ?
+        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="place-self-center ...">
           <Link to='/'>
             <BotonMenu titulo='ASIGNACIONES' icono='accessibility-outline'/>
@@ -68,7 +68,7 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       }
       {
-        usuarioLogiado[0].perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0].perfile.perfil === "COORDINADOR" ?
+        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="place-self-center ...">
           <Link to='/registros'>
             <BotonMenu titulo='REGISTROS' icono='create-outline'/>
@@ -79,7 +79,7 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       }
       {
-        usuarioLogiado[0].perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0].perfile.perfil === "COORDINADOR" ?
+        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="place-self-center ...">
           <Link to='/'>
             <BotonMenu titulo='ASISTENCIA' icono='id-card-outline'/>
