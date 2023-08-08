@@ -7,6 +7,8 @@ import { CrearSedeForm } from '../components/CrearSedeForm';
 import { InputText } from 'primereact/inputtext';
 import { EditarClienteSeleccionadoForm } from '../components/EditarClienteSeleccionadoForm';
 import { Player } from '@lottiefiles/react-lottie-player';
+import { DialogRegistroGuardado } from '../../ui/components/DialogRegistroGuardado';
+import { AlbercasSeccion } from '../components/AlbercasSeccion';
 
 export const ClientesPage = () => {
 
@@ -20,6 +22,11 @@ export const ClientesPage = () => {
     const [ventanaCarga, setVentanaCarga] = useState(false);
     const [ventanaConfirmacion, setVentanaConfirmacion] = useState(false);
     const [clienteState, setClienteState] = useState([]);
+    const [modalRegistroGuardado, setModalRegistroGuardado] = useState(false);
+    const [sedeSeleccionada, setSedeSeleccionada] = useState();
+
+    const [uploadedImage, setUploadedImage] = useState(null);
+    const [file, setFile] = useState(null);
 
    useEffect(() => {
      const fetchData = async () => {
@@ -66,6 +73,24 @@ export const ClientesPage = () => {
   // Función para cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const converImageUrlToFile =async (imageUrl) =>{
+    
+    if (imageUrl != '') {
+      try {
+        const response = await fetch(`/proxy?url=${encodeURIComponent(imageUrl)}`);
+        console.log(response)
+        const blob = await response.blob();
+  
+        const filename = 'imagen'
+        const file = new File([blob], filename, {type: blob.type});
+        setFile(file);
+        setUploadedImage(imageUrl);
+      }catch (error) {
+        console.log(error)
+      }
+    }  
+  }
+
   return (
     <>
       {ventanaCarga && (
@@ -88,31 +113,8 @@ export const ClientesPage = () => {
         </div>
       </div>
       )}
-      {ventanaConfirmacion && (
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-slate-200 bg-opacity-50 flex items-center justify-center z-50">
-        <div className="w-screen h-screen flex items-center justify-center">
-        <div className='text-center'>
-            <Player src='https://lottie.host/da9fce7b-d61d-4dd2-adff-7f9cffae9bd0/AQpy3VS18s.json'
-                className="player"
-                loop
-                autoplay
-                style={{ height: '150px', width: '150px' }}
-            />
-            <h1 className='text-lg font-bold'>Cliente guardado</h1>
-        </div>
-        
-        <div className='mt-8'>
-            <button 
-                type='button'
-                onClick={() => setModalRegistroGuardado(false)}
-                className='hover:shadow-slate-600 border h-7 px-4 bg-[#245A95] text-white text-xs font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600'
-            >
-                ACEPTAR
-            </button>
-        </div>
-        </div>
-      </div>
-      )}
+
+      <DialogRegistroGuardado setModalRegistroGuardado={setModalRegistroGuardado} modalRegistroGuardado={modalRegistroGuardado}/>
         <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">CLIENTES Y SEDES</h1>
         {/* CLIENTES */}
         <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-12'>
@@ -151,7 +153,7 @@ export const ClientesPage = () => {
           <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4'> 
             {
               clientes.map((cliente, index) => (
-                <Link key={index} onClick={() => {setClienteState(cliente), setDialogEditatarClienteForm(true)}}>
+                <Link key={index} onClick={() => {setClienteState(cliente), setDialogEditatarClienteForm(true), converImageUrlToFile(cliente.urllogo)}}>
                   <div className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer">
                     <div className="px-2 py-1 bg-[#E2E2E2] text-center">
                       <div className="font-bold text-sm xl:text-sm mb-2 text-[#245A95]">{cliente.cliente}</div>
@@ -182,7 +184,7 @@ export const ClientesPage = () => {
             <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4 pb-4'>
               <div 
                   className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
-                  onClick={() => setDialogNuevaSedeForm(true)}
+                  onClick={() => {setSedeSeleccionada(undefined), setDialogNuevaSedeForm(true)}}
               >
                 <div className="px-6 py-2 bg-[#E2E2E2]">
                   <div className="font-bold text-sm xl:text-sm mb-2 text-[#245A95]">NUEVA SEDE</div>
@@ -241,7 +243,11 @@ export const ClientesPage = () => {
               </thead>
               <tbody className="divide-y divide-gray-200" >
                 {currentRows.map((sede, index) => (
-                  <tr 
+                  <tr
+                    onClick={() => {
+                      setSedeSeleccionada(sede),
+                      setDialogNuevaSedeForm(true)
+                    }} 
                     key={index}
                     className='cursor-pointer hover:bg-[#E2E2E2]'
                   >
@@ -337,10 +343,38 @@ export const ClientesPage = () => {
             
         </div>
 
+        {/* ALBERCAS */}
+        <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+          <AlbercasSeccion/>
+        </div>
+
         {/* Modales de formularios */}
-        <CrearClienteForm dialogNuevoClienteForm={dialogNuevoClienteForm} setDialogNuevoClienteForm={setDialogNuevoClienteForm} setVentanaCarga={setVentanaCarga} setVentanaConfirmacion={setVentanaConfirmacion}/>
-        <EditarClienteSeleccionadoForm clienteState={clienteState} dialogEditatarClienteForm={dialogEditatarClienteForm} setDialogEditatarClienteForm={setDialogEditatarClienteForm}/>
-        <CrearSedeForm dialogNuevaSedeForm={dialogNuevaSedeForm} setDialogNuevaSedeForm={setDialogNuevaSedeForm}/>
+        <CrearClienteForm 
+          dialogNuevoClienteForm={dialogNuevoClienteForm} 
+          setDialogNuevoClienteForm={setDialogNuevoClienteForm} 
+          setVentanaCarga={setVentanaCarga} 
+          setVentanaConfirmacion={setVentanaConfirmacion}
+          setModalRegistroGuardado={setModalRegistroGuardado}
+        />
+        <EditarClienteSeleccionadoForm 
+          clienteState={clienteState} 
+          dialogEditatarClienteForm={dialogEditatarClienteForm} 
+          setDialogEditatarClienteForm={setDialogEditatarClienteForm}
+          setVentanaCarga={setVentanaCarga}
+          setVentanaConfirmacion={setVentanaConfirmacion}
+          setUploadedImage={setUploadedImage}
+          uploadedImage={uploadedImage}
+          setFile={setFile}
+          file={file}
+        />
+        <CrearSedeForm 
+          dialogNuevaSedeForm={dialogNuevaSedeForm} 
+          setDialogNuevaSedeForm={setDialogNuevaSedeForm}
+          setVentanaCarga={setVentanaCarga}
+          setModalRegistroGuardado={setModalRegistroGuardado}
+          setSedeSeleccionada={setSedeSeleccionada}
+          sedeSeleccionada={sedeSeleccionada}
+        />
     </>
   )
 }

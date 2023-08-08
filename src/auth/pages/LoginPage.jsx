@@ -12,7 +12,7 @@ export const LoginPage = () => {
           loop
           autoplay
           speed={0.3}
-          style={{ marginLeft: '50%', width: '50%', zIndex: -1 }} // Ajusta el zIndex a un valor negativo para que se vea por debajo
+          style={{ marginLeft: '50%', width: '50%', height: '100%', zIndex: -1 }} // Ajusta el zIndex a un valor negativo para que se vea por debajo
         />
       <div className='flex w-full items-center justify-center lg:w-1/2 bg-white'>
         <div className="relative">

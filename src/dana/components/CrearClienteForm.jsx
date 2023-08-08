@@ -7,7 +7,7 @@ import { useDropzone } from 'react-dropzone';
 import { api } from '../helpers/variablesGlobales'
 import useAuth from '../hooks/useAuth'
 
-export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteForm, setVentanaCarga, setVentanaConfirmacion}) => {
+export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteForm, setVentanaCarga, setVentanaConfirmacion, setModalRegistroGuardado}) => {
 
   const { userAuth: usuarioLogiado} = useAuth();
 
@@ -75,8 +75,8 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
           .then((response) => response.text())
           .then((responseData) => {
             setVentanaCarga(false);
-            setVentanaConfirmacion(true);
-            console.log(responseData);
+            setModalRegistroGuardado(true);
+            setDialogNuevoClienteForm(false);
           })
           .catch((error) => {
             console.log(error);
