@@ -1,11 +1,43 @@
 import { InputText } from 'primereact/inputtext'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CrearAlbercaForm } from './CrearAlbercaForm';
+import { api } from '../helpers/variablesGlobales';
 
-export const AlbercasSeccion = () => {
+export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegistroGuardado, setModalRegistroGuardado}) => {
 
     const [modalAlberca, setModalAlberca] = useState(false);
-    const [albercaSeleccionada, setAlbercaSeleccionada] = useState([])
+    const [albercas, setAlbercas] = useState([]);
+    const [albercaSeleccionada, setAlbercaSeleccionada] = useState([]);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(`${api}/obtener/albercas`);
+          const jsonData = await response.json();
+          setAlbercas(jsonData);
+        } catch (error) {
+          console.log('Error:', error);
+        }
+      };
+      fetchData();
+    }, [modalRegistroGuardado]);
+
+    // Estados y logica para que funcione el paginator
+    const [currentPage, setCurrentPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const totalRows = albercas.length;
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+  
+    // Obtener índice del último registro en la página actual
+    const indexOfLastRow = currentPage * rowsPerPage;
+    // Obtener índice del primer registro en la página actual
+    const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+    // Obtener los registros para la página actual
+    const currentRows = albercas.slice(indexOfFirstRow, indexOfLastRow);
+  
+    // Función para cambiar de página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -39,78 +71,78 @@ export const AlbercasSeccion = () => {
             </div>
         </div>
         {/* TABLA ALBERCAS */}
-        {/* <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
+        <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
           <thead className="bg-[#245A95] text-white uppercase">
             <tr className='text-left'>
               <th scope="col" className="relative px-6 py-3">
                 <div className="items-center">
+                  <span>Nombre alberca</span>
+                </div>
+              </th>
+              <th scope="col" className="relative px-6 py-3">
+                <div className="items-center">
+                  <span>Tipo de alberca</span>
+                </div>
+              </th>
+              <th scope="col" className="relative px-6 py-3">
+                <div className="items-center">
+                  <span>Capacidad (L)</span>
+                </div>
+              </th>
+              <th scope="col" className="relative px-6 py-3">
+              <div className="items-center">
                   <span>Sede</span>
                 </div>
               </th>
               <th scope="col" className="relative px-6 py-3">
-                <div className="items-center">
-                  <span>Dirección</span>
-                </div>
-              </th>
-              <th scope="col" className="relative px-6 py-3">
-                <div className="items-center">
-                  <span>Encargado</span>
-                </div>
-              </th>
-              <th scope="col" className="relative px-6 py-3">
               <div className="items-center">
-                  <span>Teléfono</span>
-                </div>
-              </th>
-              <th scope="col" className="relative px-6 py-3">
-              <div className="items-center">
-                  <span>e-mail</span>
+                  <span>Ubicación</span>
                 </div>
               </th>
             
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200" >
-            {currentRows.map((sede, index) => (
+            {currentRows.map((alberca, index) => (
               <tr
                 onClick={() => {
-                  setSedeSeleccionada(sede),
-                  setDialogNuevaSedeForm(true)
+                  setAlbercaSeleccionada(alberca),
+                  setModalAlberca(true)
                 }} 
                 key={index}
                 className='cursor-pointer hover:bg-[#E2E2E2]'
               >
                 <td className="px-6 py-2">
                   <div className="flex space-x-4">
-                  <div className="text-sm font-medium text-gray-900">{sede.nombre}</div>
+                  <div className="text-sm font-medium text-gray-900">{alberca.nombrealberca}</div>
                   </div>
                 </td>
                 <td className="px-6 py-2">
                   <div className="flex space-x-4">
-                  <div className="text-sm font-medium text-gray-900">{sede.direccion}</div>
+                  <div className="text-sm font-medium text-gray-900">{alberca.tipoalberca}</div>
                   </div>
                 </td>
                 <td className="px-6 py-2">
                   <div className="flex space-x-4">
-                  <div className="text-sm font-medium text-gray-900">{sede.encargado}</div>
+                  <div className="text-sm font-medium text-gray-900">{alberca.capacidad}</div>
                   </div>
                 </td>
                 <td className="px-6 py-2">
                   <div className="flex space-x-4">
-                  <div className="text-sm font-medium text-gray-900">{sede.telefono}</div>
+                  <div className="text-sm font-medium text-gray-900">{alberca.sede.nombre}</div>
                   </div>
                 </td>
                 <td className="px-6 py-2">
                   <div className="flex space-x-4">
-                  <div className="text-sm font-medium text-gray-900">{sede.correo}</div>
+                  <div className="text-sm font-medium text-gray-900">{alberca.ubicacion}</div>
                   </div>
                 </td>  
               </tr>
             ))} 
           </tbody>
-        </table> */}
+        </table>
         {/* PAGINATOR  */}
-        {/* <div className="flex items-center justify-between mt-4 mb-6">
+        <div className="flex items-center justify-between mt-4 mb-6">
             <div className="flex items-center">
               <span className="mr-2 text-[#245A95] font-bold text-lg">Filas por página:</span>
               <select
@@ -158,10 +190,18 @@ export const AlbercasSeccion = () => {
                 </button>
               </nav>
             </div>
-        </div> */}
+        </div>
 
         {/* MODAL DEL FORMULARIO DE CREACIO DE ALBERCA */}
-        <CrearAlbercaForm modalAlberca={modalAlberca} setModalAlberca={setModalAlberca}/>
+        <CrearAlbercaForm 
+          modalAlberca={modalAlberca} 
+          setModalAlberca={setModalAlberca}
+          sedes={sedes}
+          albercaSeleccionada={albercaSeleccionada}
+          ventanaCarga={ventanaCarga}
+          setVentanaCarga={setVentanaCarga}
+          setModalRegistroGuardado={setModalRegistroGuardado}
+        />
     </>
     
   )

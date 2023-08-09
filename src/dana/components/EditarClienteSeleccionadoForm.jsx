@@ -7,7 +7,7 @@ import { useDropzone } from 'react-dropzone';
 import { api } from '../helpers/variablesGlobales'
 import useAuth from '../hooks/useAuth'
 
-export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClienteForm, setDialogEditatarClienteForm, setVentanaCarga, setVentanaConfirmacion, setUploadedImage, uploadedImage, setFile, file}) => {
+export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClienteForm, setDialogEditatarClienteForm, setVentanaCarga, setVentanaConfirmacion, setUploadedImage, uploadedImage, setFile, file, setRespuestaApiCliente}) => {
 
   const { userAuth: usuarioLogiado} = useAuth();
 
@@ -22,7 +22,7 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
     const { getRootProps, getInputProps } = useDropzone({ onDrop, accept: 'image/*', maxFiles: 1 });
 
       const onSubmit = (values, { resetForm }) => {
-        // setVentanaCarga(true);
+        setVentanaCarga(true);
   
         console.log(values);
         values.cliente = values.cliente.toUpperCase();
@@ -48,9 +48,11 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
           })
             .then((response) => response.text())
             .then((responseData) => {
-              // setVentanaCarga(false);
-              // setVentanaConfirmacion(true);
-              console.log(responseData);
+                setVentanaCarga(false);
+                setVentanaConfirmacion(true);
+                setDialogEditatarClienteForm(false);
+                setRespuestaApiCliente(responseData);
+                console.log(responseData);
             })
             .catch((error) => {
               console.log(error);

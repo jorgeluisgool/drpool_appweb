@@ -5,8 +5,9 @@ import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
         
 import React from 'react'
+import { api } from '../helpers/variablesGlobales';
 
-export const CrearAlbercaForm = ({modalAlberca, setModalAlberca}) => {
+export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaSeleccionada, ventanaCarga, setVentanaCarga, setModalRegistroGuardado}) => {
 
     const initialValues = {
         nombrealberca: '',
@@ -16,40 +17,50 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca}) => {
         medidaancho: '',
         medidaprofundidad: '',
         ubicacion: '',
-        sede: '',
+        sede: {
+          correo: '',
+          direccion: '',
+          encargado: '',
+          idsede: '',
+          nombre: '',
+          telefono: ''
+        },
         equiponombre: '',
         tipoequipo: ''
     };
 
     const onSubmit = (values, { resetForm }) => {
-        console.log(values);
-        // setVentanaCarga(true);
-        // values.cliente = values.nombre.toUpperCase();
+        // console.log(values);
+        setVentanaCarga(true);
+        values.nombrealberca = values.nombrealberca.toUpperCase();
        
-        //   fetch(`${api}/nueva/sede`, {
-        //     method: 'POST',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(values),
-        //   })
-        //     .then((response) => response.text())
-        //     .then((responseData) => {
-        //       setVentanaCarga(false);
-        //       setModalRegistroGuardado(true);
-        //       setDialogNuevaSedeForm(false);
-        //     })
-        //     .catch((error) => {
-        //       console.log(error);
-        //     });
+           fetch(`${api}/nueva/alberca`, {
+             method: 'POST',
+             headers: {
+               'Content-Type': 'application/json',
+             },
+             body: JSON.stringify(values),
+           })
+             .then((response) => response.text())
+             .then((responseData) => {
+                console.log(responseData);
+                setVentanaCarga(false);
+                setModalRegistroGuardado(true);
+                setModalAlberca(false);
+             })
+             .catch((error) => {
+               console.log(error);
+             });
       };
   return (
     <>
-    <Dialog header='Albercas' visible={modalAlberca} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalAlberca(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+    <Dialog header='Albercas' visible={modalAlberca} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalAlberca(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+        <Formik initialValues={albercaSeleccionada === undefined? initialValues : albercaSeleccionada} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form>  
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
+                <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2'>
+                    <h1 className='text-2xl font-semibold'>Datos generales</h1>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
                     {/* <div className='grid place-items-center'> */}
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
@@ -87,8 +98,6 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca}) => {
                                 </label>
                             </span>
                         </div>
-                    {/* </div> */}
-                    {/* <div> */}
                         
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
@@ -108,6 +117,112 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca}) => {
                             </span>
                         </div>
                         <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={Dropdown}
+                                    name="sede"
+                                    value={values.sede}
+                                    options={sedes} 
+                                    optionLabel="nombre"
+                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Sede a la que pertenece
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2'>
+                    <h1 className='text-2xl font-semibold'>Meidadas de la alberca</h1>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
+                      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6'>
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={InputText}
+                                    name="capacidad"
+                                    value={values.capacidad}
+                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Capacidad
+                                </label>
+                            </span>
+                        </div>  
+                        
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={InputText}
+                                    name="medidalargo"
+                                    value={values.medidalargo}
+                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Largo
+                                </label>
+                            </span>
+                        </div>
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={InputText}
+                                    name="medidaancho"
+                                    value={values.medidaancho}
+                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Ancho
+                                </label>
+                            </span>
+                        </div>
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={InputText}
+                                    name="medidaprofundidad"
+                                    value={values.medidaprofundidad}
+                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Profundidad
+                                </label>
+                            </span>
+                        </div>
+                      </div>
+                      <div>
+                        <h1>Grafico de alberca</h1>
+                      </div>
+                        
+                    </div>
+                  </div>
+                    
+                    <div className='bg-[#E2E2E2] p-2 rounded-xl'>
+                    <h1 className='text-2xl font-semibold'>Equipo de la alberca</h1>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
+                    <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
@@ -141,96 +256,9 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca}) => {
                                 </label>
                             </span>
                         </div>
-                        <div className="p-inputgroup mb-5 mt-8">
-                            <span className='p-float-label relative'>
-                                <Field
-                                    className="w-full appearance-none focus:outline-none bg-transparent"
-                                    as={Dropdown}
-                                    name="sede"
-                                    value={values.sede}
-                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
-                                /> 
-                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                </span>
-                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Sede a la que pertenece
-                                </label>
-                            </span>
-                        </div>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
-                        <h1>Medidas de la alberca</h1>
-                        <div className="p-inputgroup mb-5 mt-8">
-                            <span className='p-float-label relative'>
-                                <Field
-                                    className="w-full appearance-none focus:outline-none bg-transparent"
-                                    as={InputText}
-                                    name="capacidad"
-                                    value={values.capacidad}
-                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
-                                /> 
-                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                </span>
-                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Capacidad
-                                </label>
-                            </span>
-                        </div>  
-                        
-                            <div className="p-inputgroup mb-5 mt-8">
-                                <span className='p-float-label relative'>
-                                    <Field
-                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                        as={InputText}
-                                        name="medidalargo"
-                                        value={values.medidalargo}
-                                        // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
-                                    /> 
-                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                    </span>
-                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                      Largo
-                                    </label>
-                                </span>
-                            </div>
-                            <div className="p-inputgroup mb-5 mt-8">
-                                <span className='p-float-label relative'>
-                                    <Field
-                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                        as={InputText}
-                                        name="medidaancho"
-                                        value={values.medidaancho}
-                                        // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
-                                    /> 
-                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                    </span>
-                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                      Ancho
-                                    </label>
-                                </span>
-                            </div>
-                            <div className="p-inputgroup mb-5 mt-8">
-                                <span className='p-float-label relative'>
-                                    <Field
-                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                        as={InputText}
-                                        name="medidaprofundidad"
-                                        value={values.medidaprofundidad}
-                                        // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
-                                    /> 
-                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                    </span>
-                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                      Profundidad
-                                    </label>
-                                </span>
-                            </div>
                     </div>
+                    
                 {/* </div>  */}
                 <div className="pt-4 flex justify-end">
                   <button

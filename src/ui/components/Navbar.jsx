@@ -121,7 +121,7 @@ export const Navbar = () => {
                       </div>
                     </div>
                     <div className="xl:ml-1 ml-2">
-                      <p className="text-xl font-semibold">Clientes</p>
+                      <p className="text-xl font-semibold">Altas</p>
                     </div>
                   </Link>
                 </li> : <></>

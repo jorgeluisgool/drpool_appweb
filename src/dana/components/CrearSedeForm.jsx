@@ -3,8 +3,9 @@ import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import React, { useState } from 'react'
 import { api } from '../helpers/variablesGlobales'
+import { Dropdown } from 'primereact/dropdown'
 
-export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setVentanaCarga, setModalRegistroGuardado, setSedeSeleccionada, sedeSeleccionada}) => {
+export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setVentanaCarga, setModalRegistroGuardado, setSedeSeleccionada, sedeSeleccionada, clientes}) => {
 
   const [nombreSede, setNombreSede] = useState('NUEVA SEDE')
 
@@ -13,31 +14,36 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
     direccion: '',
     encargado: '',
     telefono: '',
-    correo: ''
+    correo: '',
+    cliente: {
+
+    }
 };
 
 
-const onSubmit = (values, { resetForm }) => {
-  // setVentanaCarga(true);
-  // values.cliente = values.nombre.toUpperCase();
- 
-    fetch(`${api}/nueva/sede`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    })
-      .then((response) => response.text())
-      .then((responseData) => {
-        setVentanaCarga(false);
-        setModalRegistroGuardado(true);
-        setDialogNuevaSedeForm(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-};
+  const onSubmit = (values, { resetForm }) => {
+      console.log(values);
+
+    // setVentanaCarga(true);
+    // values.cliente = values.nombre.toUpperCase();
+  
+      // fetch(`${api}/nueva/sede`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(values),
+      // })
+      //   .then((response) => response.text())
+      //   .then((responseData) => {
+      //     setVentanaCarga(false);
+      //     setModalRegistroGuardado(true);
+      //     setDialogNuevaSedeForm(false);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+  };
 
   return (
     <Dialog header='' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setDialogNuevaSedeForm(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
@@ -133,6 +139,25 @@ const onSubmit = (values, { resetForm }) => {
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
                                   e-mail
+                                </label>
+                            </span>
+                        </div>
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={Dropdown}
+                                    name="cliente"
+                                    value={values.cliente}
+                                    options={clientes} 
+                                    optionLabel="cliente"
+                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Cliente a la que pertenece
                                 </label>
                             </span>
                         </div>

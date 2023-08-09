@@ -24,6 +24,7 @@ export const ClientesPage = () => {
     const [clienteState, setClienteState] = useState([]);
     const [modalRegistroGuardado, setModalRegistroGuardado] = useState(false);
     const [sedeSeleccionada, setSedeSeleccionada] = useState();
+    const [respuestaApiCliente, setRespuestaApiCliente] = useState();
 
     const [uploadedImage, setUploadedImage] = useState(null);
     const [file, setFile] = useState(null);
@@ -40,7 +41,7 @@ export const ClientesPage = () => {
      };
 
      fetchData();
-   }, []);
+   }, [respuestaApiCliente]);
 
    useEffect(() => {
     const fetchData = async () => {
@@ -115,7 +116,7 @@ export const ClientesPage = () => {
       )}
 
       <DialogRegistroGuardado setModalRegistroGuardado={setModalRegistroGuardado} modalRegistroGuardado={modalRegistroGuardado}/>
-        <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">CLIENTES Y SEDES</h1>
+        <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">ALTAS CLIENTES, SEDES Y ALBERCAS </h1>
         {/* CLIENTES */}
         <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-12'>
         <h1 className="text-2xl font-bold text-[#245A95] pb-4">Dar de alta un cliente</h1>
@@ -179,7 +180,7 @@ export const ClientesPage = () => {
         </div>
 
         {/* CEDES */}
-        <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+        <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-12'>
             <h1 className="text-2xl font-bold text-[#245A95] pb-4">Dar de alta una sede</h1>
             <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4 pb-4'>
               <div 
@@ -345,7 +346,13 @@ export const ClientesPage = () => {
 
         {/* ALBERCAS */}
         <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
-          <AlbercasSeccion/>
+          <AlbercasSeccion 
+            sedes={sedes}
+            ventanaCarga={ventanaCarga}
+            setVentanaCarga={setVentanaCarga}
+            modalRegistroGuardado={modalRegistroGuardado}
+            setModalRegistroGuardado={setModalRegistroGuardado}
+          />
         </div>
 
         {/* Modales de formularios */}
@@ -366,6 +373,7 @@ export const ClientesPage = () => {
           uploadedImage={uploadedImage}
           setFile={setFile}
           file={file}
+          setRespuestaApiCliente={setRespuestaApiCliente}
         />
         <CrearSedeForm 
           dialogNuevaSedeForm={dialogNuevaSedeForm} 
@@ -374,7 +382,9 @@ export const ClientesPage = () => {
           setModalRegistroGuardado={setModalRegistroGuardado}
           setSedeSeleccionada={setSedeSeleccionada}
           sedeSeleccionada={sedeSeleccionada}
+          clientes={clientes}
         />
     </>
   )
 }
+
