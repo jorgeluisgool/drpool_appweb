@@ -24,25 +24,25 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
   const onSubmit = (values, { resetForm }) => {
       console.log(values);
 
-    // setVentanaCarga(true);
-    // values.cliente = values.nombre.toUpperCase();
+     setVentanaCarga(true);
+    //  values.cliente = values.nombre.toUpperCase();
   
-      // fetch(`${api}/nueva/sede`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(values),
-      // })
-      //   .then((response) => response.text())
-      //   .then((responseData) => {
-      //     setVentanaCarga(false);
-      //     setModalRegistroGuardado(true);
-      //     setDialogNuevaSedeForm(false);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
+       fetch(`${api}/nueva/sede`, {
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(values),
+       })
+         .then((response) => response.text())
+         .then((responseData) => {
+           setVentanaCarga(false);
+           setModalRegistroGuardado(true);
+           setDialogNuevaSedeForm(false);
+         })
+         .catch((error) => {
+           console.log(error);
+         });
   };
 
   return (
@@ -88,8 +88,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                                 </label>
                             </span>
                         </div>
-                    {/* </div> */}
-                    {/* <div> */}
+                    
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
                                 <Field

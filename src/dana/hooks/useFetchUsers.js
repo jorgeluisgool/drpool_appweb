@@ -12,7 +12,7 @@ const acomodarDatos = (lista) => {
   return nuevaLista;
 }
 
-export const useFetchUsers = ()=>{
+export const useFetchUsers = (modalCrearEditarUsuario)=>{
   // console.log(prueba)
     const [state, setState] = useState({
         data: [],
@@ -30,7 +30,7 @@ export const useFetchUsers = ()=>{
 
           });
           //Utilizar los parentesis para mandar el parametro en dado caso que necesitemos volver a cargar el metodo
-      }, [])
+      }, [modalCrearEditarUsuario])
 
     return state;
 

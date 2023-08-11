@@ -6,6 +6,12 @@ import React, { useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone';
 import { api } from '../helpers/variablesGlobales'
 import useAuth from '../hooks/useAuth'
+import { Dropdown } from 'primereact/dropdown'
+
+const opcionesStatus = [
+  { label: 'ACTIVO', value: 'ACTIVO' },
+  { label: 'INACTIVO', value: 'INACTIVO' }
+];
 
 export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteForm, setVentanaCarga, setVentanaConfirmacion, setModalRegistroGuardado}) => {
 
@@ -28,7 +34,8 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
         clienteAplicacion: usuarioLogiado.clienteAplicacion,
         cliente: '',
         direccion: '',
-        telefono: ''
+        telefono: '',
+        estatus: 'ACTIVO'     
     };
 
     const convertirUrlaBytes = (data, onSubmitCallback) => {
@@ -156,6 +163,28 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
                                   Teléfono
+                                </label>
+                            </span>
+                        </div>
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={Dropdown}
+                                    name="estatus"
+                                    value={values.estatus}
+                                    options={opcionesStatus} 
+                                    optionLabel="value"
+                                    // onChange={(e) => {
+                                    //   handleChange(e);
+                                    //   setNombreSede(e.target.value.toUpperCase());
+                                    // }}
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Estatus
                                 </label>
                             </span>
                         </div>

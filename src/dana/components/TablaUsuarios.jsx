@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useFetchUsers } from '../hooks/useFetchUsers';
 import { SkeletonTable } from './SkeletonTable';
 import { Dialog } from 'primereact/dialog';
@@ -7,51 +7,41 @@ import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 
 import { api } from '../helpers/variablesGlobales';
+import { Dropdown } from 'primereact/dropdown';
+import useAuth from '../hooks/useAuth';
 
+const opcionesStatus = [
+    { label: 'ACTIVO', value: 'ACTIVO' },
+    { label: 'INACTIVO', value: 'INACTIVO' }
+  ];
 
-const usuarioVacio = {
-    idusuario: 0,
-    correo: "",
-    jefeinmediato: "",
-    nombre: "",
-    pass: "",
-    passtemp: 0,
-    telefono: "",
-    ubicacion: "",
-    usuario: "",
-    status: "",
-    token: "",
-    perfile: {
-        idperfil: 0,
-        perfil: ""
-    },
-    clienteAplicacion: {
-        idcliente: 0,
-        cliente: "",
-        urllogo: ""
-    },
-    vistaCliente: {
-        idcliente: 0,
-        cliente: "",
+export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuario, setUsuarioSeleccionado, usuarioSeleccionado, setVentanaCarga, setModalRegistroGuardado}) => {
+
+    const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
+
+    const usuarioVacio = {
+        // idusuario: 0,
+        correo: "",
+        jefeinmediato: "",
+        nombre: "",
+        pass: "",
+        passtemp: 0,
         telefono: "",
-        direccion: "",
-        urllogo: "",
-        estatus: "",
-        clienteAplicacion: {
-            idcliente: 0,
-            cliente: "",
-            urllogo: ""
-        }
-    },
-};
+        ubicacion: "",
+        usuario: "",
+        status: "",
+        token: "",
+        perfile: {
 
+        },
+        clienteAplicacion: usuarioLogiado[0].clienteAplicacion,
+        vistaCliente: usuarioLogiado[0].vistaCliente
+    };
 
-export const TabaUsuarios = () => {
     const [cargando, setCargando] = useState(false);
-    const [modalAbrirCerrar, setModalAbrirCerrar] = useState(false);
+    const [perfil, setPerfil] = useState(false);
 
-    const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers();
-    const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(undefined);
+    const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers(modalCrearEditarUsuario);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -80,28 +70,47 @@ export const TabaUsuarios = () => {
 
     const handleSubmit = (value) => {
         console.log(value);
+         setVentanaCarga(true);
+
+          fetch(`${api}/crear/usuario`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json' 
+              },
+              body: JSON.stringify(value) 
+            })
+              .then(response => response.json())
+              .then(responseData => {
+                 setModalCrearEditarUsuario(false);
+                 setVentanaCarga(false);
+                 setModalRegistroGuardado(true);
+          
+                console.log('Respuesta de la API:', responseData);
+                  return 'Correcto';
+              })
+              .catch(error =>{ 
+                  console.log(error);
+                  return 'Error';
+              }
+              );
     };
 
-    const guardarUsuario = (usuario)=>{
-        fetch(`${api}/crear/usuario`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json' 
-            },
-            body: JSON.stringify(usuario) 
-          })
-            .then(response => response.json())
-            .then(responseData => {
-              console.log('Respuesta de la API:', responseData);
-                return 'Correcto';
-            })
-            .catch(error =>{ 
-                console.log(error);
-                return 'Error';
-            }
-            );
+    // Obtener los perfiles
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(`${api}/obtener/perfiles`);
+            const jsonData = await response.json();
+            setPerfil(jsonData);
+          } catch (error) {
+            console.log('Error:', error);
+          }
+        };
+   
+        fetchData();
+      }, []);
 
-    }
+    //   console.log(perfil);
 
     return (
         <>
@@ -122,9 +131,8 @@ export const TabaUsuarios = () => {
                 loadingUsuarios ?
                     <SkeletonTable />
                     :
-
                     <>
-                        <table className="min-w-[70%] bg-white rounded-lg overflow-hidden shadow-md">
+                        <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
                             <thead className="bg-[#245A95] text-white uppercase">
                                 <tr className='text-left'>
                                     <th scope="col" className="relative px-6 py-3">
@@ -144,6 +152,11 @@ export const TabaUsuarios = () => {
                                     </th>
                                     <th scope="col" className="relative px-6 py-3">
                                         <div className="items-center">
+                                            <span>Perfil</span>
+                                        </div>
+                                    </th>
+                                    <th scope="col" className="relative px-6 py-3">
+                                        <div className="items-center">
                                             <span>Estatus</span>
                                         </div>
                                     </th>
@@ -155,34 +168,43 @@ export const TabaUsuarios = () => {
                                         key={index}
                                         onClick={() => {
                                             //Click para mostrar informacion del usuario
-                                            console.log(usuario);
                                             setUsuarioSeleccionado(usuario);
-                                            setModalAbrirCerrar(true);
+                                            setModalCrearEditarUsuario(true);
                                         }}
 
                                         className='cursor-pointer hover:bg-[#E2E2E2]'>
-                                        <td className="px-6">
+                                        <td className="px-6 py-2">
                                             <div className="flex items-center">
-
                                                 <div className="ml-8">
                                                     <div className="text-sm font-medium text-gray-900 cursor-pointer">{usuario.nombre}</div>
                                                     {/* <div className="text-sm text-gray-500">{registro.email}</div> */}
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6">
+                                        <td className="px-6 py-2">
                                             <div className="flex space-x-4">
                                                 <div className="text-sm font-medium text-gray-900">{usuario.usuario}</div>
                                             </div>
                                         </td>
-                                        <td className="px-6">
+                                        <td className="px-6 py-2">
                                             <div className="flex space-x-4">
                                                 <div className="text-sm font-medium text-gray-900">{usuario.correo}</div>
                                             </div>
                                         </td>
-                                        <td className="px-6">
+                                        <td className="px-6 py-2">
                                             <div className="flex space-x-4">
-                                                <div className="text-sm font-medium text-gray-900">{usuario.status}</div>
+                                                <div className="text-sm font-medium text-gray-900">{usuario.perfile.perfil}</div>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-2">
+                                            <div className="flex space-x-4">
+                                                {
+                                                    usuario.status === 'ACTIVO'?
+                                                    <div className="text-sm font-medium text-green-600"><ion-icon name="radio-button-on-outline"></ion-icon> {usuario.status}</div>
+                                                    :
+                                                    <div className="text-sm font-medium text-red-600"><ion-icon name="radio-button-off-outline"></ion-icon> {usuario.status}</div>
+                                                }
+                                                
                                             </div>
                                         </td>
                                     </tr>
@@ -237,211 +259,209 @@ export const TabaUsuarios = () => {
                                 </nav>
                             </div>
                         </div>
-
-                        <Dialog header={`Usuario`} visible={modalAbrirCerrar} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalAbrirCerrar(false)} className='mt-16'>
+                        {/* MODAL DEL FORMULARIO USUARIOS */}
+                        <Dialog header={`Usuario`} visible={modalCrearEditarUsuario} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalCrearEditarUsuario(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
                             <Formik initialValues={ usuarioSeleccionado === undefined ? usuarioVacio : usuarioSeleccionado} onSubmit={handleSubmit}>
                                 {({ values }) => (
                                     <Form>
-                                        <div className='px-2 xl:px-10 py-3'>
-                                                <span className='p-float-label'>
-                                                    <div className='grid grid-cols-2'>
-                                                        <div className=''>
-                                                            <p className='text-sm xl:text-base text-[#245A95] font-semibold text-right pr-5'>Nombre:</p>
-                                                        </div>
-                                                        <div className=''>
-                                                            <span className='p-float-label relative'>
-                                                                <div className="p-inputgroup">
-                                                                    <Field
-                                                                        as={InputText}
-                                                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                                                        name={'nombre'}
-                                                                        defaultValue={usuarioSeleccionado.nombre}
-                                                                        // maxLength={campo.longitud}
-                                                                        // onChange={(e) => {
-                                                                        //   e.target.value = e.target.value.toUpperCase();
-                                                                        // }}
-                                                                        keyfilter={RegExp(`[A-Z]`)}
-                                                                    />
-                                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                                                        <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </span>
-                                                        </div>
-                                                        <div className=''>
-                                                            <p className='text-sm xl:text-base text-[#245A95] font-semibold text-right pr-5'>Peril:</p>
-                                                        </div>
-                                                        <div className=''>
-                                                            <span className='p-float-label relative'>
-                                                                <div className="p-inputgroup">
-                                                                    <Field
-                                                                        as={InputText}
-                                                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                                                        name={'perfil'}
-                                                                        defaultValue={usuarioSeleccionado.perfile.perfil}
-                                                                        // maxLength={campo.longitud}
-                                                                        // onChange={(e) => {
-                                                                        //   e.target.value = e.target.value.toUpperCase();
-                                                                        // }}
-                                                                        keyfilter={RegExp(`[A-Z]`)}
-                                                                    />
-                                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                                                        <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </span>
-                                                        </div>
-                                                        <div className=''>
-                                                            <p className='text-sm xl:text-base text-[#245A95] font-semibold text-right pr-5'>Correo:</p>
-                                                        </div>
-                                                        <div className=''>
-                                                            <span className='p-float-label relative'>
-                                                                <div className="p-inputgroup">
-                                                                    <Field
-                                                                        as={InputText}
-                                                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                                                        name={'correo'}
-                                                                        defaultValue={usuarioSeleccionado.correo}
-                                                                        // maxLength={campo.longitud}
-                                                                        // onChange={(e) => {
-                                                                        //   e.target.value = e.target.value.toUpperCase();
-                                                                        // }}
-                                                                        keyfilter={RegExp(`[a-z]`)}
-                                                                    />
-                                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                                                        <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </span>
-                                                        </div>
-                                                        <div className=''>
-                                                            <p className='text-sm xl:text-base text-[#245A95] font-semibold text-right pr-5'>Ubicacion:</p>
-                                                        </div>
-                                                        <div className=''>
-                                                            <span className='p-float-label relative'>
-                                                                <div className="p-inputgroup">
-                                                                    <Field
-                                                                        as={InputText}
-                                                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                                                        name={'ubicacion'}
-                                                                        defaultValue={usuarioSeleccionado.ubicacion}
-                                                                        // maxLength={campo.longitud}
-                                                                        // onChange={(e) => {
-                                                                        //   e.target.value = e.target.value.toUpperCase();
-                                                                        // }}
-                                                                        keyfilter={RegExp(`[A-Z]`)}
-                                                                    />
-                                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                                                        <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </span>
-                                                        </div>
-                                                        <div className=''>
-                                                            <p className='text-sm xl:text-base text-[#245A95] font-semibold text-right pr-5'>Telefono:</p>
-                                                        </div>
-                                                        <div className=''>
-                                                            <span className='p-float-label relative'>
-                                                                <div className="p-inputgroup">
-                                                                    <Field
-                                                                        as={InputText}
-                                                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                                                        name={'telefono'}
-                                                                        defaultValue={usuarioSeleccionado.telefono}
-                                                                        // maxLength={campo.longitud}
-                                                                        // onChange={(e) => {
-                                                                        //   e.target.value = e.target.value.toUpperCase();
-                                                                        // }}
-                                                                        keyfilter={RegExp(`[0-9]`)}
-                                                                    />
-                                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                                                        <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </span>
-                                                        </div>
-                                                        <div className=''>
-                                                            <p className='text-sm xl:text-base text-[#245A95] font-semibold text-right pr-5'>Jefe inmediato:</p>
-                                                        </div>
-                                                        <div className=''>
-                                                            <span className='p-float-label relative'>
-                                                                <div className="p-inputgroup">
-                                                                    <Field
-                                                                        as={InputText}
-                                                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                                                        name={'jefeinmediato'}
-                                                                        defaultValue={usuarioSeleccionado.jefeinmediato}
-                                                                        // maxLength={campo.longitud}
-                                                                        // onChange={(e) => {
-                                                                        //   e.target.value = e.target.value.toUpperCase();
-                                                                        // }}
-                                                                        keyfilter={RegExp(`[A-Z]`)}
-                                                                    />
-                                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                                                        <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </span>
-                                                        </div>
-                                                        <div className=''>
-                                                            <p className='text-sm xl:text-base text-[#245A95] font-semibold text-right pr-5'>Estatus:</p>
-                                                        </div>
-                                                        <div className=''>
-                                                            <span className='p-float-label relative'>
-                                                                <div className="p-inputgroup">
-                                                                    <Field
-                                                                        as={InputText}
-                                                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                                                        name={'status'}
-                                                                        defaultValue={usuarioSeleccionado.status}
-                                                                        // maxLength={campo.longitud}
-                                                                        // onChange={(e) => {
-                                                                        //   e.target.value = e.target.value.toUpperCase();
-                                                                        // }}
-                                                                        keyfilter={RegExp(`[A-Z]`)}
-                                                                    />
-                                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                                                        <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </span>
-                                                        </div>
-                                                        <div className=''>
-                                                            <p className='text-sm xl:text-base text-[#245A95] font-semibold text-right pr-5'>Contraseña:</p>
-                                                        </div>
-                                                        <div className=''>
-                                                            <span className='p-float-label relative'>
-                                                                <div className="p-inputgroup">
-                                                                    <Field
-                                                                        as={Password}
-                                                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                                                        name={'pass'}
-                                                                        defaultValue={usuarioSeleccionado.pass}
-                                                                        // maxLength={campo.longitud}
-                                                                        // onChange={(e) => {
-                                                                        //   e.target.value = e.target.value.toUpperCase();
-                                                                        // }}
-                                                                        toggleMask
-                                                                    />
-                                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                                                        <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </span>
-                                                        </div>
-                                                    </div>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
+                                            <div className="p-inputgroup mb-5 mt-8">
+                                                <span className='p-float-label relative'>
+                                                    <Field
+                                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                                        as={InputText}
+                                                        name="nombre"
+                                                        value={values.nombre.toUpperCase()}
+                                                        // onChange={(e) => {
+                                                        //   handleChange(e);
+                                                        //   setNombreSede(e.target.value.toUpperCase());
+                                                        // }}
+                                                    /> 
+                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                                    </span>
+                                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                                      Nombre completo
+                                                    </label>
                                                 </span>
+                                            </div>
+                                            <div className="p-inputgroup mb-5 mt-8">
+                                                <span className='p-float-label relative'>
+                                                    <Field
+                                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                                        as={Dropdown}
+                                                        name="perfile"
+                                                        value={values.perfile}
+                                                        options={perfil} 
+                                                        optionLabel="perfil"
+                                                        // onChange={(e) => {
+                                                        //   handleChange(e);
+                                                        //   setNombreSede(e.target.value.toUpperCase());
+                                                        // }}
+                                                    /> 
+                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                                    </span>
+                                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                                      Perfil
+                                                    </label>
+                                                </span>
+                                            </div>
+                                            <div className="p-inputgroup mb-5 mt-8">
+                                                <span className='p-float-label relative'>
+                                                    <Field
+                                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                                        as={InputText}
+                                                        name="usuario"
+                                                        value={values.usuario.toUpperCase()}
+                                                        // onChange={(e) => {
+                                                        //   handleChange(e);
+                                                        //   setNombreSede(e.target.value.toUpperCase());
+                                                        // }}
+                                                    /> 
+                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                                    </span>
+                                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                                      Nombre de usuario
+                                                    </label>
+                                                </span>
+                                            </div>
+                                            <div className="p-inputgroup mb-5 mt-8">
+                                                <span className='p-float-label relative'>
+                                                    <Field
+                                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                                        as={InputText}
+                                                        name="correo"
+                                                        value={values.correo.toUpperCase()}
+                                                        // onChange={(e) => {
+                                                        //   handleChange(e);
+                                                        //   setNombreSede(e.target.value.toUpperCase());
+                                                        // }}
+                                                    /> 
+                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                                    </span>
+                                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                                      Correo
+                                                    </label>
+                                                </span>
+                                            </div>
+                                            <div className="p-inputgroup mb-5 mt-8">
+                                                <span className='p-float-label relative'>
+                                                    <Field
+                                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                                        as={InputText}
+                                                        name="ubicacion"
+                                                        value={values.ubicacion.toUpperCase()}
+                                                        // onChange={(e) => {
+                                                        //   handleChange(e);
+                                                        //   setNombreSede(e.target.value.toUpperCase());
+                                                        // }}
+                                                    /> 
+                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                                    </span>
+                                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                                      Ubicación
+                                                    </label>
+                                                </span>
+                                            </div>
+                                            <div className="p-inputgroup mb-5 mt-8">
+                                                <span className='p-float-label relative'>
+                                                    <Field
+                                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                                        as={InputText}
+                                                        name="telefono"
+                                                        value={values.telefono.toUpperCase()}
+                                                        // onChange={(e) => {
+                                                        //   handleChange(e);
+                                                        //   setNombreSede(e.target.value.toUpperCase());
+                                                        // }}
+                                                    /> 
+                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                                    </span>
+                                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                                      Telefono
+                                                    </label>
+                                                </span>
+                                            </div>
+                                            <div className="p-inputgroup mb-5 mt-8">
+                                                <span className='p-float-label relative'>
+                                                    <Field
+                                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                                        as={InputText}
+                                                        name="jefeinmediato"
+                                                        value={values.jefeinmediato.toUpperCase()}
+                                                        // onChange={(e) => {
+                                                        //   handleChange(e);
+                                                        //   setNombreSede(e.target.value.toUpperCase());
+                                                        // }}
+                                                    /> 
+                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                                    </span>
+                                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                                      Jefe inmediato
+                                                    </label>
+                                                </span>
+                                            </div>
+                                            <div className="p-inputgroup mb-5 mt-8">
+                                                <span className='p-float-label relative'>
+                                                    <Field
+                                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                                        as={Dropdown}
+                                                        name="status"
+                                                        value={values.status}
+                                                        options={opcionesStatus} 
+                                                        optionLabel="value"
+                                                        // onChange={(e) => {
+                                                        //   handleChange(e);
+                                                        //   setNombreSede(e.target.value.toUpperCase());
+                                                        // }}
+                                                    /> 
+                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                                    </span>
+                                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                                      Estatus
+                                                    </label>
+                                                </span>
+                                            </div>
+                                            <div className="p-inputgroup mb-5 mt-8">
+                                                <span className='p-float-label relative'>
+                                                    <Field
+                                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                                        as={Password}
+                                                        name="pass"
+                                                        value={values.pass}
+                                                        toggleMask
+                                                        // onChange={(e) => {
+                                                        //   handleChange(e);
+                                                        //   setNombreSede(e.target.value.toUpperCase());
+                                                        // }}
+                                                    /> 
+                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                                    </span>
+                                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                                      Contraseña
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        
                                         </div>
-
-                                        <div className="cursor-pointer absolute inset-x-0 bottom-4 left-4 flex gap-3">
+                                            
+                                        <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
                                             <button
                                                 type="submit"
                                                 className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                                                onClick={() => {
+                                                // onClick={() => {
 
-                                                    const s = guardarUsuario(usuarioSeleccionado);
-                                                    console.log('Respuesta peticion: ', s);
-                                                }}
+                                                //     const s = guardarUsuario(usuarioSeleccionado);
+                                                //     console.log('Respuesta peticion: ', s);
+                                                // }}
                                             >
                                                 Aceptar
                                             </button>
@@ -461,7 +481,6 @@ export const TabaUsuarios = () => {
                             </Formik>
                         </Dialog>
                     </>
-
             }
         </>
     )

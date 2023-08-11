@@ -9,6 +9,7 @@ import { EditarClienteSeleccionadoForm } from '../components/EditarClienteSelecc
 import { Player } from '@lottiefiles/react-lottie-player';
 import { DialogRegistroGuardado } from '../../ui/components/DialogRegistroGuardado';
 import { AlbercasSeccion } from '../components/AlbercasSeccion';
+import ModalClientesInactivos from '../components/ModalClientesInactivos';
 
 export const ClientesPage = () => {
 
@@ -25,6 +26,7 @@ export const ClientesPage = () => {
     const [modalRegistroGuardado, setModalRegistroGuardado] = useState(false);
     const [sedeSeleccionada, setSedeSeleccionada] = useState();
     const [respuestaApiCliente, setRespuestaApiCliente] = useState();
+    const [dialogClientesInactivos, setDialogClientesInactivos] = useState(false);
 
     const [uploadedImage, setUploadedImage] = useState(null);
     const [file, setFile] = useState(null);
@@ -41,7 +43,7 @@ export const ClientesPage = () => {
      };
 
      fetchData();
-   }, [respuestaApiCliente]);
+   }, [dialogEditatarClienteForm]);
 
    useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +57,7 @@ export const ClientesPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [dialogNuevaSedeForm]);
 
   // Estados y logica para que funcione el paginator
   const [currentPage, setCurrentPage] = useState(1);
@@ -92,6 +94,8 @@ export const ClientesPage = () => {
     }  
   }
 
+  const clientesActivos = clientes.filter(cliente => cliente.estatus === "ACTIVO");
+  
   return (
     <>
       {ventanaCarga && (
@@ -116,6 +120,7 @@ export const ClientesPage = () => {
       )}
 
       <DialogRegistroGuardado setModalRegistroGuardado={setModalRegistroGuardado} modalRegistroGuardado={modalRegistroGuardado}/>
+      
         <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">ALTAS CLIENTES, SEDES Y ALBERCAS </h1>
         {/* CLIENTES */}
         <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-12'>
@@ -150,10 +155,21 @@ export const ClientesPage = () => {
                 </span>
             </div> 
           </div>
-          
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              // disabled={!formik.dirty || formik.isSubmitting}
+              className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+              onClick={()=>{
+                setDialogClientesInactivos(true);
+              }}
+            >
+              <ion-icon name="eye" className="mr-2 text-2xl"></ion-icon> Clientes inactivos
+            </button>
+          </div>
           <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4'> 
             {
-              clientes.map((cliente, index) => (
+              clientesActivos.map((cliente, index) => (
                 <Link key={index} onClick={() => {setClienteState(cliente), setDialogEditatarClienteForm(true), converImageUrlToFile(cliente.urllogo)}}>
                   <div className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer">
                     <div className="px-2 py-1 bg-[#E2E2E2] text-center">
@@ -177,6 +193,7 @@ export const ClientesPage = () => {
               ))
             }
           </div>
+          
         </div>
 
         {/* CEDES */}
@@ -239,6 +256,11 @@ export const ClientesPage = () => {
                       <span>e-mail</span>
                     </div>
                   </th>
+                  <th scope="col" className="relative px-6 py-3">
+                  <div className="items-center">
+                      <span>Cliente</span>
+                    </div>
+                  </th>
                 
                 </tr>
               </thead>
@@ -275,6 +297,11 @@ export const ClientesPage = () => {
                     <td className="px-6 py-2">
                       <div className="flex space-x-4">
                       <div className="text-sm font-medium text-gray-900">{sede.correo}</div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-2">
+                      <div className="flex space-x-4">
+                      <div className="text-sm font-medium text-gray-900">{sede.cliente.cliente}</div>
                       </div>
                     </td>
                     
@@ -344,7 +371,7 @@ export const ClientesPage = () => {
             
         </div>
 
-        {/* ALBERCAS */}
+        {/* ALBERCAS SECCION*/}
         <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
           <AlbercasSeccion 
             sedes={sedes}
@@ -384,7 +411,22 @@ export const ClientesPage = () => {
           sedeSeleccionada={sedeSeleccionada}
           clientes={clientes}
         />
+        <ModalClientesInactivos
+          dialogClientesInactivos={dialogClientesInactivos}
+          setDialogClientesInactivos={setDialogClientesInactivos}
+          clientes={clientes}
+          setDialogEditatarClienteForm={setDialogEditatarClienteForm}
+          converImageUrlToFile={converImageUrlToFile}
+          setClienteState={setClienteState}
+        />
     </>
   )
 }
+
+
+
+
+
+
+
 

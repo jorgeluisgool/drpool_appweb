@@ -27,7 +27,7 @@ export const ModalHistorialRegistros = ({modalHistorialAbrirCerrar, setModalHist
 
   return (
     <>
-      <Dialog header='Historial de cambios' visible={modalHistorialAbrirCerrar} style={{ width: '90vw', height: '40vw' }} onHide={() => setModalHistorialAbrirCerrar(false)} className='mt-16'>
+      <Dialog header='Historial de cambios' visible={modalHistorialAbrirCerrar} style={{ width: '90vw', height: '40vw' }} onHide={() => setModalHistorialAbrirCerrar(false)}>
       <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md mb-6">
       <thead className="bg-[#245A95] text-white uppercase">
         <tr className='text-left'>
