@@ -196,7 +196,7 @@ export const ClientesPage = () => {
           
         </div>
 
-        {/* CEDES */}
+        {/* SEDES */}
         <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-12'>
             <h1 className="text-2xl font-bold text-[#245A95] pb-4">Dar de alta una sede</h1>
             <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4 pb-4'>
@@ -261,6 +261,11 @@ export const ClientesPage = () => {
                       <span>Cliente</span>
                     </div>
                   </th>
+                  <th scope="col" className="relative px-6 py-3">
+                  <div className="items-center">
+                      <span>Estatus</span>
+                    </div>
+                  </th>
                 
                 </tr>
               </thead>
@@ -302,6 +307,16 @@ export const ClientesPage = () => {
                     <td className="px-6 py-2">
                       <div className="flex space-x-4">
                       <div className="text-sm font-medium text-gray-900">{sede.cliente.cliente}</div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-2">
+                      <div className="flex space-x-4">
+                        {
+                            sede.estatus === 'ACTIVO'?
+                            <div className="text-sm font-medium text-green-600"><ion-icon name="radio-button-on-outline"></ion-icon> {sede.estatus}</div>
+                            :
+                            <div className="text-sm font-medium text-red-600"><ion-icon name="radio-button-off-outline"></ion-icon> {sede.estatus}</div>
+                        }
                       </div>
                     </td>
                     

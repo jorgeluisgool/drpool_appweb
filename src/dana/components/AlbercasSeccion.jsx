@@ -91,12 +91,17 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
               </th>
               <th scope="col" className="relative px-6 py-3">
               <div className="items-center">
+                  <span>Ubicación</span>
+                </div>
+              </th>
+              <th scope="col" className="relative px-6 py-3">
+              <div className="items-center">
                   <span>Sede</span>
                 </div>
               </th>
               <th scope="col" className="relative px-6 py-3">
               <div className="items-center">
-                  <span>Ubicación</span>
+                  <span>Estatus</span>
                 </div>
               </th>
             
@@ -129,14 +134,24 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
                 </td>
                 <td className="px-6 py-2">
                   <div className="flex space-x-4">
+                  <div className="text-sm font-medium text-gray-900">{alberca.ubicacion}</div>
+                  </div>
+                </td>
+                <td className="px-6 py-2">
+                  <div className="flex space-x-4">
                   <div className="text-sm font-medium text-gray-900">{alberca.sede.nombre}</div>
                   </div>
                 </td>
                 <td className="px-6 py-2">
                   <div className="flex space-x-4">
-                  <div className="text-sm font-medium text-gray-900">{alberca.ubicacion}</div>
+                    {
+                        alberca.estatus === 'ACTIVO'?
+                        <div className="text-sm font-medium text-green-600"><ion-icon name="radio-button-on-outline"></ion-icon> {alberca.estatus}</div>
+                        :
+                        <div className="text-sm font-medium text-red-600"><ion-icon name="radio-button-off-outline"></ion-icon> {alberca.estatus}</div>
+                    }
                   </div>
-                </td>  
+                </td>     
               </tr>
             ))} 
           </tbody>

@@ -5,6 +5,11 @@ import React, { useState } from 'react'
 import { api } from '../helpers/variablesGlobales'
 import { Dropdown } from 'primereact/dropdown'
 
+const opcionesStatus = [
+  { label: 'ACTIVO', value: 'ACTIVO' },
+  { label: 'INACTIVO', value: 'INACTIVO' }
+];
+
 export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setVentanaCarga, setModalRegistroGuardado, setSedeSeleccionada, sedeSeleccionada, clientes}) => {
 
   const [nombreSede, setNombreSede] = useState('NUEVA SEDE')
@@ -15,6 +20,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
     encargado: '',
     telefono: '',
     correo: '',
+    estatus: '',
     cliente: {
 
     }
@@ -138,6 +144,24 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
                                   e-mail
+                                </label>
+                            </span>
+                        </div>
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={Dropdown}
+                                    name="estatus"
+                                    value={values.estatus}
+                                    options={opcionesStatus} 
+                                    optionLabel="value"
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Estatus
                                 </label>
                             </span>
                         </div>
