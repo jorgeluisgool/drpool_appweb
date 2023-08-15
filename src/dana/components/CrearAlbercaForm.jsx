@@ -58,6 +58,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                console.log(error);
              });
       };
+      
   return (
     <>
     <Dialog header='Albercas' visible={modalAlberca} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalAlberca(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
@@ -103,8 +104,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   Tipo de alberca
                                 </label>
                             </span>
-                        </div>
-                        
+                        </div> 
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
                                 <Field
