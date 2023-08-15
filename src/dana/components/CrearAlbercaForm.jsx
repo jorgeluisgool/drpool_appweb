@@ -6,6 +6,7 @@ import { Dropdown } from 'primereact/dropdown';
         
 import React from 'react'
 import { api } from '../helpers/variablesGlobales';
+import { AlbercaDraw } from './AlbercaDraw';
 
 const opcionesStatus = [
   { label: 'ACTIVO', value: 'ACTIVO' },
@@ -237,6 +238,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                       </div>
                       <div>
                         <h1>Grafico de alberca</h1>
+                        <AlbercaDraw />
                       </div>
                         
                     </div>
