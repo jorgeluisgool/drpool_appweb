@@ -14,6 +14,7 @@ import { MultiFile } from '../components/MultiFile'
 import { ClientesPage } from '../pages/ClientesPage'
 import { RegistrosPagePrueba } from '../pages/RegistrosPagePrueba'
 import { UsuariosPage } from '../pages/UsuariosPage'
+import { AsistenciaPage } from '../pages/AsistenciaPage'
 
 export const DanaRoutes = () => {
 
@@ -27,6 +28,7 @@ export const DanaRoutes = () => {
               <Route path='menu' element={ <HomeScreem/>}/>
               <Route path='proyectos' element={ <ProyectosPage/>}/>
               <Route path='usuarios' element={ <UsuariosPage/>}/>
+              <Route path='asistencia' element={ <AsistenciaPage/>}/>
               <Route path='ejemplo' element={ <MultiFile/>}/>
               <Route path='camposproyecto' element={ <CamposProyectoPage/>}/>
               <Route path='registropage' element={ <RegistrosPagePrueba/>}/>

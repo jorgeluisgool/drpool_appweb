@@ -45,12 +45,13 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 
-export const AlbercaDraw = () => {
+export const AlbercaDraw = ({largoAlberca,anchoAlberca,profundidadMinimaAlberca,profundidadMaximaAlberca}) => {
+
     const canvasRef = useRef(null)
-    const largo = 200;
-    const ancho = 100;
-    const profundidadMinima =50;
-    const profundidadMaxima = 50;
+    const largo = ((largoAlberca >= 84 ? 84 : largoAlberca) * 4 ) >= 60 ? ((largoAlberca >= 84 ? 84 : largoAlberca) * 4 ) : 60; // 50
+    const ancho = (anchoAlberca * 2) <= 30 ? 40 : ((anchoAlberca * 2) >= 120 ? 120 : anchoAlberca * 2);  // 25
+    const profundidadMinima = (profundidadMinimaAlberca * 10) <= 30 ? 30 : (profundidadMinimaAlberca * 10 >= 80 ? 80 : profundidadMinimaAlberca * 10); // 2
+    const profundidadMaxima = (profundidadMaximaAlberca * 10) <= 30 ? 30 : (profundidadMaximaAlberca * 10 >= 80 ? 80 : profundidadMaximaAlberca * 10); // 2
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -119,7 +120,7 @@ export const AlbercaDraw = () => {
         ctx.lineWidth = 2; 
         ctx.beginPath();
         ctx.moveTo(largo, 20); 
-        ctx.lineTo(largo, ancho); 
+        ctx.lineTo(largo, largo < ancho ? ancho * 0.5 : ancho); 
         ctx.stroke();
 
         //Ancho derecha
@@ -140,12 +141,12 @@ export const AlbercaDraw = () => {
 
         
 
-      }, [largo, ancho]);
+      }, [largo, ancho, profundidadMinima, profundidadMaxima]);
 
   return (
     <>
-      <div>AlbercaDraw</div>
-      <canvas ref={canvasRef} width={500} height={300}></canvas>
+      <div>(Estimacion del tamaño de la alberca)</div>
+      <canvas ref={canvasRef} width={500} height={200}></canvas>
     </>
   );
 };

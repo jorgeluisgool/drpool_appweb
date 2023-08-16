@@ -238,7 +238,12 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                       </div>
                       <div>
                         <h1>Grafico de alberca</h1>
-                        <AlbercaDraw />
+                        <AlbercaDraw 
+                        largoAlberca = {values.medidalargo}
+                        anchoAlberca = {values.medidaancho}
+                        profundidadMinimaAlberca={5}
+                        profundidadMaximaAlberca={5}
+                        />
                       </div>
                         
                     </div>
