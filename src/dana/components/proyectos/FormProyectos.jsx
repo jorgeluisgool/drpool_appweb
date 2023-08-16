@@ -3,7 +3,8 @@ import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { api } from '../../helpers/variablesGlobales';
 
 const initialValues = {
     nombreproyectoalberca: '',
@@ -14,15 +15,56 @@ const initialValues = {
     instrumentosmedicion: '',
     estatus: ''
 }
-export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarProyectos}) => {
 
-    const handleSubmit = () => {
+const opcionesStatus = [
+    { label: 'ACTIVO', value: 'ACTIVO' },
+    { label: 'INACTIVO', value: 'INACTIVO' }
+  ];
 
+export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarProyectos, proyectoAlbercaSeleccionado, setVentanaCarga, setModalRegistroGuardado}) => {
+
+    const [albercas, setAlbercas] = useState();
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(`${api}/obtener/albercas`);
+            const jsonData = await response.json();
+            setAlbercas(jsonData);
+          } catch (error) {
+            console.log('Error:', error);
+          }
+        };
+        fetchData();
+    }, []);
+
+
+    const handleSubmit = (values) => {
+
+        setVentanaCarga(true);
+
+        fetch(`${api}/nuevo/proyectoalberca`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+          })
+            .then((response) => response.text())
+            .then((responseData) => {
+               console.log(responseData);
+               setModalCrearEditarProyectos(false);
+               setVentanaCarga(false);
+               setModalRegistroGuardado(true);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
     }
 
   return (
     <Dialog header={`Proyectos`} visible={modalCrearEditarProyectos} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalCrearEditarProyectos(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
-        <Formik initialValues={''} onSubmit={handleSubmit}>
+        <Formik initialValues={proyectoAlbercaSeleccionado === undefined? initialValues : proyectoAlbercaSeleccionado} onSubmit={handleSubmit}>
             {({ values }) => (
                 <Form>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
@@ -31,12 +73,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={InputText}
-                                    name="nombre"
-                                    // value={values.nombre.toUpperCase()}
-                                    // onChange={(e) => {
-                                    //   handleChange(e);
-                                    //   setNombreSede(e.target.value.toUpperCase());
-                                    // }}
+                                    name="nombreproyectoalberca"
+                                    value={values.nombreproyectoalberca.toUpperCase()}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -45,20 +83,16 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                   Nombre del proyecto
                                 </label>
                             </span>
-                        </div>
-                        
-                        
+                        </div>              
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Dropdown}
-                                    name="correo"
-                                    // value={values.correo.toUpperCase()}
-                                    // onChange={(e) => {
-                                    //   handleChange(e);
-                                    //   setNombreSede(e.target.value.toUpperCase());
-                                    // }}
+                                    name="alberca"
+                                    value={values.alberca}
+                                    options={albercas} 
+                                    optionLabel="nombrealberca"
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -73,12 +107,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Dropdown}
-                                    name="telefono"
-                                    // value={values.telefono.toUpperCase()}
-                                    // onChange={(e) => {
-                                    //   handleChange(e);
-                                    //   setNombreSede(e.target.value.toUpperCase());
-                                    // }}
+                                    name="tiposervicio"
+                                    value={values.tiposervicio}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -93,12 +123,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Dropdown}
-                                    name="jefeinmediato"
-                                    // value={values.jefeinmediato.toUpperCase()}
-                                    // onChange={(e) => {
-                                    //   handleChange(e);
-                                    //   setNombreSede(e.target.value.toUpperCase());
-                                    // }}
+                                    name="instrumentosmedicion"
+                                    value={values.instrumentosmedicion}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -114,13 +140,9 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Dropdown}
                                     name="estatus"
-                                    // value={values.status}
-                                    // options={opcionesStatus} 
-                                    // optionLabel="value"
-                                    // onChange={(e) => {
-                                    //   handleChange(e);
-                                    //   setNombreSede(e.target.value.toUpperCase());
-                                    // }}
+                                    value={values.estatus}
+                                    options={opcionesStatus} 
+                                    optionLabel="value"
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
