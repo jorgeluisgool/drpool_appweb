@@ -48,7 +48,7 @@ export const HomeScreem = ({titulo}) => {
       {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="place-self-center">
-          <Link to='/'>
+          <Link to='/catalogos'>
             <BotonMenu titulo='CATALOGO' icono='clipboard-outline'/>
           </Link>
           <div className='pt-5'>
@@ -59,7 +59,7 @@ export const HomeScreem = ({titulo}) => {
       {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="place-self-center ...">
-          <Link to='/'>
+          <Link to='/asignaciones'>
             <BotonMenu titulo='ASIGNACIONES' icono='accessibility-outline'/>
           </Link>
           <div className='pt-5'>

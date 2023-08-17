@@ -5,6 +5,9 @@ import { api } from '../../dana/helpers/variablesGlobales';
 import { Avatar } from 'primereact/avatar';
 import { ModalSeeleccionarCliente } from '../../dana/components/ModalSeeleccionarCliente';
 
+import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
+import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
 export const Navbar = () => {
 
   // Context del usuario logiado
@@ -41,6 +44,23 @@ export const Navbar = () => {
   }, []);
 
   console.log(clientes);
+
+
+  const accept = () => {
+    // toast.current.show({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+    onLogout();
+  };
+
+  const confirm1 = (event) => {
+      confirmPopup({
+          target: event.currentTarget,
+          message: '¿Seguro que desea cerrar sesión?',
+          icon: 'pi pi-lock',
+          acceptLabel: 'Aceptar',
+          rejectLabel: 'Cancelar',
+          accept
+      });
+  };
 
   return (
     <>
@@ -129,7 +149,7 @@ export const Navbar = () => {
             {
               usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
-                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to="/">
+                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to="/catalogos">
                     <div className="xl:hidden">
                       <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadowxl text-[#245A95] text-3xl">
                         <ion-icon name="clipboard-outline"></ion-icon>
@@ -144,7 +164,7 @@ export const Navbar = () => {
             {
               usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
-                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to="/">
+                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to="/asignaciones">
                     <div className="xl:hidden">
                       <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadow-md text-[#245A95] text-3xl">
                         <ion-icon name="accessibility-outline"></ion-icon>
@@ -190,10 +210,14 @@ export const Navbar = () => {
             {/* Resto de elementos del menú */}
             <button
               className="bg-[#245A95] text-white border border-white hover:bg-white hover:text-[#245A95] shadow-md py-2 px-3 mt-2 rounded-full md:ml-4 duration-500 font-bold"
-              onClick={onLogout}
+              // onClick={onLogout}
+              onClick={confirm1}
             >
               <i className="pi pi-sign-out"></i>
             </button>
+
+            <ConfirmPopup />
+            
           </ul>
         </div>
       </div>

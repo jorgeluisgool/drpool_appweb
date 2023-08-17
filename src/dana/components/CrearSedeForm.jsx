@@ -172,7 +172,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                                     as={Dropdown}
                                     name="cliente"
                                     value={values.cliente}
-                                    options={clientes} 
+                                    options={clientes.filter(cliente => cliente.estatus === "ACTIVO")} 
                                     optionLabel="cliente"
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 

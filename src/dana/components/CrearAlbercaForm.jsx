@@ -4,7 +4,7 @@ import { InputText } from 'primereact/inputtext';
 
 import { Dropdown } from 'primereact/dropdown';
         
-import React from 'react'
+import React, { useState } from 'react'
 import { api } from '../helpers/variablesGlobales';
 import { AlbercaDraw } from './AlbercaDraw';
 
@@ -13,7 +13,11 @@ const opcionesStatus = [
   { label: 'INACTIVO', value: 'INACTIVO' }
 ];
 
-export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaSeleccionada, ventanaCarga, setVentanaCarga, setModalRegistroGuardado}) => {
+export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaSeleccionada, ventanaCarga, setVentanaCarga, setModalRegistroGuardado, clientesActivos, clienteSelect, setClienteSelect}) => {
+
+  // console.log(clienteSelect);
+
+    console.log(albercaSeleccionada);
 
     const initialValues = {
         nombrealberca: '',
@@ -58,6 +62,17 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                console.log(error);
              });
       };
+
+
+      const renderClienteOption = (option) => {
+        return (
+          <div className="flex items-center">
+            <img src={option.urllogo} alt={option.cliente} className="mr-2" style={{ width: '40px' }} />
+            <span>{option.cliente}</span>
+          </div>
+        );
+      };
+      
       
   return (
     <>
@@ -127,11 +142,33 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Dropdown}
+                                    name="clientes"
+                                    value={clienteSelect}
+                                    options={clientesActivos} 
+                                    optionLabel="cliente"
+                                    itemTemplate={renderClienteOption}
+                                    onChange={(e) => {setClienteSelect(e.target.value)}}
+                                    filter
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Cliente
+                                </label>
+                            </span>
+                        </div>
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={Dropdown}
                                     name="sede"
                                     value={values.sede}
-                                    options={sedes} 
+                                    options={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente)} 
                                     optionLabel="nombre"
-                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                    disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente).length === 0}
+                                    filter
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -179,7 +216,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Capacidad
+                                  Capacidad (L)
                                 </label>
                             </span>
                         </div>  
@@ -197,7 +234,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Largo
+                                  Largo (M)
                                 </label>
                             </span>
                         </div>
@@ -214,7 +251,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Ancho
+                                  Ancho (M)
                                 </label>
                             </span>
                         </div>
@@ -231,7 +268,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Profundidad
+                                  Profundidad (M)
                                 </label>
                             </span>
                         </div>

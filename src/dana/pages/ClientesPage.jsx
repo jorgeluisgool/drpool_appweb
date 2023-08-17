@@ -193,7 +193,6 @@ export const ClientesPage = () => {
               ))
             }
           </div>
-          
         </div>
 
         {/* SEDES */}
@@ -387,13 +386,14 @@ export const ClientesPage = () => {
         </div>
 
         {/* ALBERCAS SECCION*/}
-        <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+        <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-12'>
           <AlbercasSeccion 
             sedes={sedes}
             ventanaCarga={ventanaCarga}
             setVentanaCarga={setVentanaCarga}
             modalRegistroGuardado={modalRegistroGuardado}
             setModalRegistroGuardado={setModalRegistroGuardado}
+            clientesActivos={clientesActivos}
           />
         </div>
 

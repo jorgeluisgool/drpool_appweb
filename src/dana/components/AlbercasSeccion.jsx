@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { CrearAlbercaForm } from './CrearAlbercaForm';
 import { api } from '../helpers/variablesGlobales';
 
-export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegistroGuardado, setModalRegistroGuardado}) => {
+export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegistroGuardado, setModalRegistroGuardado, clientesActivos}) => {
 
     const [modalAlberca, setModalAlberca] = useState(false);
     const [albercas, setAlbercas] = useState([]);
     const [albercaSeleccionada, setAlbercaSeleccionada] = useState([]);
+    const [clienteSelect, setClienteSelect] = useState('');
 
     useEffect(() => {
       const fetchData = async () => {
@@ -45,7 +46,7 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
         <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4 pb-4'>
             <div 
                 className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
-                onClick={() => {setAlbercaSeleccionada(undefined), setModalAlberca(true)}}
+                onClick={() => {setAlbercaSeleccionada(undefined), setModalAlberca(true),  setClienteSelect('')}}
             >
                 <div className="px-6 py-2 bg-[#E2E2E2]">
                   <div className="font-bold text-sm xl:text-sm mb-2 text-[#245A95]">NUEVA ALBERCA</div>
@@ -113,6 +114,7 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
                 onClick={() => {
                   setAlbercaSeleccionada(alberca),
                   setModalAlberca(true)
+                  setClienteSelect(alberca.sede.cliente)
                 }} 
                 key={index}
                 className='cursor-pointer hover:bg-[#E2E2E2]'
@@ -216,6 +218,9 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
           ventanaCarga={ventanaCarga}
           setVentanaCarga={setVentanaCarga}
           setModalRegistroGuardado={setModalRegistroGuardado}
+          clientesActivos={clientesActivos}
+          clienteSelect={clienteSelect}
+          setClienteSelect={setClienteSelect}
         />
     </>
     

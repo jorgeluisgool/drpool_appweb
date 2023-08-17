@@ -91,8 +91,10 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     as={Dropdown}
                                     name="alberca"
                                     value={values.alberca}
-                                    options={albercas} 
+                                    options={albercas.filter(alberca => alberca.estatus === "ACTIVO")} 
                                     optionLabel="nombrealberca"
+                                    filter
+                                    
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
