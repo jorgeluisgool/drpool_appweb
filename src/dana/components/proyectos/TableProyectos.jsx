@@ -1,23 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { api } from '../../helpers/variablesGlobales';
 
-export const TableProyectos = ({proyectoAlbercaSeleccionado, setProyectoAlbercaSeleccionado, setModalCrearEditarProyectos, modalRegistroGuardado}) => {
-
-    const [proyectoAlbercaData, setProyectoAlbercaData ] = useState([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await fetch(`${api}/obtener/proyectosalberca`);
-            const jsonData = await response.json();
-            setProyectoAlbercaData(jsonData);
-          } catch (error) {
-            console.log('Error:', error);
-          }
-        };
-   
-        fetchData();
-      }, [modalRegistroGuardado]);
+export const TableProyectos = ({proyectoAlbercaSeleccionado, proyectoAlbercaData, setProyectoAlbercaSeleccionado, setModalCrearEditarProyectos, modalRegistroGuardado, filterProyectos}) => {
 
       //Estados y logica para que funcione el paginator
       const [currentPage, setCurrentPage] = useState(1);
@@ -31,7 +15,7 @@ export const TableProyectos = ({proyectoAlbercaSeleccionado, setProyectoAlbercaS
       // Obtener índice del primer registro en la página actual
       const indexOfFirstRow = indexOfLastRow - rowsPerPage;
       // Obtener los registros para la página actual
-      const currentRows = proyectoAlbercaData.slice(indexOfFirstRow, indexOfLastRow);
+      const currentRows = filterProyectos.slice(indexOfFirstRow, indexOfLastRow);
     
       // Función para cambiar de página
       const paginate = (pageNumber) => setCurrentPage(pageNumber);

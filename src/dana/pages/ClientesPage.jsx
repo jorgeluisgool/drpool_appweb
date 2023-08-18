@@ -10,6 +10,7 @@ import { Player } from '@lottiefiles/react-lottie-player';
 import { DialogRegistroGuardado } from '../../ui/components/DialogRegistroGuardado';
 import { AlbercasSeccion } from '../components/AlbercasSeccion';
 import ModalClientesInactivos from '../components/ModalClientesInactivos';
+import { VentanaCarga } from '../../ui/components/VentanaCarga';
 
 export const ClientesPage = () => {
 
@@ -27,9 +28,19 @@ export const ClientesPage = () => {
     const [sedeSeleccionada, setSedeSeleccionada] = useState();
     const [respuestaApiCliente, setRespuestaApiCliente] = useState();
     const [dialogClientesInactivos, setDialogClientesInactivos] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const [uploadedImage, setUploadedImage] = useState(null);
     const [file, setFile] = useState(null);
+
+    const handleSearchClientes = (event) => {
+      setSearchTerm(event.target.value);
+    };
+
+    //Clientes filtrados para Search
+    const filterClientes = clientes.filter((cliente) =>
+      cliente.cliente.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
    useEffect(() => {
      const fetchData = async () => {
@@ -94,29 +105,12 @@ export const ClientesPage = () => {
     }  
   }
 
-  const clientesActivos = clientes.filter(cliente => cliente.estatus === "ACTIVO");
+  const clientesActivos = filterClientes.filter(cliente => cliente.estatus === "ACTIVO");
   
   return (
     <>
       {ventanaCarga && (
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-slate-200 bg-opacity-50 flex items-center justify-center z-50">
-        <div className="w-screen h-screen flex items-center justify-center">
-          <Player
-            src="https://lottie.host/6e504b56-2da0-430e-9861-0a2186e4ae0f/hkIjXR28gA.json"
-            className="player absolute bottom-0 w-full"
-            loop
-            autoplay
-            speed={0.2}
-            style={{ width: '100%', zIndex: -1 }} // Ajusta el zIndex a un valor negativo para que se vea por debajo
-          />
-          <div className="hidden lg:flex h-full w-full items-center justify-center" style={{ flexDirection: 'column' }}>
-            <div className="w-auto h-auto mx-auto">
-              <img className="" src="https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool-black.png?alt=media&token=a9161a39-9ed7-472e-af7f-ba8dcd856d62" alt="Your Company"/>
-              <h1 className='animate-pulse text-3xl text-white pt-6'>Cargando<span className='animate-pulse'>.</span><span className='animate-pulse'>.</span><span className='animate-pulse'>.</span></h1>
-            </div>  
-          </div>
-        </div>
-      </div>
+        <VentanaCarga/>
       )}
 
       <DialogRegistroGuardado setModalRegistroGuardado={setModalRegistroGuardado} modalRegistroGuardado={modalRegistroGuardado}/>
@@ -139,12 +133,14 @@ export const ClientesPage = () => {
             </div>
             
             <div className="p-inputgroup mb-5 mt-8 col-span-3 xl:col-start-3">
+              <div className="flex flex-col">
                 <span className='p-float-label relative py-4 '>
                     <InputText
                         className="w-full appearance-none focus:outline-none bg-transparent"
                         name="direccion"
-                        
-                        // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                        type='text'
+                        value={searchTerm.toUpperCase()}
+                        onChange={handleSearchClientes}  
                     /> 
                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                       <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
@@ -153,12 +149,13 @@ export const ClientesPage = () => {
                       Busca el cliente
                     </label>
                 </span>
+                <p className="text-base text-[#245A95] font-semibold">Puedes buscar al cliente por su nombre</p>
+              </div>
             </div> 
           </div>
           <div className="flex justify-end">
             <button
               type="submit"
-              // disabled={!formik.dirty || formik.isSubmitting}
               className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
               onClick={()=>{
                 setDialogClientesInactivos(true);

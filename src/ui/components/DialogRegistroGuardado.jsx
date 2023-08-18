@@ -8,7 +8,7 @@ export const DialogRegistroGuardado = ({modalRegistroGuardado, setModalRegistroG
         if (modalRegistroGuardado) {
           const timer = setTimeout(() => {
             setModalRegistroGuardado(false);
-          }, 2400); // 5000 milisegundos = 5 segundos
+          }, 3000); // 5000 milisegundos = 5 segundos
     
           return () => clearTimeout(timer);
         }
@@ -32,13 +32,14 @@ export const DialogRegistroGuardado = ({modalRegistroGuardado, setModalRegistroG
         onHide={() => setModalRegistroGuardado(false)}
     >
         <div className='text-center'>
-            <Player src='https://lottie.host/da9fce7b-d61d-4dd2-adff-7f9cffae9bd0/AQpy3VS18s.json'
+            <Player src='https://lottie.host/87be0746-fbdd-478e-833f-bb3513644277/zZ97aI1Tg7.json'
                 className="player"
                 loop
                 autoplay
                 style={{ height: '150px', width: '150px' }}
             />
-            <h1 className='text-lg font-bold'>{dataMensajeRegistroGuardado}</h1>
+            <h1 className='text-lg font-bold'>Guardado exitosamente</h1>
+
         </div>
         
         <div className='mt-8'>

@@ -15,9 +15,16 @@ const opcionesStatus = [
     { label: 'INACTIVO', value: 'INACTIVO' }
   ];
 
-export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuario, setUsuarioSeleccionado, usuarioSeleccionado, setVentanaCarga, setModalRegistroGuardado}) => {
+export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuario, setUsuarioSeleccionado, usuarioSeleccionado, setVentanaCarga, setModalRegistroGuardado, searchTerm}) => {
 
     const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
+    const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers(modalCrearEditarUsuario);
+
+    // Filtro para el search
+    const filterUsuarios = listaUsuarios.filter((usuario) =>
+        usuario.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        usuario.usuario.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     const usuarioVacio = {
         // idusuario: 0,
@@ -34,14 +41,12 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
         perfile: {
 
         },
-        clienteAplicacion: usuarioLogiado[0].clienteAplicacion,
-        vistaCliente: usuarioLogiado[0].vistaCliente
+        clienteAplicacion: usuarioLogiado[0]?.clienteAplicacion,
+        vistaCliente: usuarioLogiado[0]?.vistaCliente
     };
 
     const [cargando, setCargando] = useState(false);
     const [perfil, setPerfil] = useState(false);
-
-    const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers(modalCrearEditarUsuario);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -63,7 +68,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
     // Obtener índice del primer registro en la página actual
     const indexOfFirstRow = indexOfLastRow - rowsPerPage;
     // Obtener los registros para la página actual
-    const currentRows = listaUsuarios.slice(indexOfFirstRow, indexOfLastRow);
+    const currentRows = filterUsuarios.slice(indexOfFirstRow, indexOfLastRow);
 
     // Función para cambiar de página
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -108,9 +113,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
         };
    
         fetchData();
-      }, []);
-
-    //   console.log(perfil);
+    }, []);
 
     return (
         <>
@@ -260,7 +263,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                             </div>
                         </div>
                         {/* MODAL DEL FORMULARIO USUARIOS */}
-                        <Dialog header={`Usuario`} visible={modalCrearEditarUsuario} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalCrearEditarUsuario(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+                        <Dialog header={`Usuario`} visible={modalCrearEditarUsuario} baseZIndex={-1} style={{ width: '70vw', height: '35vw' }} onHide={() => setModalCrearEditarUsuario(false)} >
                             <Formik initialValues={ usuarioSeleccionado === undefined ? usuarioVacio : usuarioSeleccionado} onSubmit={handleSubmit}>
                                 {({ values }) => (
                                     <Form>

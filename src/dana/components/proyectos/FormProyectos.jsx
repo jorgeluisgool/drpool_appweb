@@ -3,6 +3,7 @@ import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
+import { MultiSelect } from 'primereact/multiselect';
 import React, { useEffect, useState } from 'react'
 import { api } from '../../helpers/variablesGlobales';
 
@@ -16,9 +17,24 @@ const initialValues = {
     estatus: ''
 }
 
-const opcionesStatus = [
+  const opcionesStatus = [
     { label: 'ACTIVO', value: 'ACTIVO' },
     { label: 'INACTIVO', value: 'INACTIVO' }
+  ];
+
+  const opcionesTipoServicio = [
+    { label: 'LIMPIEZA', value: 'LIMPIEZA' },
+    { label: 'INSTALACION', value: 'INSTALACION' },
+    { label: 'CAMBIO DE MOTOBOMBA', value: 'CAMBIO DE MOTOBOMBA' }
+  ];
+
+  const opcionesInstrmentosMedicion = [
+    { label: 'COLORIMETRO', value: 'COLORIMETRO' },
+    { label: 'FOTÓMETRO', value: 'FOTOMETRO' },
+    { label: 'TERMOMENTRO SUMERGIBLE', value: 'TERMOMENTRO SUMERGIBLE' },
+    { label: 'TERMOMENTRO DIGITAL', value: 'TERMOMENTRO DIGITAL' },
+    { label: 'TURBIDEZ (VISUAL)', value: 'TURBIDEZ (VISUAL)' },
+    { label: 'TURBIDIMETRO', value: 'TURBIDIMETRO' },
   ];
 
 export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarProyectos, proyectoAlbercaSeleccionado, setVentanaCarga, setModalRegistroGuardado}) => {
@@ -63,7 +79,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
     }
 
   return (
-    <Dialog header={`Proyectos`} visible={modalCrearEditarProyectos} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalCrearEditarProyectos(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+    <Dialog header={`Proyectos`} visible={modalCrearEditarProyectos} baseZIndex={-1} style={{ width: '70vw', height: '35vw' }} onHide={() => setModalCrearEditarProyectos(false)}>
         <Formik initialValues={proyectoAlbercaSeleccionado === undefined? initialValues : proyectoAlbercaSeleccionado} onSubmit={handleSubmit}>
             {({ values }) => (
                 <Form>
@@ -111,6 +127,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     as={Dropdown}
                                     name="tiposervicio"
                                     value={values.tiposervicio}
+                                    options={opcionesTipoServicio}
+                                    optionLabel="value"
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -123,10 +141,16 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
                                 <Field
-                                    className="w-full appearance-none focus:outline-none bg-transparent"
-                                    as={Dropdown}
+                                    className="w-full appearance-none focus:outline-none bg-transparent md:w-20rem"
+                                    as={MultiSelect}
                                     name="instrumentosmedicion"
                                     value={values.instrumentosmedicion}
+                                    // options={opcionesInstrmentosMedicion}
+                                    // optionLabel="value"
+                                    // display="chip"
+                                    filter
+                                    // placeholder="Select Cities" 
+                                    // maxSelectedLabels={3}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -159,18 +183,13 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                         <button
                             type="submit"
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                            // onClick={() => {
-                            //     const s = guardarUsuario(usuarioSeleccionado);
-                            //     console.log('Respuesta peticion: ', s);
-                            // }}
                         >
-                            Aceptar
+                            Guardar
                         </button>
                         <button
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                             onClick={() => {
-                                setUsuarioSeleccionado(undefined);
-                                setModalAbrirCerrar(false);
+                                setModalCrearEditarProyectos(false);
                             }}
                             type='button'
                         >

@@ -125,54 +125,59 @@ export const AsistenciaPage = () => {
             <Toast ref={toast} />
             <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">Asistencia</h1>
             <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-12'>
-                <h1 className="text-2xl font-bold text-[#245A95] pb-4">Pendiente</h1>
-
-                <div className="p-inputgroup mb-5 mt-8 col-span-3 xl:col-start-3">
-                    <span className='p-float-label relative py-4 '>
-                        <Calendar
-                            className="w-full appearance-none focus:outline-none bg-transparent"
-                            value={fechaInicio}
-                            name="fechainicio"
-                            onChange={(e) => setFechaInicio(e.value)}
-                            dateFormat='dd/mm/yy'
-                            locale='es'
-                        />
-                        <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                            <i className="pi pi-calendar-plus text-[#245A95] font-bold text-2xl"></i>
+                <h1 className="text-2xl font-bold text-[#245A95] pb-4">Consulta de asistencia</h1>
+                <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-2 gap-8 m-4'>
+                    <div className="p-inputgroup mb-5 mt-8">
+                        <span className='p-float-label relative py-4 '>
+                            <Calendar
+                                className="w-full appearance-none focus:outline-none bg-transparent"
+                                value={fechaInicio}
+                                name="fechainicio"
+                                onChange={(e) => setFechaInicio(e.value)}
+                                dateFormat='dd/mm/yy'
+                                locale='es'
+                            />
+                            <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                <i className="pi pi-calendar-plus text-[#245A95] font-bold text-2xl"></i>
+                            </span>
+                            <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                Fecha inicio
+                            </label>
                         </span>
-                        <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                            Fecha inicio
-                        </label>
-                    </span>
-                </div>
-                <div className="p-inputgroup mb-5 mt-8 col-span-3 xl:col-start-3">
-                    <span className='p-float-label relative py-4 '>
-                        <Calendar
-                            className="w-full appearance-none focus:outline-none bg-transparent"
-                            value={fechaFinal}
-                            name="fechainicio"
-                            onChange={(e) => setFechaFinal(e.value)}
-                            dateFormat='dd/mm/yy'
-                            locale='es'
-                        />
-                        <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                            <i className="pi pi-calendar-plus text-[#245A95] font-bold text-2xl"></i>
+                    </div>
+                    <div className="p-inputgroup mb-5 mt-8">
+                        <span className='p-float-label relative py-4 '>
+                            <Calendar
+                                className="w-full appearance-none focus:outline-none bg-transparent"
+                                value={fechaFinal}
+                                name="fechainicio"
+                                onChange={(e) => setFechaFinal(e.value)}
+                                dateFormat='dd/mm/yy'
+                                locale='es'
+                            />
+                            <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                <i className="pi pi-calendar-plus text-[#245A95] font-bold text-2xl"></i>
+                            </span>
+                            <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                Fecha final
+                            </label>
                         </span>
-                        <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                            Fecha final
-                        </label>
-                    </span>
+                    </div>
                 </div>
-                <Button label='Consultar'
+                <button 
+                className='hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600'
+                    label='Consultar'
                     onClick={consultarAsistencia}
-                />
+                >
+                    consultar
+                </button>
 
                 {
                     listaUsuarios.length == 0 ?
-                        <h1 className="text-2xl font-bold text-[#245A95] pb-4">Sin registros para este intervalo de fechas</h1>
+                        <h1 className="text-2xl font-bold text-[#245A95] pb-4 mt-6">Sin registros para este intervalo de fechas</h1>
                         :
                         <div>
-                            <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
+                            <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md mt-6">
                                 <thead className="bg-[#245A95] text-white uppercase">
                                     <tr className='text-left'>
                                         <th scope="col" className="relative px-6 py-3">
