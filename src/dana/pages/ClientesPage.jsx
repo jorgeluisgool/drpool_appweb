@@ -29,6 +29,8 @@ export const ClientesPage = () => {
     const [respuestaApiCliente, setRespuestaApiCliente] = useState();
     const [dialogClientesInactivos, setDialogClientesInactivos] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [searchSede, setSearchSede] = useState('');
+    const [searchAlberca, setSearchAlberca] = useState('');
 
     const [uploadedImage, setUploadedImage] = useState(null);
     const [file, setFile] = useState(null);
@@ -37,9 +39,22 @@ export const ClientesPage = () => {
       setSearchTerm(event.target.value);
     };
 
-    //Clientes filtrados para Search
+    const handleSearchSede = (event) => {
+      setSearchSede(event.target.value);
+    };
+
+    const handleSearchAlberca = (event) => {
+      setSearchAlberca(event.target.value);
+    };
+
+    //Clientes filtrados para Search 
     const filterClientes = clientes.filter((cliente) =>
       cliente.cliente.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const filterSedes = sedes.filter((sede) =>
+      sede.nombre.toLowerCase().includes(searchSede.toLowerCase()) || 
+      sede.encargado.toLowerCase().includes(searchSede.toLowerCase())
     );
 
    useEffect(() => {
@@ -74,7 +89,7 @@ export const ClientesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const totalRows = sedes.length;
+  const totalRows = filterSedes.length;
   const totalPages = Math.ceil(totalRows / rowsPerPage);
 
   // Obtener índice del último registro en la página actual
@@ -82,7 +97,7 @@ export const ClientesPage = () => {
   // Obtener índice del primer registro en la página actual
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
   // Obtener los registros para la página actual
-  const currentRows = sedes.slice(indexOfFirstRow, indexOfLastRow);
+  const currentRows = filterSedes.slice(indexOfFirstRow, indexOfLastRow);
 
   // Función para cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -114,7 +129,7 @@ export const ClientesPage = () => {
       )}
 
       <DialogRegistroGuardado setModalRegistroGuardado={setModalRegistroGuardado} modalRegistroGuardado={modalRegistroGuardado}/>
-      
+      <div className="py-8">
         <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">ALTAS CLIENTES, SEDES Y ALBERCAS </h1>
         {/* CLIENTES */}
         <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-12'>
@@ -134,7 +149,7 @@ export const ClientesPage = () => {
             
             <div className="p-inputgroup mb-5 mt-8 col-span-3 xl:col-start-3">
               <div className="flex flex-col">
-                <span className='p-float-label relative py-4 '>
+                <span className='p-float-label relative'>
                     <InputText
                         className="w-full appearance-none focus:outline-none bg-transparent"
                         name="direccion"
@@ -208,19 +223,23 @@ export const ClientesPage = () => {
                 </div>
               </div> 
               <div className="p-inputgroup mb-5 mt-8 col-span-3 xl:col-start-3">
-                <span className='p-float-label relative py-4 '>
-                    <InputText
-                        className="w-full appearance-none focus:outline-none bg-transparent"
-                        name="direccion"
-                        // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
-                    /> 
-                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                      <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
-                    </span>
-                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                      Busca la sede
-                    </label>
-                </span>
+                <div className="flex flex-col">
+                  <span className='p-float-label relative'>
+                      <InputText
+                          className="w-full appearance-none focus:outline-none bg-transparent"
+                          name="direccion"
+                          value={searchSede.toUpperCase()}
+                          onChange={handleSearchSede} 
+                      /> 
+                      <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                        <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
+                      </span>
+                      <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                        Busca la sede
+                      </label>
+                  </span>
+                  <p className="text-base text-[#245A95] font-semibold">Puedes buscar la sede por su nombre, o por el encargado de la sede</p>
+                </div>
               </div>
             </div>
 
@@ -383,7 +402,7 @@ export const ClientesPage = () => {
         </div>
 
         {/* ALBERCAS SECCION*/}
-        <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-12'>
+        <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
           <AlbercasSeccion 
             sedes={sedes}
             ventanaCarga={ventanaCarga}
@@ -391,9 +410,12 @@ export const ClientesPage = () => {
             modalRegistroGuardado={modalRegistroGuardado}
             setModalRegistroGuardado={setModalRegistroGuardado}
             clientesActivos={clientesActivos}
+            searchAlberca={searchAlberca}
+            setSearchAlberca={setSearchAlberca}
+            handleSearchAlberca={handleSearchAlberca}
           />
         </div>
-
+        </div>
         {/* Modales de formularios */}
         <CrearClienteForm 
           dialogNuevoClienteForm={dialogNuevoClienteForm} 

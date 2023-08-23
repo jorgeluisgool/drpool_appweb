@@ -37,7 +37,7 @@ const initialValues = {
     { label: 'TURBIDIMETRO', value: 'TURBIDIMETRO' },
   ];
 
-export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarProyectos, proyectoAlbercaSeleccionado, setVentanaCarga, setModalRegistroGuardado}) => {
+export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarProyectos, proyectoAlbercaSeleccionado, setVentanaCarga, setModalRegistroGuardado, clienteSelect, setClienteSelect, clientesActivos, sedeSelect, setSedeSelect, sedes}) => {
 
     const [albercas, setAlbercas] = useState();
 
@@ -56,30 +56,40 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
 
 
     const handleSubmit = (values) => {
+      values.nombreproyectoalberca = values.nombreproyectoalberca.toUpperCase();
 
-        setVentanaCarga(true);
+         setVentanaCarga(true);
 
-        fetch(`${api}/nuevo/proyectoalberca`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(values),
-          })
-            .then((response) => response.text())
-            .then((responseData) => {
-               console.log(responseData);
-               setModalCrearEditarProyectos(false);
-               setVentanaCarga(false);
-               setModalRegistroGuardado(true);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+         fetch(`${api}/nuevo/proyectoalberca`, {
+             method: 'POST',
+             headers: {
+               'Content-Type': 'application/json',
+             },
+             body: JSON.stringify(values),
+           })
+             .then((response) => response.text())
+             .then((responseData) => {
+                console.log(responseData);
+                setModalCrearEditarProyectos(false);
+                setVentanaCarga(false);
+                setModalRegistroGuardado(true);
+             })
+             .catch((error) => {
+               console.log(error);
+             });
     }
 
+    const renderClienteOption = (option) => {
+      return (
+        <div className="flex items-center">
+          <img src={option.urllogo} alt={option.cliente} className="mr-2" style={{ width: '40px' }} />
+          <span>{option.cliente}</span>
+        </div>
+      );
+    };
+
   return (
-    <Dialog header={`Proyectos`} visible={modalCrearEditarProyectos} baseZIndex={-1} style={{ width: '70vw', height: '35vw' }} onHide={() => setModalCrearEditarProyectos(false)}>
+    <Dialog header={`Proyectos`} visible={modalCrearEditarProyectos} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalCrearEditarProyectos(false)} className='pt-16'>
         <Formik initialValues={proyectoAlbercaSeleccionado === undefined? initialValues : proyectoAlbercaSeleccionado} onSubmit={handleSubmit}>
             {({ values }) => (
                 <Form>
@@ -99,7 +109,49 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                   Nombre del proyecto
                                 </label>
                             </span>
-                        </div>              
+                        </div>
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={Dropdown}
+                                    name="clientes"
+                                    value={clienteSelect}
+                                    options={clientesActivos} 
+                                    optionLabel="cliente"
+                                    itemTemplate={renderClienteOption}
+                                    onChange={(e) => {setClienteSelect(e.target.value)}}
+                                    filter
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Cliente
+                                </label>
+                            </span>
+                        </div> 
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={Dropdown}
+                                    name="sede"
+                                    value={sedeSelect}
+                                    options={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente)} 
+                                    optionLabel="nombre"
+                                    disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente).length === 0}
+                                    onChange={(e) => {setSedeSelect(e.target.value)}}
+                                    filter
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Sede
+                                </label>
+                            </span>
+                        </div>             
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
                                 <Field
@@ -107,8 +159,9 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     as={Dropdown}
                                     name="alberca"
                                     value={values.alberca}
-                                    options={albercas.filter(alberca => alberca.estatus === "ACTIVO")} 
+                                    options={albercas.filter(alberca => alberca.estatus === "ACTIVO" && alberca.sede.nombre === sedeSelect.nombre)} 
                                     optionLabel="nombrealberca"
+                                    disabled={albercas.filter(alberca => alberca.estatus === "ACTIVO" && alberca.sede.nombre === sedeSelect.nombre).length === 0}
                                     filter
                                     
                                 /> 

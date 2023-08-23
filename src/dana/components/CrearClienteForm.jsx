@@ -93,7 +93,7 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
     
 
   return (
-    <Dialog header='DAR DE ALTA NUEVO CLIENTE' visible={dialogNuevoClienteForm} baseZIndex={-1} style={{ width: '70vw', height: '36vw' }} onHide={() => setDialogNuevoClienteForm(false)} className='mx-4 xl:mx-20 my-4 px-4 mt-20 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+    <Dialog header='DAR DE ALTA NUEVO CLIENTE' visible={dialogNuevoClienteForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setDialogNuevoClienteForm(false)} className='pt-20'>
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form>   
@@ -196,14 +196,31 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
                         </div>
                     </div>
                 </div>
-                <div className="pt-4 flex justify-end">
+                <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+                    <button
+                        type="submit"
+                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                    >
+                        Guardar
+                    </button>
+                    <button
+                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                        onClick={() => {
+                          setDialogNuevoClienteForm(false);
+                        }}
+                        type='button'
+                    >
+                        Cancelar
+                    </button>
+                </div>
+                {/* <div className="pt-4 flex justify-end">
                   <button
                     type='submit'
                     className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                   >
                     Guardar
                   </button>
-                </div>
+                </div> */}
             </Form>
         )}
         </Formik>

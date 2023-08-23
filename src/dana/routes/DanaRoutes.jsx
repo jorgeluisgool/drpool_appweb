@@ -17,6 +17,7 @@ import { UsuariosPage } from '../pages/UsuariosPage'
 import { AsistenciaPage } from '../pages/AsistenciaPage'
 import { CatalogosPage } from '../pages/CatalogosPage'
 import { AsignacionesPage } from '../pages/AsignacionesPage'
+import { ClienteConfiguracionPage } from '../pages/ClienteConfiguracionPage'
 
 export const DanaRoutes = () => {
 
@@ -33,12 +34,13 @@ export const DanaRoutes = () => {
               <Route path='asistencia' element={ <AsistenciaPage/>}/>
               <Route path='ejemplo' element={ <MultiFile/>}/>
               <Route path='camposproyecto' element={ <CamposProyectoPage/>}/>
-              <Route path='registropage' element={ <RegistrosPagePrueba/>}/>
-              {/* <Route path='registropage' element={ <RegistrosPage/>}/> */}
-              <Route path='registros' element={ <ClientesRegistrosPage/>}/>
+              {/* <Route path='registros' element={ <RegistrosPagePrueba/>}/> */}
+              <Route path='registros' element={ <RegistrosPage/>}/>
+              <Route path='cliente' element={ <ClientesRegistrosPage/>}/>
               <Route path='clientes' element={ <ClientesPage/>}/>
               <Route path='catalogos' element={ <CatalogosPage/>}/>
               <Route path='asignaciones' element={ <AsignacionesPage/>}/>
+              <Route path='configuracion' element={ <ClienteConfiguracionPage/>}/>
               <Route path='/' element={<Navigate to='menu'/>}/>
             </Route>
           </Routes>

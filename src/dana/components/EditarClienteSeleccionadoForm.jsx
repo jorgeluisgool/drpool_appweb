@@ -186,13 +186,22 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                         </div>
                     </div>
                 </div>
-                <div className="pt-4 flex justify-end">
-                  <button
-                    type='submit'
-                    className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                  >
-                    Guardar
-                  </button>
+                <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+                    <button
+                        type="submit"
+                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                    >
+                        Guardar
+                    </button>
+                    <button
+                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                        onClick={() => {
+                          setDialogEditatarClienteForm(false);
+                        }}
+                        type='button'
+                    >
+                        Cancelar
+                    </button>
                 </div>
             </Form>
         )}

@@ -52,7 +52,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
   };
 
   return (
-    <Dialog header='' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setDialogNuevaSedeForm(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+    <Dialog header='' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '35vw' }} onHide={() => setDialogNuevaSedeForm(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
         <Formik initialValues={sedeSeleccionada === undefined?  initialValues : sedeSeleccionada} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form>  
@@ -186,13 +186,22 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                         </div>
                     </div>
                 {/* </div>  */}
-                <div className="pt-4 flex justify-end">
-                  <button
-                    type='submit'
-                    className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                  >
-                    Guardar
-                  </button>
+                <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+                    <button
+                        type="submit"
+                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                    >
+                        Guardar
+                    </button>
+                    <button
+                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                        onClick={() => {
+                          setDialogNuevaSedeForm(false);
+                        }}
+                        type='button'
+                    >
+                        Cancelar
+                    </button>
                 </div> 
             </Form>
         )}

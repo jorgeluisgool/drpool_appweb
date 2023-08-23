@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { CrearAlbercaForm } from './CrearAlbercaForm';
 import { api } from '../helpers/variablesGlobales';
 
-export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegistroGuardado, setModalRegistroGuardado, clientesActivos}) => {
+export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegistroGuardado, setModalRegistroGuardado, clientesActivos, searchAlberca, setSearchAlberca, handleSearchAlberca}) => {
 
     const [modalAlberca, setModalAlberca] = useState(false);
     const [albercas, setAlbercas] = useState([]);
@@ -23,11 +23,15 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
       fetchData();
     }, [modalRegistroGuardado]);
 
+    const filterAlbercas = albercas.filter((alberca) =>
+      alberca.nombrealberca.toLowerCase().includes(searchAlberca.toLowerCase())
+    );
+
     // Estados y logica para que funcione el paginator
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const totalRows = albercas.length;
+    const totalRows = filterAlbercas.length;
     const totalPages = Math.ceil(totalRows / rowsPerPage);
   
     // Obtener índice del último registro en la página actual
@@ -35,7 +39,7 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
     // Obtener índice del primer registro en la página actual
     const indexOfFirstRow = indexOfLastRow - rowsPerPage;
     // Obtener los registros para la página actual
-    const currentRows = albercas.slice(indexOfFirstRow, indexOfLastRow);
+    const currentRows = filterAlbercas.slice(indexOfFirstRow, indexOfLastRow);
   
     // Función para cambiar de página
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -46,7 +50,7 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
         <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4 pb-4'>
             <div 
                 className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
-                onClick={() => {setAlbercaSeleccionada(undefined), setModalAlberca(true),  setClienteSelect('')}}
+                onClick={() => {setAlbercaSeleccionada(undefined), setModalAlberca(true), setClienteSelect('')}}
             >
                 <div className="px-6 py-2 bg-[#E2E2E2]">
                   <div className="font-bold text-sm xl:text-sm mb-2 text-[#245A95]">NUEVA ALBERCA</div>
@@ -56,19 +60,23 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
                 </div>
             </div> 
             <div className="p-inputgroup mb-5 mt-8 col-span-3 xl:col-start-3">
-                <span className='p-float-label relative py-4 '>
-                    <InputText
-                        className="w-full appearance-none focus:outline-none bg-transparent"
-                        name="direccion"
-                        // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
-                    /> 
-                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                      <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
-                    </span>
-                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                      Busca la sede
-                    </label>
-                </span>
+                <div className="flex flex-col">
+                  <span className='p-float-label relative'>
+                      <InputText
+                          className="w-full appearance-none focus:outline-none bg-transparent"
+                          name="direccion"
+                          value={searchAlberca.toUpperCase()}
+                          onChange={handleSearchAlberca}
+                      /> 
+                      <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                        <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
+                      </span>
+                      <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                        Busca la alberca
+                      </label>
+                  </span>
+                  <p className="text-base text-[#245A95] font-semibold">Puedes buscar la alberca por su nombre</p>
+                </div>
             </div>
         </div>
         {/* TABLA ALBERCAS */}

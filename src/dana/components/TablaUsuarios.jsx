@@ -20,6 +20,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
     const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
     const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers(modalCrearEditarUsuario);
 
+    console.log(usuarioLogiado);
     // Filtro para el search
     const filterUsuarios = listaUsuarios.filter((usuario) =>
         usuario.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -75,29 +76,29 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
 
     const handleSubmit = (value) => {
         console.log(value);
-         setVentanaCarga(true);
+        //  setVentanaCarga(true);
 
-          fetch(`${api}/crear/usuario`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json' 
-              },
-              body: JSON.stringify(value) 
-            })
-              .then(response => response.json())
-              .then(responseData => {
-                 setModalCrearEditarUsuario(false);
-                 setVentanaCarga(false);
-                 setModalRegistroGuardado(true);
+        //   fetch(`${api}/crear/usuario`, {
+        //       method: 'POST',
+        //       headers: {
+        //         'Content-Type': 'application/json' 
+        //       },
+        //       body: JSON.stringify(value) 
+        //     })
+        //       .then(response => response.json())
+        //       .then(responseData => {
+        //          setModalCrearEditarUsuario(false);
+        //          setVentanaCarga(false);
+        //          setModalRegistroGuardado(true);
           
-                console.log('Respuesta de la API:', responseData);
-                  return 'Correcto';
-              })
-              .catch(error =>{ 
-                  console.log(error);
-                  return 'Error';
-              }
-              );
+        //         console.log('Respuesta de la API:', responseData);
+        //           return 'Correcto';
+        //       })
+        //       .catch(error =>{ 
+        //           console.log(error);
+        //           return 'Error';
+        //       }
+        //       );
     };
 
     // Obtener los perfiles
@@ -397,10 +398,6 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         as={InputText}
                                                         name="jefeinmediato"
                                                         value={values.jefeinmediato.toUpperCase()}
-                                                        // onChange={(e) => {
-                                                        //   handleChange(e);
-                                                        //   setNombreSede(e.target.value.toUpperCase());
-                                                        // }}
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>

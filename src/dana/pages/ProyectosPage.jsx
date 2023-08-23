@@ -32,18 +32,10 @@ const ProyectosPage = () => {
     ];
   return (
         <>
+        <div className="py-8">
         <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">Proyectos</h1>
             <ProyectosSeccion/>
-            {/* <CrearProyectoForm/> */}
-            {/* <div className="container mx-auto pb-6">
-            {loading ? 
-            <Player src='https://assets4.lottiefiles.com/packages/lf20_FZAe8NYBhS.json'
-              className="player"
-              loop
-              autoplay
-              style={{ height: '250px', width: '250px' }}
-            /> :  <TablaCRUD tipoDatos={"PROYECTOS"} listaDatos = {proyectos} headers = {headers} editar = {false} eliminar = {true} seleccionMultiple = {false} />}
-            </div>  */}
+        </div> 
         </>
   )
 }

@@ -76,7 +76,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
       
   return (
     <>
-    <Dialog header='Albercas' visible={modalAlberca} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalAlberca(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+    <Dialog header='Albercas' visible={modalAlberca} baseZIndex={-1} style={{ width: '80vw', height: '35vw' }} onHide={() => setModalAlberca(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
         <Formik initialValues={albercaSeleccionada === undefined? initialValues : albercaSeleccionada} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form>  
@@ -327,13 +327,22 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                     </div>
                     
                 {/* </div>  */}
-                <div className="pt-4 flex justify-end">
-                  <button
-                    type='submit'
-                    className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                  >
-                    Guardar
-                  </button>
+                <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+                    <button
+                        type="submit"
+                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                    >
+                        Guardar
+                    </button>
+                    <button
+                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                        onClick={() => {
+                          setModalAlberca(false);
+                        }}
+                        type='button'
+                    >
+                        Cancelar
+                    </button>
                 </div> 
             </Form>
         )}

@@ -7,19 +7,19 @@ import { ModalSeeleccionarCliente } from '../../dana/components/ModalSeelecciona
 
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import { Toast } from 'primereact/toast';
+
 import { Button } from 'primereact/button';
+import { TieredMenu } from 'primereact/tieredmenu';
+
 export const Navbar = () => {
 
-  // Context del usuario logiado
-  const { userAuth: usuarioLogiado, clientes, setClientes, clienteSeleccionado } = useAuth();
-  console.log(clienteSeleccionado);
+  const menu = useRef(null);
 
-  const logoClienteSeleccionado = clienteSeleccionado.urllogo;
-  const [modalSeleccionCliente, setModalSeleccionCliente] = useState(false)
-
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const navbarRef = useRef(null);
+  const handleUserOptionClick = () => {
+    navigate('/configuracion', {
+      replace: true,
+    });
+  };
 
   const onLogout = () => {
     localStorage.removeItem('token');
@@ -29,6 +29,40 @@ export const Navbar = () => {
       replace: true,
     });
   };
+
+    const items = [
+        {
+            label: 'cliente',
+            icon: 'pi pi-user',
+            items: [
+              {
+                label: 'configuración',
+                icon: 'pi pi-cog',
+                command: handleUserOptionClick
+              }
+            ],
+        },
+  
+        {
+            separator: true
+        },
+        {
+            label: 'Cerrar sesión',
+            icon: 'pi pi-fw pi-power-off',
+            command: onLogout
+        }
+    ];
+
+  // Context del usuario logiado
+  const { userAuth: usuarioLogiado, clientes, setClientes, clienteSeleccionado } = useAuth();
+
+  const logoClienteSeleccionado = clienteSeleccionado.urllogo;
+  const [modalSeleccionCliente, setModalSeleccionCliente] = useState(false)
+
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const navbarRef = useRef(null);
+
 
   const handleClickOutside = (event) => {
     if (navbarRef.current && !navbarRef.current.contains(event.target)) {
@@ -42,8 +76,6 @@ export const Navbar = () => {
       document.removeEventListener('click', handleClickOutside, true);
     };
   }, []);
-
-  console.log(clientes);
 
 
   const accept = () => {
@@ -64,7 +96,6 @@ export const Navbar = () => {
 
   return (
     <>
-
       <div className="z-30 shadow-md w-full fixed top-0 left-0">
         <div className="md:flex items-center justify-between bg-[#245A95] py-2 md:px-6 px-5">
           <div className="font-bold text-2xl cursor-pointer flex items-center font-[Poppins] mt-2">
@@ -111,7 +142,22 @@ export const Navbar = () => {
                       </div>
                     </div>
                     <div className="xl:ml-1 ml-2">
-                      <p className="text-xl font-semibold">Proyectos</p>
+                      <p className="text-xl font-semibold">Alta de proyecto</p>
+                    </div>
+                  </Link>
+                </li> : <></>
+            }
+            {
+              usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" ?
+                <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
+                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to="/clientes">
+                    <div className="xl:hidden">
+                      <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadow-md text-[#245A95] text-3xl">
+                        <ion-icon name="business-outline"></ion-icon>
+                      </div>
+                    </div>
+                    <div className="xl:ml-1 ml-2">
+                      <p className="text-xl font-semibold">Clientes sedes y albercas</p>
                     </div>
                   </Link>
                 </li> : <></>
@@ -131,21 +177,7 @@ export const Navbar = () => {
                   </Link>
                 </li> : <></>
             }
-            {
-              usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" ?
-                <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
-                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to="/clientes">
-                    <div className="xl:hidden">
-                      <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadow-md text-[#245A95] text-3xl">
-                        <ion-icon name="business-outline"></ion-icon>
-                      </div>
-                    </div>
-                    <div className="xl:ml-1 ml-2">
-                      <p className="text-xl font-semibold">Altas</p>
-                    </div>
-                  </Link>
-                </li> : <></>
-            }
+            
             {
               usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
@@ -179,7 +211,7 @@ export const Navbar = () => {
             {
               usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
-                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to="/registros">
+                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to={clienteSeleccionado.length === 0 ? `/cliente` : `/registros`}>
                     <div className="xl:hidden">
                       <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadow-md text-[#245A95] text-3xl">
                         <ion-icon name="create-outline"></ion-icon>
@@ -206,15 +238,31 @@ export const Navbar = () => {
                   </Link>
                 </li> : <></>
             }
-
+            
+            <div className="card flex justify-content-center">
+                <TieredMenu model={items} popup ref={menu} breakpoint="767px" />
+                <Button 
+                  label={<div className="flex items-center space-x-2">
+                            <div className="relative w-12 h-12 rounded-full bg-white flex justify-center items-center text-3xl my-auto">
+                              <h1 className='text-[#245A95]'>DP</h1>
+                              <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+                            </div>
+                          </div>
+                
+                
+                        } 
+                   
+                  onClick={(e) => {menu.current.toggle(e), confirm1}} 
+                />
+            </div>
             {/* Resto de elementos del menú */}
-            <button
+            {/* <button
               className="bg-[#245A95] text-white border border-white hover:bg-white hover:text-[#245A95] shadow-md py-2 px-3 mt-2 rounded-full md:ml-4 duration-500 font-bold"
               // onClick={onLogout}
               onClick={confirm1}
             >
               <i className="pi pi-sign-out"></i>
-            </button>
+            </button> */}
 
             <ConfirmPopup />
             

@@ -9,6 +9,7 @@ import { TabaUsuarios } from '../components/TablaUsuarios'
 import { api } from '../helpers/variablesGlobales';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { Image } from 'primereact/image';
+import { VentanaCarga } from '../../ui/components/VentanaCarga';
 
 export const AsistenciaPage = () => {
     const [fechaInicio, setFechaInicio] = useState(null);
@@ -103,24 +104,7 @@ export const AsistenciaPage = () => {
     return (
         <>
             {ventanaCarga && (
-                <div className="fixed top-0 left-0 right-0 bottom-0 bg-slate-200 bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="w-screen h-screen flex items-center justify-center">
-                        <Player
-                            src="https://lottie.host/6e504b56-2da0-430e-9861-0a2186e4ae0f/hkIjXR28gA.json"
-                            className="player absolute bottom-0 w-full"
-                            loop
-                            autoplay
-                            speed={0.2}
-                            style={{ width: '100%', zIndex: -1 }} // Ajusta el zIndex a un valor negativo para que se vea por debajo
-                        />
-                        <div className="hidden lg:flex h-full w-full items-center justify-center" style={{ flexDirection: 'column' }}>
-                            <div className="w-auto h-auto mx-auto">
-                                <img className="" src="https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5" alt="Your Company" />
-                                <h1 className='animate-pulse text-3xl text-white pt-6'>Cargando<span className='animate-pulse'>.</span><span className='animate-pulse'>.</span><span className='animate-pulse'>.</span></h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <VentanaCarga/>
             )}
             <Toast ref={toast} />
             <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">Asistencia</h1>
@@ -394,7 +378,7 @@ export const AsistenciaPage = () => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-2">
-                                            <div className="flex space-x-4 flex items-center justify-center">
+                                            <div className="flex space-x-4 items-center justify-center">
                                                 <Image
                                                     src={asistencia.urlFoto}
                                                     zoomSrc={asistencia.urlFoto}

@@ -5,7 +5,7 @@ import useAuth from '../hooks/useAuth';
 
 export const HomeScreem = ({titulo}) => {
 
-  const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
+  const { userAuth: usuarioLogiado, setUserAuth, clienteSeleccionado } = useAuth();
 
   console.log(usuarioLogiado[0]);
 
@@ -14,18 +14,29 @@ export const HomeScreem = ({titulo}) => {
     <div className="bg-[#E2E2E2] h-full grid grid-cols-2 sm:grid-cols-3 gap-14 pt-20">
       {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" ?
-        <div className="place-self-center ...">
+        <div className="flex flex-col items-center justify-center">
           <Link to='/Proyectos'>
             <BotonMenu titulo='PROYECTOS' icono='library-outline'/>
           </Link>
           <div className='pt-5'>
-            <p className='text-center text-[#245A95] font-bold'>PROYECTOS</p>
+            <p className='text-center text-[#245A95] font-bold'>ALTA DE PROYECTO</p>
+          </div>
+        </div> : <></>
+      }
+      {
+        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" ? 
+        <div className="flex flex-col items-center justify-center">
+          <Link to='/clientes'>
+            <BotonMenu titulo='CATALOGO' icono='business-outline'/>
+          </Link>
+          <div className='pt-5'>
+            <p className='text-center text-[#245A95] font-bold'>CLIENTES SEDES Y ALBERCAS</p>
           </div>
         </div> : <></>
       }
       {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ? 
-        <div className="place-self-center ...">
+        <div className="flex flex-col items-center justify-center">
           <Link to='/usuarios'>
             <BotonMenu titulo='USUARIOS' icono='person-add-outline'/>
           </Link>
@@ -34,20 +45,10 @@ export const HomeScreem = ({titulo}) => {
           </div>
         </div> : <></>
       }
-      {
-        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" ? 
-        <div className="place-self-center">
-          <Link to='/clientes'>
-            <BotonMenu titulo='CATALOGO' icono='business-outline'/>
-          </Link>
-          <div className='pt-5'>
-            <p className='text-center text-[#245A95] font-bold'>ALTAS</p>
-          </div>
-        </div> : <></>
-      }
+      
       {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
-        <div className="place-self-center">
+        <div className="flex flex-col items-center justify-center">
           <Link to='/catalogos'>
             <BotonMenu titulo='CATALOGO' icono='clipboard-outline'/>
           </Link>
@@ -58,7 +59,7 @@ export const HomeScreem = ({titulo}) => {
       }
       {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
-        <div className="place-self-center ...">
+        <div className="flex flex-col items-center justify-center">
           <Link to='/asignaciones'>
             <BotonMenu titulo='ASIGNACIONES' icono='accessibility-outline'/>
           </Link>
@@ -69,8 +70,8 @@ export const HomeScreem = ({titulo}) => {
       }
       {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
-        <div className="place-self-center ...">
-          <Link to='/registros'>
+        <div className="flex flex-col items-center justify-center">
+          <Link to={clienteSeleccionado.length === 0 ? `/cliente` : `/registros`}>
             <BotonMenu titulo='REGISTROS' icono='create-outline'/>
           </Link>
           <div className='pt-5'>
@@ -80,7 +81,7 @@ export const HomeScreem = ({titulo}) => {
       }
       {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
-        <div className="place-self-center ...">
+        <div className="flex flex-col items-center justify-center">
           <Link to='/asistencia'>
             <BotonMenu titulo='ASISTENCIA' icono='id-card-outline'/>
           </Link>
