@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { api } from '../../helpers/variablesGlobales';
 
-export const TableProyectos = ({proyectoAlbercaSeleccionado, proyectoAlbercaData, setProyectoAlbercaSeleccionado, setModalCrearEditarProyectos, modalRegistroGuardado, filterProyectos}) => {
+export const TableProyectos = ({proyectoAlbercaSeleccionado, proyectoAlbercaData, setProyectoAlbercaSeleccionado, setModalCrearEditarProyectos, modalRegistroGuardado, filterProyectos, setSedeSelect}) => {
 
       //Estados y logica para que funcione el paginator
       const [currentPage, setCurrentPage] = useState(1);
@@ -62,7 +62,6 @@ export const TableProyectos = ({proyectoAlbercaSeleccionado, proyectoAlbercaData
                     <tr
                         key={index}
                         onClick={() => {
-                            
                             setProyectoAlbercaSeleccionado(proyectoAlberca);
                             setModalCrearEditarProyectos(true);
                         }}
@@ -96,7 +95,7 @@ export const TableProyectos = ({proyectoAlbercaSeleccionado, proyectoAlbercaData
                         <td className="px-6 py-2">
                             <div className="flex space-x-4">
                                 {
-                                    proyectoAlberca.estatus === 'ACTIVO'?
+                                    proyectoAlberca.estatus === 'VIGENTE'?
                                     <div className="text-sm font-medium text-green-600"><ion-icon name="radio-button-on-outline"></ion-icon> {proyectoAlberca.estatus}</div>
                                     :
                                     <div className="text-sm font-medium text-red-600"><ion-icon name="radio-button-off-outline"></ion-icon> {proyectoAlberca.estatus}</div>

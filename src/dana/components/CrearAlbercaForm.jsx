@@ -13,19 +13,33 @@ const opcionesStatus = [
   { label: 'INACTIVO', value: 'INACTIVO' }
 ];
 
-export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaSeleccionada, ventanaCarga, setVentanaCarga, setModalRegistroGuardado, clientesActivos, clienteSelect, setClienteSelect}) => {
+const opcionesTipoAlberca = [
+  { label: 'OLÍMPICA', value: 'OLIMPICA' },
+  { label: 'SEMIOLÍMPICA', value: 'SEMIOLÍMPICA' },
+  { label: 'FOSA DE CLAVADOS', value: 'FOSA DE CLAVADOS' },
+  { label: 'CHAPOTEADERO', value: 'CHAPOTEADERO' },
+  { label: 'ALBERCA RECREATIVA', value: 'ALBERCA RECREATIVA' },
+  { label: 'JACUZZI', value: 'JACUZZI' }
+];
 
-  // console.log(clienteSelect);
+const opcionesCaracteristicaAlberca = [
+  { label: 'TECHADA', value: 'TECHADA' },
+  { label: 'NO TECHADA', value: 'NO TECHADA' }
+];
+
+export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaSeleccionada, ventanaCarga, setVentanaCarga, setModalRegistroGuardado, clientesActivos, clienteSelect, setClienteSelect}) => {
 
     console.log(albercaSeleccionada);
 
     const initialValues = {
         nombrealberca: '',
         tipoalberca: '',
+        caracteristica: '',
         capacidad: '',
         medidalargo: '',
         medidaancho: '',
-        medidaprofundidad: '',
+        profundidadminima: '',
+        profundidadmaxima: '',
         ubicacion: '',
         sede: {
           correo: '',
@@ -56,7 +70,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                 console.log(responseData);
                 setVentanaCarga(false);
                 setModalRegistroGuardado(true);
-                setModalAlberca(false);
+                // setModalAlberca(false);
              })
              .catch((error) => {
                console.log(error);
@@ -108,15 +122,35 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
-                                    as={InputText}
+                                    as={Dropdown}
                                     name="tipoalberca"
                                     value={values.tipoalberca}
+                                    options={opcionesTipoAlberca}
+                                    optionLabel="label"
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
                                   Tipo de alberca
+                                </label>
+                            </span>
+                        </div> 
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={Dropdown}
+                                    name="caracteristica"
+                                    value={values.caracteristica}
+                                    options={opcionesCaracteristicaAlberca}
+                                    optionLabel="label"
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Caracteristica de la alberca
                                 </label>
                             </span>
                         </div> 
@@ -154,7 +188,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Cliente
+                                  Cliente al que pertenece
                                 </label>
                             </span>
                         </div>
@@ -200,7 +234,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                 </div>
                 
                 <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2'>
-                    <h1 className='text-2xl font-semibold'>Meidadas de la alberca</h1>
+                    <h1 className='text-2xl font-semibold'>Dimensiones de la alberca</h1>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
                       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6'>
                         <div className="p-inputgroup mb-5 mt-8">
@@ -216,7 +250,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Capacidad (L)
+                                  Volumen (m³)
                                 </label>
                             </span>
                         </div>  
@@ -234,7 +268,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Largo (M)
+                                  Largo (m)
                                 </label>
                             </span>
                         </div>
@@ -251,7 +285,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Ancho (M)
+                                  Ancho (m)
                                 </label>
                             </span>
                         </div>
@@ -260,26 +294,43 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={InputText}
-                                    name="medidaprofundidad"
-                                    value={values.medidaprofundidad}
+                                    name="profundidadminima"
+                                    value={values.profundidadminima}
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Profundidad (M)
+                                  Profundidad nínima (m)
+                                </label>
+                            </span>
+                        </div>
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={InputText}
+                                    name="profundidadmaxima"
+                                    value={values.profundidadmaxima}
+                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Profundidad máxima (m)
                                 </label>
                             </span>
                         </div>
                       </div>
                       <div>
-                        <h1>Grafico de alberca</h1>
+                        <h1>Gráfico de alberca</h1>
                         <AlbercaDraw 
                         largoAlberca = {values.medidalargo}
                         anchoAlberca = {values.medidaancho}
-                        profundidadMinimaAlberca={5}
-                        profundidadMaximaAlberca={5}
+                        profundidadMinimaAlberca={values.profundidadminima}
+                        profundidadMaximaAlberca={values.profundidadmaxima}
                         />
                       </div>
                         
@@ -287,7 +338,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                   </div>
                     
                     <div className='bg-[#E2E2E2] p-2 rounded-xl'>
-                    <h1 className='text-2xl font-semibold'>Equipo de la alberca</h1>
+                    <h1 className='text-2xl font-semibold'>Equipos de la alberca</h1>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
                     <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
@@ -302,7 +353,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Equipo
+                                  Equipo de la
                                 </label>
                             </span>
                         </div>

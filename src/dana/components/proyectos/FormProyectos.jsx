@@ -1,11 +1,26 @@
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, useFormikContext } from 'formik';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { MultiSelect } from 'primereact/multiselect';
+import { Calendar } from 'primereact/calendar';
 import React, { useEffect, useState } from 'react'
 import { api } from '../../helpers/variablesGlobales';
+import { addLocale } from 'primereact/api';
+
+import { format } from 'date-fns';
+
+addLocale('es', {
+  firstDayOfWeek: 1,
+  dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+  dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+  dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+  monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+  monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+  today: 'Hoy',
+  clear: 'Limpiar'
+});
 
 const initialValues = {
     nombreproyectoalberca: '',
@@ -13,19 +28,20 @@ const initialValues = {
 
     },
     tiposervicio: '',
-    instrumentosmedicion: '',
+    fechainiciocontrato: '',
+    fechafincontrato: '', 
     estatus: ''
 }
 
   const opcionesStatus = [
-    { label: 'ACTIVO', value: 'ACTIVO' },
-    { label: 'INACTIVO', value: 'INACTIVO' }
+    { label: 'CONTRATO VIGENTE', value: 'VIGENTE' },
+    { label: 'CONTRATO FINALIZADO', value: 'CONTRATO FINALIZADO' }
   ];
 
   const opcionesTipoServicio = [
-    { label: 'LIMPIEZA', value: 'LIMPIEZA' },
-    { label: 'INSTALACION', value: 'INSTALACION' },
-    { label: 'CAMBIO DE MOTOBOMBA', value: 'CAMBIO DE MOTOBOMBA' }
+    { label: 'HOTELERIA', value: 'HOTELERIA' },
+    { label: 'GOBIERNO', value: 'GOBIERNO' }, 
+    { label: 'RESIDENCIAL', value: 'RESIDENCIAL' }
   ];
 
   const opcionesInstrmentosMedicion = [
@@ -58,25 +74,30 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
     const handleSubmit = (values) => {
       values.nombreproyectoalberca = values.nombreproyectoalberca.toUpperCase();
 
-         setVentanaCarga(true);
+      const formattedDate = format(values.fechainiciocontrato, "dd/MM/yy");
+      values.fechainiciocontrato = formattedDate;
+      values.fechafincontrato = formattedDate;
 
-         fetch(`${api}/nuevo/proyectoalberca`, {
-             method: 'POST',
-             headers: {
-               'Content-Type': 'application/json',
-             },
-             body: JSON.stringify(values),
-           })
-             .then((response) => response.text())
-             .then((responseData) => {
-                console.log(responseData);
-                setModalCrearEditarProyectos(false);
-                setVentanaCarga(false);
-                setModalRegistroGuardado(true);
+      console.log(values);
+           setVentanaCarga(true);
+
+           fetch(`${api}/nuevo/proyectoalberca`, {
+               method: 'POST',
+               headers: {
+                 'Content-Type': 'application/json',
+               },
+               body: JSON.stringify(values),
              })
-             .catch((error) => {
-               console.log(error);
-             });
+               .then((response) => response.text())
+               .then((responseData) => {
+                  console.log(responseData);
+                  setModalCrearEditarProyectos(false);
+                  setVentanaCarga(false);
+                  setModalRegistroGuardado(true);
+               })
+               .catch((error) => {
+                 console.log(error);
+               });
     }
 
     const renderClienteOption = (option) => {
@@ -91,7 +112,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
   return (
     <Dialog header={`Proyectos`} visible={modalCrearEditarProyectos} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalCrearEditarProyectos(false)} className='pt-16'>
         <Formik initialValues={proyectoAlbercaSeleccionado === undefined? initialValues : proyectoAlbercaSeleccionado} onSubmit={handleSubmit}>
-            {({ values }) => (
+            {({ values, field, form }) => (
                 <Form>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
                         <div className="p-inputgroup mb-5 mt-8">
@@ -195,21 +216,35 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent md:w-20rem"
-                                    as={MultiSelect}
-                                    name="instrumentosmedicion"
-                                    value={values.instrumentosmedicion}
-                                    // options={opcionesInstrmentosMedicion}
-                                    // optionLabel="value"
-                                    // display="chip"
-                                    filter
-                                    // placeholder="Select Cities" 
-                                    // maxSelectedLabels={3}
+                                    as={Calendar}
+                                    name="fechainiciocontrato"
+                                    value={values.fechainiciocontrato}
+                                    dateFormat="dd/MM/yy"
+                                    locale='es'
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Instrumentos de medición
+                                Fecha de inicio de contratación 
+                                </label>
+                            </span>
+                        </div>
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent md:w-20rem"
+                                    as={Calendar}
+                                    name="fechafincontrato"
+                                    value={values.fechafincontrato}
+                                    dateFormat="dd/MM/yy"
+                                    locale='es'
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                Fecha de finalización de contratación
                                 </label>
                             </span>
                         </div>

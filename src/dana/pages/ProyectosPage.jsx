@@ -33,7 +33,7 @@ const ProyectosPage = () => {
   return (
         <>
         <div className="py-8">
-        <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">Proyectos</h1>
+        <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">Alta de proyectos</h1>
             <ProyectosSeccion/>
         </div> 
         </>

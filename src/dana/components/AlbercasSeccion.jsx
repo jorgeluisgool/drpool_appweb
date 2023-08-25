@@ -46,7 +46,7 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
 
   return (
     <>
-    <h1 className="text-2xl font-bold text-[#245A95] pb-4">Dar de alta una alberca</h1>
+    <h1 className="text-2xl font-bold text-[#245A95] pb-4">ALTA DE ALBERCA</h1>
         <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4 pb-4'>
             <div 
                 className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
