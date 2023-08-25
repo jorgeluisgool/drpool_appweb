@@ -1,6 +1,8 @@
 import React from 'react'
 import { FormLogin } from '../components/FormLogin'
 import { Player } from "@lottiefiles/react-lottie-player";
+import rueditaLogo from '../../assets/isae.png';
+import logoIsae from '../../assets/logo_ISAe.png';
 
 export const LoginPage = () => {
   return (
@@ -21,10 +23,10 @@ export const LoginPage = () => {
       </div>
       <div className='hidden lg:flex h-full w-1/2 items-center justify-center' style={{ flexDirection: 'column' }}>
         <div className='w-auto h-auto mx-auto motion-safe:animate-spin'>
-          <img className="" src="src/assets/isae.png" alt="Your Company"/>
+          <img className="" src={rueditaLogo} alt="Your Company"/>
         </div>
         <h1 className='text-white text-lg font-black pt-20'>Powered by</h1>
-        <img className="h-10" src="/src/assets/logo_ISAe.png" alt="Your Company"/>
+        <img className="h-10" src={logoIsae} alt="Your Company"/>
       </div>
     </div>
     
