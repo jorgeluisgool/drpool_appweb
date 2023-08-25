@@ -11,6 +11,7 @@ import { DialogRegistroGuardado } from '../../ui/components/DialogRegistroGuarda
 import { AlbercasSeccion } from '../components/AlbercasSeccion';
 import ModalClientesInactivos from '../components/ModalClientesInactivos';
 import { VentanaCarga } from '../../ui/components/VentanaCarga';
+import { useFetchUsers } from '../hooks/useFetchUsers';
 
 export const ClientesPage = () => {
 
@@ -35,6 +36,9 @@ export const ClientesPage = () => {
     const [uploadedImage, setUploadedImage] = useState(null);
     const [file, setFile] = useState(null);
 
+    // obtener la lista de iusuarios
+    const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers();
+
     const handleSearchClientes = (event) => {
       setSearchTerm(event.target.value);
     };
@@ -52,7 +56,7 @@ export const ClientesPage = () => {
       cliente.cliente.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const filterSedes = sedes.filter((sede) =>
+    const filterSedes = sedes?? sedes.filter((sede) =>
       sede.nombre.toLowerCase().includes(searchSede.toLowerCase()) || 
       sede.encargado.toLowerCase().includes(searchSede.toLowerCase())
     );
@@ -97,7 +101,7 @@ export const ClientesPage = () => {
   // Obtener índice del primer registro en la página actual
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
   // Obtener los registros para la página actual
-  const currentRows = filterSedes.slice(indexOfFirstRow, indexOfLastRow);
+  const currentRows = filterSedes?? filterSedes.slice(indexOfFirstRow, indexOfLastRow);
 
   // Función para cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -133,7 +137,7 @@ export const ClientesPage = () => {
         <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">ALTAS CLIENTES, SEDES Y ALBERCAS </h1>
         {/* CLIENTES */}
         <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-12'>
-        <h1 className="text-2xl font-bold text-[#245A95] pb-4">Dar de alta un cliente</h1>
+        <h1 className="text-2xl font-bold text-[#245A95] pb-4">ALTA CLIENTE</h1>
           <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4 pb-4'>
             <div 
                 className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
@@ -209,7 +213,7 @@ export const ClientesPage = () => {
 
         {/* SEDES */}
         <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-12'>
-            <h1 className="text-2xl font-bold text-[#245A95] pb-4">Dar de alta una sede</h1>
+            <h1 className="text-2xl font-bold text-[#245A95] pb-4">ALTA SEDE</h1>
             <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4 pb-4'>
               <div 
                   className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
@@ -238,7 +242,7 @@ export const ClientesPage = () => {
                         Busca la sede
                       </label>
                   </span>
-                  <p className="text-base text-[#245A95] font-semibold">Puedes buscar la sede por su nombre, o por el encargado de la sede</p>
+                  <p className="text-base text-[#245A95] font-semibold">Puedes buscar la sede por su nombre, o por el administrador de la sede</p>
                 </div>
               </div>
             </div>
@@ -258,7 +262,7 @@ export const ClientesPage = () => {
                   </th>
                   <th scope="col" className="relative px-6 py-3">
                     <div className="items-center">
-                      <span>Encargado</span>
+                      <span>Administrador de la sede</span>
                     </div>
                   </th>
                   <th scope="col" className="relative px-6 py-3">
@@ -285,7 +289,8 @@ export const ClientesPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200" >
-                {currentRows.map((sede, index) => (
+                {currentRows.length >0 ?
+                currentRows.map((sede, index) => (
                   <tr
                     onClick={() => {
                       setSedeSeleccionada(sede),
@@ -301,12 +306,12 @@ export const ClientesPage = () => {
                     </td>
                     <td className="px-6 py-2">
                       <div className="flex space-x-4">
-                      <div className="text-sm font-medium text-gray-900">{sede.direccion}</div>
+                      <div className="text-sm font-medium text-gray-900">{sede.direccion.calle}</div>
                       </div>
                     </td>
                     <td className="px-6 py-2">
                       <div className="flex space-x-4">
-                      <div className="text-sm font-medium text-gray-900">{sede.encargado}</div>
+                      <div className="text-sm font-medium text-gray-900">{sede.encargadosede}</div>
                       </div>
                     </td>
                     <td className="px-6 py-2">
@@ -321,7 +326,7 @@ export const ClientesPage = () => {
                     </td>
                     <td className="px-6 py-2">
                       <div className="flex space-x-4">
-                      <div className="text-sm font-medium text-gray-900">{sede.cliente.cliente}</div>
+                      <div className="text-sm font-medium text-gray-900">{""}</div>
                       </div>
                     </td>
                     <td className="px-6 py-2">
@@ -346,7 +351,9 @@ export const ClientesPage = () => {
                       </div>
                     </td> */}
                   </tr>
-                ))} 
+                )):
+                <></>
+                } 
               </tbody>
             </table>
               <div className="flex items-center justify-between mt-4 mb-6">
@@ -444,6 +451,7 @@ export const ClientesPage = () => {
           setSedeSeleccionada={setSedeSeleccionada}
           sedeSeleccionada={sedeSeleccionada}
           clientes={clientes}
+          listaUsuarios={listaUsuarios}
         />
         <ModalClientesInactivos
           dialogClientesInactivos={dialogClientesInactivos}

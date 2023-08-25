@@ -76,29 +76,29 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
 
     const handleSubmit = (value) => {
         console.log(value);
-        //  setVentanaCarga(true);
+      setVentanaCarga(true);
 
-        //   fetch(`${api}/crear/usuario`, {
-        //       method: 'POST',
-        //       headers: {
-        //         'Content-Type': 'application/json' 
-        //       },
-        //       body: JSON.stringify(value) 
-        //     })
-        //       .then(response => response.json())
-        //       .then(responseData => {
-        //          setModalCrearEditarUsuario(false);
-        //          setVentanaCarga(false);
-        //          setModalRegistroGuardado(true);
+       fetch(`${api}/crear/usuario`, {
+           method: 'POST',
+           headers: {
+             'Content-Type': 'application/json' 
+           },
+           body: JSON.stringify(value) 
+         })
+           .then(response => response.json())
+           .then(responseData => {
+              setModalCrearEditarUsuario(false);
+              setVentanaCarga(false);
+              setModalRegistroGuardado(true);
           
-        //         console.log('Respuesta de la API:', responseData);
-        //           return 'Correcto';
-        //       })
-        //       .catch(error =>{ 
-        //           console.log(error);
-        //           return 'Error';
-        //       }
-        //       );
+             console.log('Respuesta de la API:', responseData);
+               return 'Correcto';
+           })
+           .catch(error =>{ 
+               console.log(error);
+               return 'Error';
+           }
+           );
     };
 
     // Obtener los perfiles

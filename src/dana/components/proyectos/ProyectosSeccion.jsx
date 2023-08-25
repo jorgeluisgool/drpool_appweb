@@ -130,6 +130,7 @@ export const ProyectosSeccion = () => {
               setModalCrearEditarProyectos={setModalCrearEditarProyectos}
               modalRegistroGuardado={modalRegistroGuardado}
               filterProyectos={filterProyectos}
+              setSedeSelect={setSedeSelect}
             />
 
             <FormProyectos 

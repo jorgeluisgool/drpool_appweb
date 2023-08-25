@@ -145,7 +145,7 @@ export const AlbercaDraw = ({largoAlberca,anchoAlberca,profundidadMinimaAlberca,
 
   return (
     <>
-      <div>(Estimacion del tamaño de la alberca)</div>
+      <div>(Estimación del tamaño de la alberca)</div>
       <canvas ref={canvasRef} width={500} height={200}></canvas>
     </>
   );
