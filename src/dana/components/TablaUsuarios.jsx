@@ -9,6 +9,20 @@ import { Password } from 'primereact/password';
 import { api } from '../helpers/variablesGlobales';
 import { Dropdown } from 'primereact/dropdown';
 import useAuth from '../hooks/useAuth';
+import { Calendar } from 'primereact/calendar';
+import { addLocale } from 'primereact/api';
+import { format } from 'date-fns';
+
+addLocale('es', {
+    firstDayOfWeek: 1,
+    dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+    dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+    dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+    monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+    monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+    today: 'Hoy',
+    clear: 'Limpiar'
+  });
 
 const opcionesStatus = [
     { label: 'ACTIVO', value: 'ACTIVO' },
@@ -20,7 +34,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
     const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
     const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers(modalCrearEditarUsuario);
 
-    console.log(usuarioLogiado);
+    // console.log(usuarioLogiado);
     // Filtro para el search
     const filterUsuarios = listaUsuarios.filter((usuario) =>
         usuario.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -30,11 +44,13 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
     const usuarioVacio = {
         // idusuario: 0,
         correo: "",
-        jefeinmediato: "",
+        jefeinmediato: '',
         nombre: "",
         pass: "",
         passtemp: 0,
         telefono: "",
+        fechaingreso: "",
+        fechanacimiento: "",
         ubicacion: "",
         usuario: "",
         status: "",
@@ -74,31 +90,40 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
     // Función para cambiar de página
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const handleSubmit = (value) => {
-        console.log(value);
-      setVentanaCarga(true);
+    const handleSubmit = (values) => {
+        values.nombre = values.nombre.toUpperCase();
+        values.usuario = values.usuario.toUpperCase();
+        values.ubicacion = values.ubicacion.toUpperCase();
 
-       fetch(`${api}/crear/usuario`, {
-           method: 'POST',
-           headers: {
-             'Content-Type': 'application/json' 
-           },
-           body: JSON.stringify(value) 
-         })
-           .then(response => response.json())
-           .then(responseData => {
-              setModalCrearEditarUsuario(false);
-              setVentanaCarga(false);
-              setModalRegistroGuardado(true);
-          
-             console.log('Respuesta de la API:', responseData);
-               return 'Correcto';
-           })
-           .catch(error =>{ 
-               console.log(error);
-               return 'Error';
-           }
-           );
+        const formattedDate = format(values.fechaingreso, "dd/MM/yy");
+        values.fechaingreso = formattedDate;
+        values.fechanacimiento = formattedDate;
+        
+        console.log(values);
+
+         setVentanaCarga(true);
+
+          fetch(`${api}/crear/usuario`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json' 
+              },
+              body: JSON.stringify(values) 
+            })
+              .then(response => response.json())
+              .then(responseData => {
+                 setModalCrearEditarUsuario(false);
+                 setVentanaCarga(false);
+                 setModalRegistroGuardado(true);
+    
+                console.log('Respuesta de la API:', responseData);
+                  return 'Correcto';
+              })
+              .catch(error =>{ 
+                  console.log(error);
+                  return 'Error';
+              }
+              );
     };
 
     // Obtener los perfiles
@@ -264,7 +289,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                             </div>
                         </div>
                         {/* MODAL DEL FORMULARIO USUARIOS */}
-                        <Dialog header={`Usuario`} visible={modalCrearEditarUsuario} baseZIndex={-1} style={{ width: '70vw', height: '35vw' }} onHide={() => setModalCrearEditarUsuario(false)} >
+                        <Dialog header={`Usuario`} visible={modalCrearEditarUsuario} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalCrearEditarUsuario(false)}  className='pt-12'>
                             <Formik initialValues={ usuarioSeleccionado === undefined ? usuarioVacio : usuarioSeleccionado} onSubmit={handleSubmit}>
                                 {({ values }) => (
                                     <Form>
@@ -285,7 +310,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Nombre completo
+                                                      Nombre completo del colaborador
                                                     </label>
                                                 </span>
                                             </div>
@@ -307,7 +332,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Perfil
+                                                      Rol
                                                     </label>
                                                 </span>
                                             </div>
@@ -337,7 +362,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                                         as={InputText}
                                                         name="correo"
-                                                        value={values.correo.toUpperCase()}
+                                                        value={values.correo}
                                                         // onChange={(e) => {
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
@@ -347,7 +372,43 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Correo
+                                                      Correo electrónico del colaborador
+                                                    </label>
+                                                </span>
+                                            </div>
+                                            <div className="p-inputgroup mb-5 mt-8">
+                                                <span className='p-float-label relative'>
+                                                    <Field
+                                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                                        as={Calendar}
+                                                        name="fechaingreso"
+                                                        value={values.fechaingreso}
+                                                        dateFormat="dd/MM/yy"
+                                                        locale='es'
+                                                    /> 
+                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                                    </span>
+                                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                                      Fecha de ingreso
+                                                    </label>
+                                                </span>
+                                            </div>
+                                            <div className="p-inputgroup mb-5 mt-8">
+                                                <span className='p-float-label relative'>
+                                                    <Field
+                                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                                        as={Calendar}
+                                                        name="fechanacimiento"
+                                                        value={values.fechanacimiento}
+                                                        dateFormat="dd/MM/yy"
+                                                        locale='es'
+                                                    /> 
+                                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                                    </span>
+                                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                                      Fecha de ingreso
                                                     </label>
                                                 </span>
                                             </div>
@@ -367,7 +428,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Ubicación
+                                                      Dirección del colaborador
                                                     </label>
                                                 </span>
                                             </div>
@@ -378,6 +439,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         as={InputText}
                                                         name="telefono"
                                                         value={values.telefono.toUpperCase()}
+                                                        keyfilter="pint"
                                                         // onChange={(e) => {
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
@@ -387,7 +449,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Telefono
+                                                      Teléfono del colaborador
                                                     </label>
                                                 </span>
                                             </div>
@@ -395,9 +457,13 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                 <span className='p-float-label relative'>
                                                     <Field
                                                         className="w-full appearance-none focus:outline-none bg-transparent"
-                                                        as={InputText}
+                                                        as={Dropdown}
                                                         name="jefeinmediato"
-                                                        value={values.jefeinmediato.toUpperCase()}
+                                                        value={values.jefeinmediato}
+                                                        optionValue="nombre"
+                                                        options={listaUsuarios}
+                                                        optionLabel="nombre"
+                                                        filter
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>

@@ -29,7 +29,7 @@ export const DialogRegistroGuardado = ({modalRegistroGuardado, setModalRegistroG
             boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)', // Agrega una sombra para el efecto de elevación
             backgroundColor: '#ffffff', // Ajusta el color de fondo del Dialog
           }} 
-        onHide={() => setModalRegistroGuardado(false)}
+        // onHide={() => setModalRegistroGuardado(false)}
     >
         <div className='text-center'>
             <Player src='https://lottie.host/87be0746-fbdd-478e-833f-bb3513644277/zZ97aI1Tg7.json'
@@ -43,13 +43,13 @@ export const DialogRegistroGuardado = ({modalRegistroGuardado, setModalRegistroG
         </div>
         
         <div className='mt-8'>
-            <button 
+            {/* <button 
                 type='button'
                 onClick={() => setModalRegistroGuardado(false)}
                 className='hover:shadow-slate-600 border h-7 px-4 bg-[#245A95] text-white text-xs font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600'
             >
                 ACEPTAR
-            </button>
+            </button> */}
         </div>
     </Dialog>
   )

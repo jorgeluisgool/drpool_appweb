@@ -58,7 +58,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
         .then((responseData) => {
           setVentanaCarga(false);
           setModalRegistroGuardado(true);
-          // setDialogNuevaSedeForm(false);
+          setDialogNuevaSedeForm(false);
         })
         .catch((error) => {
           console.log(error);
@@ -138,7 +138,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                           </span>
                           <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                            Teléfono de la sede
+                            Teléfono del administrador de la sede
                           </label>
                       </span>
                   </div>

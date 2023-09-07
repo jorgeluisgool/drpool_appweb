@@ -104,7 +104,6 @@ export const Navbar = () => {
                 <span className="hover:text-gray-400 duration-500 text-3xl text-slate-50">
                   <img src="https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5" alt="Icono" className="h-11 mr-1" />
                 </span>
-                {/* <img src="/src/assets/letras_isae.png" alt="Icono" className=" h-7 mr-2" /> */}
               </div>
             </Link>
           </div>
@@ -113,13 +112,13 @@ export const Navbar = () => {
           </div>
           <ul
             ref={navbarRef}
-            className={`xl:flex xl:items-center xl:pb-0 pb-3 pt-1 absolute xl:static bg-[#245A95] xl:z-auto z-[-1] left-40 w-full xl:w-auto xl:pl-0 pl-3 transition-all duration-500 ease-in ${open ? 'top-20' : 'top-[-520px]'
+            className={`xl:flex xl:items-center xl:pb-0 pb-2 absolute xl:static bg-[#245A95] xl:z-auto z-[-1] left-24 md:left-96 lg:left-2/3 w-full xl:w-auto pl-3 transition-all duration-500 ease-in ${open ? 'top-20' : 'top-[-520px]'
               } `}
           >
             {
               logoClienteSeleccionado === undefined ?
                 <div onClick={() => setModalSeleccionCliente(true)} className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3 bg-slate-300 cursor-pointer p-2 text-[#245A95] rounded-full">
-                  <h1>Seleccionar un cliente</h1>
+                  <h1 className='xl:text-center'>Seleccionar un cliente</h1>
                   {/* <img src={logoClienteSeleccionado} alt="Icono" className="h-14 rounded-2xl" /> */}
                 </div> :
                 (
@@ -135,14 +134,14 @@ export const Navbar = () => {
             {
               usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
-                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to="/proyectos">
+                  <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/proyectos">
                     <div className="xl:hidden">
                       <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadow-md text-[#245A95] text-3xl">
                         <ion-icon name="library-outline"></ion-icon>
                       </div>
                     </div>
-                    <div className="xl:ml-1 ml-2">
-                      <p className="text-xl font-semibold">Alta de proyecto</p>
+                    <div className="xl:ml-1">
+                      <p className="text-lg xl:text-center font-semibold">Proyectos</p>
                     </div>
                   </Link>
                 </li> : <></>
@@ -150,14 +149,29 @@ export const Navbar = () => {
             {
               usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
-                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to="/clientes">
+                  <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/clientes">
                     <div className="xl:hidden">
                       <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadow-md text-[#245A95] text-3xl">
                         <ion-icon name="business-outline"></ion-icon>
                       </div>
                     </div>
-                    <div className="xl:ml-1 ml-2">
-                      <p className="text-xl font-semibold">Clientes, sedes y albercas</p>
+                    <div className="xl:ml-1">
+                      <p className="text-lg xl:text-center font-semibold">Clientes, sedes y albercas</p>
+                    </div>
+                  </Link>
+                </li> : <></>
+            }
+            {
+              usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" ?
+                <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
+                  <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/equipos">
+                    <div className="xl:hidden">
+                      <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadow-md text-[#245A95] text-3xl">
+                        <ion-icon name="construct-outline"></ion-icon>
+                      </div>
+                    </div>
+                    <div className="xl:ml-1">
+                      <p className="text-lg xl:text-center font-semibold">Equipos</p>
                     </div>
                   </Link>
                 </li> : <></>
@@ -165,60 +179,60 @@ export const Navbar = () => {
             {
               usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
-                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to="/usuarios">
+                  <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/usuarios">
                     <div className="xl:hidden">
                       <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadow-md text-[#245A95] text-3xl">
                         <ion-icon name="person-add-outline"></ion-icon>
                       </div>
                     </div>
-                    <div className="xl:ml-1 ml-2">
-                      <p className="text-xl font-semibold">Usuarios</p>
+                    <div className="xl:ml-1">
+                      <p className="text-lg xl:text-center font-semibold">Usuarios</p>
                     </div>
                   </Link>
                 </li> : <></>
             }
             
-            {
+            {/* {
               usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
-                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to="/catalogos">
+                  <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/catalogos">
                     <div className="xl:hidden">
                       <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadowxl text-[#245A95] text-3xl">
                         <ion-icon name="clipboard-outline"></ion-icon>
                       </div>
                     </div>
-                    <div className="xl:ml-1 ml-2">
-                      <p className="text-xl font-semibold">Catalogo</p>
+                    <div className="xl:ml-1">
+                      <p className="text-lg xl:text-center font-semibold">Catalogo</p>
                     </div>
                   </Link>
                 </li> : <></>
-            }
-            {
+            } */}
+            {/* {
               usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
-                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to="/asignaciones">
+                  <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/asignaciones">
                     <div className="xl:hidden">
                       <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadow-md text-[#245A95] text-3xl">
                         <ion-icon name="accessibility-outline"></ion-icon>
                       </div>
                     </div>
-                    <div className="xl:ml-1 ml-2">
-                      <p className="text-xl font-semibold">Asignaciones</p>
+                    <div className="xl:ml-1">
+                      <p className="text-lg xl:text-center font-semibold">Asignaciones</p>
                     </div>
                   </Link>
                 </li> : <></>
-            }
+            } */}
             {
               usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
-                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to={clienteSeleccionado.length === 0 ? `/cliente` : `/registros`}>
+                  <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to={clienteSeleccionado.length === 0 ? `/cliente` : `/registros`}>
                     <div className="xl:hidden">
                       <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadow-md text-[#245A95] text-3xl">
                         <ion-icon name="create-outline"></ion-icon>
                       </div>
                     </div>
-                    <div className="xl:ml-1 ml-2">
-                      <p className="text-xl font-semibold">Registros</p>
+                    <div className="xl:ml-1">
+                      <p className="text-lg xl:text-center font-semibold">Registros</p>
                     </div>
                   </Link>
                 </li> : <></>
@@ -226,14 +240,14 @@ export const Navbar = () => {
             {
               usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
-                  <Link className="flex p-2 items-center text-[#E2E2E2] px-0 rounded-lg text-lg font-semibold hover:text-white" to="/asistencia">
+                  <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/asistencia">
                     <div className="xl:hidden">
                       <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadow-md text-[#245A95] text-3xl">
                         <ion-icon name="id-card-outline"></ion-icon>
                       </div>
                     </div>
-                    <div className="xl:ml-1 ml-2">
-                      <p className="text-xl font-semibold">Asistencia</p>
+                    <div className="xl:ml-1">
+                      <p className="text-lg xl:text-center font-semibold">Asistencia</p>
                     </div>
                   </Link>
                 </li> : <></>

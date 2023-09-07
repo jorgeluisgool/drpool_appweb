@@ -1,7 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { api } from '../helpers/variablesGlobales';
 
 const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelected, onSelectedRow, setModalAbrirCerrar, listaRegistros, setProyectoSeleccionado, setDataProyectoSeleccionado, usuariosSeleccionados}) => {
+
+  const [registrosDrPool, setRegistrosDrPool] = useState();
+
+   useEffect(() => {
+     const fetchData = async () => {
+       try {
+         const response = await fetch(`${api}/obtener/registros/231`);
+         const jsonData = await response.json();
+         console.log(jsonData)
+         setRegistrosDrPool(jsonData);
+       } catch (error) {
+         console.log('Error:', error);
+       }
+     };
+
+     fetchData();
+   }, []);
+
+   console.log(registrosDrPool);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -16,10 +35,13 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
   // Obtener índice del primer registro en la página actual
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
   // Obtener los registros para la página actual
-  const currentRows = listaRegistros.slice(indexOfFirstRow, indexOfLastRow);
+  const currentRows = registrosDrPool?.slice(indexOfFirstRow, indexOfLastRow) || [];
+
 
   // Función para cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+
 
   return (
     <>
@@ -148,19 +170,31 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
               <div className="flex space-x-4">
                 <button 
                   onClick={ (event)=>{
-                      if (registro.estatus==='CERRADO') {
-                        event.stopPropagation();
-                        // fetch(`${api}/abrir/documento/inventario/${registro.idinventario}`, {
-                        //   method: 'GET',
-                        //   headers: {
-                        //     'Content-Type': 'application/json' 
-                        //   },
-                        //   // body: JSON.stringify(usuario.target.value) 
-                        // })
-                        //   .then(response => console.log(response.blob))
-                        //   .catch(error => console.log(error));
-                        window.open(`${api}/abrir/documento/inventario/${registro.idinventario}`,'_blank')
-                      }
+
+                    fetch(`${api}/generar/nuevo/documento/${registro.idinventario}`, {
+                      method: 'GET',
+                      headers: {
+                        'Content-Type': 'application/json' 
+                      },
+                       
+                    })
+                      .then(response => console.log(response.text()))
+                      .then(respuesta => console.log(respuesta))
+                      .catch(error => console.log(error));
+
+                      // if (registro.estatus==='CERRADO') {
+                      //   event.stopPropagation();
+                      //    fetch(`${api}/abrir/documento/inventario/${registro.idinventario}`, {
+                      //      method: 'GET',
+                      //      headers: {
+                      //        'Content-Type': 'application/json' 
+                      //      },
+                      //       body: JSON.stringify(usuario.target.value) 
+                      //    })
+                      //      .then(response => console.log(response.blob))
+                      //      .catch(error => console.log(error));
+                      //   window.open(`${api}/abrir/documento/inventario/${registro.idinventario}`,'_blank')
+                      // }
                     }
                   }
                   className="w-14 h-14 object-cover active:scale-[.98] py-3 bg-transparent hover:bg-[#245A95] hover:text-white text-[#245A95] text-2xl font-bold inline-block rounded-full bg-primary p-2 uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] mt-4">

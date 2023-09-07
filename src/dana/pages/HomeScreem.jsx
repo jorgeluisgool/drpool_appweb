@@ -19,7 +19,7 @@ export const HomeScreem = ({titulo}) => {
             <BotonMenu titulo='PROYECTOS' icono='library-outline'/>
           </Link>
           <div className='pt-5'>
-            <p className='text-center text-[#245A95] font-bold'>ALTA DE PROYECTO</p>
+            <p className='text-center text-[#245A95] font-bold'>PROYECTOS</p>
           </div>
         </div> : <></>
       }
@@ -35,6 +35,17 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       }
       {
+        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" ? 
+        <div className="flex flex-col items-center justify-center">
+          <Link to='/equipos'>
+            <BotonMenu titulo='CATALOGO' icono='construct-outline'/>
+          </Link>
+          <div className='pt-5'>
+            <p className='text-center text-[#245A95] font-bold'>EQUIPOS</p>
+          </div>
+        </div> : <></>
+      }
+      {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ? 
         <div className="flex flex-col items-center justify-center">
           <Link to='/usuarios'>
@@ -46,7 +57,7 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       }
       
-      {
+      {/* {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="flex flex-col items-center justify-center">
           <Link to='/catalogos'>
@@ -56,8 +67,8 @@ export const HomeScreem = ({titulo}) => {
             <p className='text-center text-[#245A95] font-bold'>CATALOGO</p>
           </div>
         </div> : <></>
-      }
-      {
+      } */}
+      {/* {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="flex flex-col items-center justify-center">
           <Link to='/asignaciones'>
@@ -67,7 +78,7 @@ export const HomeScreem = ({titulo}) => {
             <p className='text-center text-[#245A95] font-bold'>ASIGNACIONES</p>
           </div>
         </div> : <></>
-      }
+      } */}
       {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="flex flex-col items-center justify-center">

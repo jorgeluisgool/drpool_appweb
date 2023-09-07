@@ -79,17 +79,17 @@ export const TableProyectos = ({proyectoAlbercaSeleccionado, proyectoAlbercaData
                         </td>
                         <td className="px-6 py-2">
                             <div className="flex space-x-4">
-                                <div className="text-sm font-medium text-gray-900">{proyectoAlberca.alberca.sede.cliente.cliente}</div>
+                                <div className="text-sm font-medium text-gray-900">{proyectoAlberca.proyectoSedes[0]?.sede.cliente.cliente}</div>
                             </div>
                         </td>
                         <td className="px-6 py-2">
                             <div className="flex space-x-4">
-                                <div className="text-sm font-medium text-gray-900">{proyectoAlberca.alberca.sede.nombre}</div>
+                                <div className="text-sm font-medium text-gray-900">{''}</div>
                             </div>
                         </td>
                         <td className="px-6 py-2">
                             <div className="flex space-x-4">
-                                <div className="text-sm font-medium text-gray-900">{proyectoAlberca.alberca.nombrealberca}</div>
+                                <div className="text-sm font-medium text-gray-900">{''}</div>
                             </div>
                         </td>
                         <td className="px-6 py-2">

@@ -24,9 +24,15 @@ addLocale('es', {
 
 const initialValues = {
     nombreproyectoalberca: '',
-    alberca: {
+    numeroproyecto: '',
+    proyectoSedes: [
+      {
+        idproyectosedes: 0,
+        sede: {
 
-    },
+        }
+      }
+    ],
     tiposervicio: '',
     fechainiciocontrato: '',
     fechafincontrato: '', 
@@ -56,6 +62,7 @@ const initialValues = {
 export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarProyectos, proyectoAlbercaSeleccionado, setVentanaCarga, setModalRegistroGuardado, clienteSelect, setClienteSelect, clientesActivos, sedeSelect, setSedeSelect, sedes}) => {
 
     const [albercas, setAlbercas] = useState();
+    const [fielValue, setFieldValue] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -78,26 +85,37 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
       values.fechainiciocontrato = formattedDate;
       values.fechafincontrato = formattedDate;
 
-      console.log(values);
-           setVentanaCarga(true);
+        // Aquí es donde puedes manipular los valores antes de enviarlos al servidor
+      const proyectoSedes = values.proyectoSedes.map(sede => ({
+        idproyectosedes: 0, // Ajusta este valor según tus necesidades
+        sede: sede
+      }));
 
-           fetch(`${api}/nuevo/proyectoalberca`, {
-               method: 'POST',
-               headers: {
-                 'Content-Type': 'application/json',
-               },
-               body: JSON.stringify(values),
-             })
-               .then((response) => response.text())
-               .then((responseData) => {
-                  console.log(responseData);
-                  setModalCrearEditarProyectos(false);
-                  setVentanaCarga(false);
-                  setModalRegistroGuardado(true);
+      const valuesToSend = {
+        ...values,
+        proyectoSedes: proyectoSedes
+      };
+
+      console.log(valuesToSend);
+             setVentanaCarga(true);
+
+             fetch(`${api}/nuevo/proyectoalberca`, {
+                 method: 'POST',
+                 headers: {
+                   'Content-Type': 'application/json',
+                 },
+                 body: JSON.stringify(valuesToSend),
                })
-               .catch((error) => {
-                 console.log(error);
-               });
+                 .then((response) => response.text())
+                 .then((responseData) => {
+                    console.log(responseData);
+                    setModalCrearEditarProyectos(false);
+                    setVentanaCarga(false);
+                   setModalRegistroGuardado(true);
+                 })
+                 .catch((error) => {
+                   console.log(error);
+                 });
     }
 
     const renderClienteOption = (option) => {
@@ -135,6 +153,23 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={InputText}
+                                    name="numeroproyecto"
+                                    value={values.numeroproyecto}
+                                    keyfilter="pint"
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Número del proyecto
+                                </label>
+                            </span>
+                        </div>
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Dropdown}
                                     name="clientes"
                                     value={clienteSelect}
@@ -156,24 +191,29 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
-                                    as={Dropdown}
-                                    name="sede"
-                                    value={sedeSelect}
+                                    as={MultiSelect}
+                                    name="proyectoSedes"
+                                    value={values.proyectoSedes}
                                     options={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente)} 
                                     optionLabel="nombre"
                                     disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente).length === 0}
-                                    onChange={(e) => {setSedeSelect(e.target.value)}}
+                                    // onChange={(e) => {
+                                    //   //setSedeSelect(e.target.value)
+                                    //   values.proyectoSedes =[ {idproyectosedes:0, ...values.proyectoSedes}, e.target.value]
+                                    // }}
+                                  
                                     filter
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Sede
+                                  Sedes
                                 </label>
                             </span>
-                        </div>             
-                        <div className="p-inputgroup mb-5 mt-8">
+                        </div> 
+                                    
+                        {/* <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
@@ -193,7 +233,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                   Alberca
                                 </label>
                             </span>
-                        </div>
+                        </div> */}
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
                                 <Field

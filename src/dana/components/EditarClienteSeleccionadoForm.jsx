@@ -135,7 +135,24 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Dirección
+                                  Dirección fiscal
+                                </label>
+                            </span>
+                        </div>
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={InputText}
+                                    name="rfc"
+                                    value={values.rfc}
+                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  RFC
                                 </label>
                             </span>
                         </div>

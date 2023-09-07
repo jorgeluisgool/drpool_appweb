@@ -7,6 +7,7 @@ import { Dropdown } from 'primereact/dropdown';
 import React, { useState } from 'react'
 import { api } from '../helpers/variablesGlobales';
 import { AlbercaDraw } from './AlbercaDraw';
+import { FormAlbercaEquipo } from './alberca/FormAlbercaEquipo';
 
 const opcionesStatus = [
   { label: 'ACTIVO', value: 'ACTIVO' },
@@ -27,7 +28,17 @@ const opcionesCaracteristicaAlberca = [
   { label: 'NO TECHADA', value: 'NO TECHADA' }
 ];
 
+const opcionesFormaAlberca = [
+  { label: 'CUADRADA', value: 'CUADRADA' },
+  { label: 'RECTANGULAR', value: 'RECTANGULAR' },
+  { label: 'CIRCULAR', value: 'CIRCULAR' },
+  { label: 'CACAHUATE', value: 'CACAHUATE' }
+];
+
 export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaSeleccionada, ventanaCarga, setVentanaCarga, setModalRegistroGuardado, clientesActivos, clienteSelect, setClienteSelect}) => {
+
+  const [acordionEquipoAlberca, setAcordionEquipoAlberca] = useState(null);
+  const [rotate, setRotate] = useState(false);
 
     console.log(albercaSeleccionada);
 
@@ -35,12 +46,13 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
         nombrealberca: '',
         tipoalberca: '',
         caracteristica: '',
+        forma: '',
         capacidad: '',
         medidalargo: '',
         medidaancho: '',
         profundidadminima: '',
         profundidadmaxima: '',
-        ubicacion: '',
+        observaciones: '',
         sede: {
           correo: '',
           direccion: '',
@@ -57,24 +69,26 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
         // console.log(values);
         setVentanaCarga(true);
         values.nombrealberca = values.nombrealberca.toUpperCase();
+
+        console.log(values);
        
-           fetch(`${api}/nueva/alberca`, {
-             method: 'POST',
-             headers: {
-               'Content-Type': 'application/json',
-             },
-             body: JSON.stringify(values),
-           })
-             .then((response) => response.text())
-             .then((responseData) => {
-                console.log(responseData);
-                setVentanaCarga(false);
-                setModalRegistroGuardado(true);
-                // setModalAlberca(false);
-             })
-             .catch((error) => {
-               console.log(error);
-             });
+            fetch(`${api}/nueva/alberca`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(values),
+            })
+              .then((response) => response.text())
+              .then((responseData) => {
+                 console.log(responseData);
+                 setVentanaCarga(false);
+                 setModalRegistroGuardado(true);
+                 // setModalAlberca(false);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
       };
 
 
@@ -87,10 +101,14 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
         );
       };
       
-      
+      const funcionAcordion = () => {
+        setAcordionEquipoAlberca(!acordionEquipoAlberca);
+        setRotate(!rotate);
+      }
+
   return (
     <>
-    <Dialog header='Albercas' visible={modalAlberca} baseZIndex={-1} style={{ width: '80vw', height: '35vw' }} onHide={() => setModalAlberca(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+    <Dialog header='Albercas' visible={modalAlberca} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalAlberca(false)} className='pt-20'>
         <Formik initialValues={albercaSeleccionada === undefined? initialValues : albercaSeleccionada} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form>  
@@ -159,15 +177,15 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={InputText}
-                                    name="ubicacion"
-                                    value={values.ubicacion}
+                                    name="observaciones"
+                                    value={values.observaciones}
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Ubicación
+                                  Observaciones de la alberca
                                 </label>
                             </span>
                         </div>
@@ -183,6 +201,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     itemTemplate={renderClienteOption}
                                     onChange={(e) => {setClienteSelect(e.target.value)}}
                                     filter
+                                    
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -237,6 +256,25 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                     <h1 className='text-2xl font-semibold'>Dimensiones de la alberca</h1>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
                       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6'>
+                        <div className="p-inputgroup mb-5 mt-8">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={Dropdown}
+                                    name="forma"
+                                    value={values.forma}
+                                    options={opcionesFormaAlberca} 
+                                    optionLabel="value"
+                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Forma de la alberca
+                                </label>
+                            </span>
+                        </div>
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
                                 <Field
@@ -337,45 +375,19 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                     </div>
                   </div>
                     
-                    <div className='bg-[#E2E2E2] p-2 rounded-xl'>
-                    <h1 className='text-2xl font-semibold'>Equipos de la alberca</h1>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
-                    <div className="p-inputgroup mb-5 mt-8">
-                            <span className='p-float-label relative'>
-                                <Field
-                                    className="w-full appearance-none focus:outline-none bg-transparent"
-                                    as={InputText}
-                                    name="equiponombre"
-                                    value={values.equiponombre}
-                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
-                                /> 
-                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                </span>
-                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Equipo de la
-                                </label>
-                            </span>
+                  {/* <div className='bg-[#E2E2E2] p-4 rounded-xl cursor-pointer'>
+                    <h1 className="text-2xl font-semibold" onClick={funcionAcordion}>
+                    Equipos de la alberca
+                        <div style={{ float: 'right' }} className='px-4 text-lg'>
+                            <i className={`pi pi-angle-down text-2xl transform ${rotate ? 'rotate-180' : 'rotate-0'} rounded-full hover:border-white p-2 mr-2 transition duration-300 ease-in-out hover:bg-[#245A95] text-[#245A95] hover:text-white hover:shadow-md`}></i>
                         </div>
-                        <div className="p-inputgroup mb-5 mt-8">
-                            <span className='p-float-label relative'>
-                                <Field
-                                    className="w-full appearance-none focus:outline-none bg-transparent"
-                                    as={InputText}
-                                    name="tipoequipo"
-                                    value={values.tipoequipo}
-                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
-                                /> 
-                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                </span>
-                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Tipo de equipo
-                                </label>
-                            </span>
-                        </div>
-                    </div>
-                    </div>
+                        <p className='text-base font-semibold'>Para el llenado de esta sección podria realizarlo ahora en cualquier otro momento.</p>
+                    </h1>
+                      
+                  {
+                    acordionEquipoAlberca === true ? <FormAlbercaEquipo/> : <></>
+                  } 
+                  </div> */}
                     
                 {/* </div>  */}
                 <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
