@@ -43,6 +43,12 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
   const onSubmit = (values, { resetForm }) => {
       // console.log(values);
       values.nombre = values.nombre.toUpperCase()
+      values.encargadosede = values.encargadosede.toUpperCase()
+      values.direccion.calle = values.direccion.calle.toUpperCase()
+      values.direccion.estado = values.direccion.estado.toUpperCase()
+      values.direccion.alcaldia = values.direccion.alcaldia.toUpperCase()
+      values.direccion.colonia = values.direccion.colonia.toUpperCase()
+      
 
       console.log(values);
      setVentanaCarga(true);
@@ -66,7 +72,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
   };
 
   return (
-    <Dialog header='' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setDialogNuevaSedeForm(false)} className='pt-16'>
+    <Dialog header='Sede' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setDialogNuevaSedeForm(false)} className='pt-16'>
         <Formik initialValues={sedeSeleccionada === undefined?  initialValues : sedeSeleccionada} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form> 
@@ -99,7 +105,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               className="w-full appearance-none focus:outline-none bg-transparent"
                               as={InputText}
                               name="encargadosede"
-                              value={values.encargadosede}
+                              value={values.encargadosede.toUpperCase()}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -132,6 +138,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               as={InputText}
                               name="telefono"
                               value={values.telefono}
+                              keyfilter="pint"
                               // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -153,7 +160,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               className="w-full appearance-none focus:outline-none bg-transparent"
                               as={InputText}
                               name="direccion.calle"
-                              value={values.direccion.calle}
+                              value={values.direccion.calle.toUpperCase()}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -170,6 +177,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               as={InputText}
                               name="direccion.callenumero"
                               value={values.direccion.callenumero}
+                              keyfilter="pint"
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -185,7 +193,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               className="w-full appearance-none focus:outline-none bg-transparent"
                               as={InputText}
                               name="direccion.estado"
-                              value={values.direccion.estado}
+                              value={values.direccion.estado.toUpperCase()}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -201,7 +209,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               className="w-full appearance-none focus:outline-none bg-transparent"
                               as={InputText}
                               name="direccion.alcaldia"
-                              value={values.direccion.alcaldia}
+                              value={values.direccion.alcaldia.toUpperCase()}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -217,7 +225,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               className="w-full appearance-none focus:outline-none bg-transparent"
                               as={InputText}
                               name="direccion.colonia"
-                              value={values.direccion.colonia}
+                              value={values.direccion.colonia.toUpperCase()}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -234,6 +242,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               as={InputText}
                               name="direccion.codigopostal"
                               value={values.direccion.codigopostal}
+                              keyfilter="pint"
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -257,7 +266,6 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               value={values.cliente}
                               options={clientes.filter(cliente => cliente.estatus === "ACTIVO")} 
                               optionLabel="cliente"
-                              // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -276,6 +284,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               value={values.coordinador}
                               options={listaUsuarios.filter((usuario) => usuario.perfile.perfil === "COORDINADOR")} 
                               optionLabel="nombre"
+                              filter
                               // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -295,6 +304,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               value={values.operador}
                               options={listaUsuarios.filter((usuario) => usuario.perfile.perfil === "OPERADOR")} 
                               optionLabel="nombre"
+                              filter
                               // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">

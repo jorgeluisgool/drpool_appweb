@@ -198,7 +198,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                         onClick={() => {
                                             //Click para mostrar informacion del usuario
                                             setUsuarioSeleccionado(usuario);
-                                            setModalCrearEditarUsuario(true);
+                                            // setModalCrearEditarUsuario(true);
                                         }}
 
                                         className='cursor-pointer hover:bg-[#E2E2E2]'>
@@ -408,7 +408,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Fecha de ingreso
+                                                      Fecha de nacimiento
                                                     </label>
                                                 </span>
                                             </div>

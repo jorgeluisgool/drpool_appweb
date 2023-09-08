@@ -37,7 +37,9 @@ export const HomeScreem = ({titulo}) => {
       {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" ? 
         <div className="flex flex-col items-center justify-center">
-          <Link to='/equipos'>
+          <Link 
+            // to='/equipos'
+          >
             <BotonMenu titulo='CATALOGO' icono='construct-outline'/>
           </Link>
           <div className='pt-5'>
@@ -82,7 +84,9 @@ export const HomeScreem = ({titulo}) => {
       {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="flex flex-col items-center justify-center">
-          <Link to={clienteSeleccionado.length === 0 ? `/cliente` : `/registros`}>
+          <Link to={''
+            // clienteSeleccionado.length === 0 ? `/cliente` : `/registros`
+            }>
             <BotonMenu titulo='REGISTROS' icono='create-outline'/>
           </Link>
           <div className='pt-5'>

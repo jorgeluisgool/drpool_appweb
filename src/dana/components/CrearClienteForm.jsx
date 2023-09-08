@@ -60,6 +60,7 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
       setVentanaCarga(true);
 
       values.cliente = values.cliente.toUpperCase();
+      values.direccion = values.direccion.toUpperCase();
       values.clienteAplicacion = usuarioLogiado[0].clienteAplicacion;
       //clienteAplicacion: usuarioLogiado.clienteAplicacion,
     
@@ -139,7 +140,7 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={InputText}
                                     name="direccion"
-                                    value={values.direccion}
+                                    value={values.direccion.toUpperCase()}
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -174,6 +175,7 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
                                     as={InputText}
                                     name="telefono"
                                     value={values.telefono}
+                                    keyfilter="pint"
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">

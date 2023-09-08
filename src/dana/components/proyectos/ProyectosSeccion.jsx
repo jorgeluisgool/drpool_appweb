@@ -22,6 +22,7 @@ export const ProyectosSeccion = () => {
   const [clienteSelect, setClienteSelect] = useState('');
   const [sedeSelect, setSedeSelect] = useState('');
 
+  console.log(proyectoAlbercaData)
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -71,7 +72,8 @@ export const ProyectosSeccion = () => {
   console.log(proyectoAlbercaData)
    const filterProyectos = proyectoAlbercaData.filter((proyectoAlbercaData) =>
      proyectoAlbercaData.nombreproyectoalberca.toLowerCase().includes(searchTerm.toLowerCase()) ||
-     proyectoAlbercaData.alberca.nombrealberca.toLowerCase().includes(searchTerm.toLowerCase())
+     proyectoAlbercaData.numeroproyecto.toLowerCase().includes(searchTerm.toLowerCase())
+     
    );
 
   const clientesActivos = clientes.filter(cliente => cliente.estatus === "ACTIVO");
@@ -120,7 +122,7 @@ export const ProyectosSeccion = () => {
                         Busca el proyecto
                       </label>
                     </span>
-                    <p className="text-base text-[#245A95] font-semibold">Puedes buscar el proyecto por su nombre o alberca relacionada</p>
+                    <p className="text-base text-[#245A95] font-semibold">Puedes buscar el proyecto por el número de proyecto o por su nombre</p>
                   </div>
                 </div>
             </div>

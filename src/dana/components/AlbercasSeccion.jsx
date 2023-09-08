@@ -121,7 +121,7 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
               <tr
                 onClick={() => {
                   setAlbercaSeleccionada(alberca),
-                  setModalAlberca(true)
+                  // setModalAlberca(true)
                   setClienteSelect(alberca.sede.cliente)
                 }} 
                 key={index}

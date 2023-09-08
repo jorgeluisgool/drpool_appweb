@@ -69,6 +69,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
         // console.log(values);
         setVentanaCarga(true);
         values.nombrealberca = values.nombrealberca.toUpperCase();
+        values.observaciones = values.observaciones.toUpperCase();
 
         console.log(values);
        
@@ -84,7 +85,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                  console.log(responseData);
                  setVentanaCarga(false);
                  setModalRegistroGuardado(true);
-                 // setModalAlberca(false);
+                  setModalAlberca(false);
               })
               .catch((error) => {
                 console.log(error);
@@ -178,7 +179,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={InputText}
                                     name="observaciones"
-                                    value={values.observaciones}
+                                    value={values.observaciones.toUpperCase()}
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -282,7 +283,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     as={InputText}
                                     name="capacidad"
                                     value={values.capacidad}
-                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                    keyfilter="pint"
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -300,7 +301,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     as={InputText}
                                     name="medidalargo"
                                     value={values.medidalargo}
-                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                    keyfilter="pint"
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -317,7 +318,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     as={InputText}
                                     name="medidaancho"
                                     value={values.medidaancho}
-                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                    keyfilter="pint"
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -334,13 +335,14 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     as={InputText}
                                     name="profundidadminima"
                                     value={values.profundidadminima}
+                                    keyfilter={/^\d+(\.\d{0,2})?$/}
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Profundidad nínima (m)
+                                  Profundidad mínima (m)
                                 </label>
                             </span>
                         </div>
@@ -351,6 +353,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     as={InputText}
                                     name="profundidadmaxima"
                                     value={values.profundidadmaxima}
+                                    keyfilter={/^\d+(\.\d{0,2})?$/}
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">

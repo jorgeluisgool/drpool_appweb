@@ -31,6 +31,11 @@ export const TableProyectos = ({proyectoAlbercaSeleccionado, proyectoAlbercaData
                         </div>
                     </th>
                     <th scope="col" className="relative px-6 py-3">
+                        <div className="items-center">
+                            <span>Numero de proyecto</span>
+                        </div>
+                    </th>
+                    <th scope="col" className="relative px-6 py-3">
                         <div className="items-center pl-12">
                             <span>Nombre proyecto</span>
                         </div>
@@ -47,11 +52,6 @@ export const TableProyectos = ({proyectoAlbercaSeleccionado, proyectoAlbercaData
                     </th>
                     <th scope="col" className="relative px-6 py-3">
                         <div className="items-center">
-                            <span>Alberca</span>
-                        </div>
-                    </th>
-                    <th scope="col" className="relative px-6 py-3">
-                        <div className="items-center">
                             <span>Estatus</span>
                         </div>
                     </th>
@@ -63,13 +63,18 @@ export const TableProyectos = ({proyectoAlbercaSeleccionado, proyectoAlbercaData
                         key={index}
                         onClick={() => {
                             setProyectoAlbercaSeleccionado(proyectoAlberca);
-                            setModalCrearEditarProyectos(true);
+                            // setModalCrearEditarProyectos(true);
                         }}
                         className='cursor-pointer hover:bg-[#E2E2E2]'
                     >
                         <td className="px-6 py-2">
                             <div className="flex space-x-4">
                                 <div className="text-sm font-medium text-gray-900">{proyectoAlberca.idproyectoalberca}</div>
+                            </div>
+                        </td>
+                        <td className="px-6 py-2">
+                            <div className="flex space-x-4">    
+                                <div className="text-sm font-medium text-gray-900 cursor-pointer">{proyectoAlberca.numeroproyecto}</div>                               
                             </div>
                         </td>
                         <td className="px-6 py-2">
@@ -82,14 +87,10 @@ export const TableProyectos = ({proyectoAlbercaSeleccionado, proyectoAlbercaData
                                 <div className="text-sm font-medium text-gray-900">{proyectoAlberca.proyectoSedes[0]?.sede.cliente.cliente}</div>
                             </div>
                         </td>
+                        
                         <td className="px-6 py-2">
                             <div className="flex space-x-4">
-                                <div className="text-sm font-medium text-gray-900">{''}</div>
-                            </div>
-                        </td>
-                        <td className="px-6 py-2">
-                            <div className="flex space-x-4">
-                                <div className="text-sm font-medium text-gray-900">{''}</div>
+                                <div className="text-sm font-medium text-gray-900">{proyectoAlberca.proyectoSedes[0]?.sede.nombre}</div>
                             </div>
                         </td>
                         <td className="px-6 py-2">

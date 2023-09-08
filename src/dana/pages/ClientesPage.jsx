@@ -186,7 +186,13 @@ export const ClientesPage = () => {
           <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4'> 
             {
               clientesActivos.map((cliente, index) => (
-                <Link key={index} onClick={() => {setClienteState(cliente), setDialogEditatarClienteForm(true), converImageUrlToFile(cliente.urllogo)}}>
+                <Link 
+                  key={index} 
+                  onClick={() => {
+                    setClienteState(cliente), 
+                    // setDialogEditatarClienteForm(true), 
+                    converImageUrlToFile(cliente.urllogo)}}
+                  >
                   <div className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer">
                     <div className="px-2 py-1 bg-[#E2E2E2] text-center">
                       <div className="font-bold text-sm xl:text-sm mb-2 text-[#245A95]">{cliente.cliente}</div>
@@ -293,8 +299,8 @@ export const ClientesPage = () => {
                 currentRows.map((sede, index) => (
                   <tr
                     onClick={() => {
-                      setSedeSeleccionada(sede),
-                      setDialogNuevaSedeForm(true)
+                      setSedeSeleccionada(sede)
+                      // setDialogNuevaSedeForm(true)
                     }} 
                     key={index}
                     className='cursor-pointer hover:bg-[#E2E2E2]'

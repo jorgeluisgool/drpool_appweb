@@ -26,12 +26,7 @@ const initialValues = {
     nombreproyectoalberca: '',
     numeroproyecto: '',
     proyectoSedes: [
-      {
-        idproyectosedes: 0,
-        sede: {
-
-        }
-      }
+      
     ],
     tiposervicio: '',
     fechainiciocontrato: '',
@@ -156,7 +151,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     as={InputText}
                                     name="numeroproyecto"
                                     value={values.numeroproyecto}
-                                    keyfilter="pint"
+                                    
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
