@@ -36,6 +36,8 @@ export const ClientesPage = () => {
     const [uploadedImage, setUploadedImage] = useState(null);
     const [file, setFile] = useState(null);
 
+    console.log(sedes);
+    
     // obtener la lista de iusuarios
     const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers();
 

@@ -59,7 +59,8 @@ export const EquiposAlbercaSeccion = () => {
     fetchData();
   }, []);
 
-  console.log(albercas)
+  console.log(albercaSelected);
+
   return (
     <>
         {ventanaCarga && (
@@ -159,7 +160,9 @@ export const EquiposAlbercaSeccion = () => {
                 }
             </div>
 
-            <TarjetaEquiposProyecto/>
+            <TarjetaEquiposProyecto
+              albercaSelected={albercaSelected}
+            />
             {
               equipoSelected === 'BOMBEO' && (
                 <BombeoForm

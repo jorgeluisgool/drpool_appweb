@@ -11,7 +11,7 @@ import { Dropdown } from 'primereact/dropdown';
 import useAuth from '../hooks/useAuth';
 import { Calendar } from 'primereact/calendar';
 import { addLocale } from 'primereact/api';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 
 addLocale('es', {
     firstDayOfWeek: 1,
@@ -31,10 +31,23 @@ const opcionesStatus = [
 
 export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuario, setUsuarioSeleccionado, usuarioSeleccionado, setVentanaCarga, setModalRegistroGuardado, searchTerm}) => {
 
+    const [selectedDateIngreso, setSelectedDateIngreso] = useState(null);
+
+    console.log(selectedDateIngreso)
     const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
     const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers(modalCrearEditarUsuario);
 
-    // console.log(usuarioLogiado);
+    // Función para convertir la fecha en formato válido de la fecha ingreso
+    const parseDate = (dateString) => {
+        if (typeof dateString === "string") {
+            const parsedDate = parse(dateString, 'dd/MM/yy', new Date());
+            return parsedDate;
+        } else {
+            return dateString
+        }  
+    };
+
+    console.log(listaUsuarios);
     // Filtro para el search
     const filterUsuarios = listaUsuarios.filter((usuario) =>
         usuario.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -49,8 +62,8 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
         pass: "",
         passtemp: 0,
         telefono: "",
-        fechaingreso: "",
-        fechanacimiento: "",
+        fechaingreso: new Date(),
+        fechanacimiento: new Date(),
         ubicacion: "",
         usuario: "",
         status: "",
@@ -95,9 +108,14 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
         values.usuario = values.usuario.toUpperCase();
         values.ubicacion = values.ubicacion.toUpperCase();
 
-        const formattedDate = format(values.fechaingreso, "dd/MM/yy");
-        values.fechaingreso = formattedDate;
-        values.fechanacimiento = formattedDate;
+        if(typeof values.fechaingreso !== "string"){
+            const formattedDate = format(values.fechaingreso, "dd/MM/yy");
+            values.fechaingreso = formattedDate;
+        }
+        if(typeof values.fechanacimiento !== "string"){
+            const formattedDate2 = format(values.fechanacimiento, "dd/MM/yy");
+            values.fechanacimiento = formattedDate2;
+        }
         
         console.log(values);
 
@@ -140,6 +158,12 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
    
         fetchData();
     }, []);
+
+    const handleDateChange = (date) => {
+        // date = parse('dd/MM/yyyy', new Date());  
+        console.log(date)
+        setSelectedDateIngreso(date); // Actualiza la fecha seleccionada en el estado local
+      }
 
     return (
         <>
@@ -291,7 +315,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                         {/* MODAL DEL FORMULARIO USUARIOS */}
                         <Dialog header={`Usuario`} visible={modalCrearEditarUsuario} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalCrearEditarUsuario(false)}  className='pt-12'>
                             <Formik initialValues={ usuarioSeleccionado === undefined ? usuarioVacio : usuarioSeleccionado} onSubmit={handleSubmit}>
-                                {({ values }) => (
+                                {({ values, setFieldValue }) => (
                                     <Form>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
                                             <div className="p-inputgroup mb-5 mt-8">
@@ -382,9 +406,16 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                                         as={Calendar}
                                                         name="fechaingreso"
-                                                        value={values.fechaingreso}
+                                                        value={parseDate(values.fechaingreso)}
                                                         dateFormat="dd/MM/yy"
                                                         locale='es'
+                                                        // onChange={(date) => {
+                                                        //     // Realiza el procesamiento de fecha con parseDateIngreso
+                                                        //     const processedDate = parseDateIngreso(date);
+                                                        //     console.log(processedDate);
+                                                        //     // Actualiza el valor del campo fechaingreso en Formik
+                                                        //     setFieldValue('fechaingreso', processedDate);
+                                                        //   }}
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -400,7 +431,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                                         as={Calendar}
                                                         name="fechanacimiento"
-                                                        value={values.fechanacimiento}
+                                                        value={parseDate(values.fechanacimiento)}
                                                         dateFormat="dd/MM/yy"
                                                         locale='es'
                                                     /> 
@@ -535,7 +566,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                 className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                                                 onClick={() => {
                                                     setUsuarioSeleccionado(undefined);
-                                                    setModalAbrirCerrar(false);
+                                                    setModalCrearEditarUsuario(false);
                                                 }}
                                                 type='button'
                                             >

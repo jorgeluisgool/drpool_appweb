@@ -31,7 +31,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
 
     },
     coordinador: {
-
+     
     },
     operador: {
 
@@ -266,6 +266,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               value={values.cliente}
                               options={clientes.filter(cliente => cliente.estatus === "ACTIVO")} 
                               optionLabel="cliente"
+                              filter
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
