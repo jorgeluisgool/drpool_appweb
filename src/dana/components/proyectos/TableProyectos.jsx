@@ -25,11 +25,11 @@ export const TableProyectos = ({proyectoAlbercaSeleccionado, proyectoAlbercaData
         <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
             <thead className="bg-[#245A95] text-white uppercase">
                 <tr className='text-left'>
-                    <th scope="col" className="relative px-6 py-3">
+                    {/* <th scope="col" className="relative px-6 py-3">
                         <div className="items-center pl-12">
                             <span>Id proyecto</span>
                         </div>
-                    </th>
+                    </th> */}
                     <th scope="col" className="relative px-6 py-3">
                         <div className="items-center">
                             <span>Numero de proyecto</span>
@@ -37,7 +37,7 @@ export const TableProyectos = ({proyectoAlbercaSeleccionado, proyectoAlbercaData
                     </th>
                     <th scope="col" className="relative px-6 py-3">
                         <div className="items-center pl-12">
-                            <span>Nombre proyecto</span>
+                            <span>Nombre del proyecto</span>
                         </div>
                     </th>
                     <th scope="col" className="relative px-6 py-3">
@@ -63,15 +63,15 @@ export const TableProyectos = ({proyectoAlbercaSeleccionado, proyectoAlbercaData
                         key={index}
                         onClick={() => {
                             setProyectoAlbercaSeleccionado(proyectoAlberca);
-                            // setModalCrearEditarProyectos(true);
+                            setModalCrearEditarProyectos(true);
                         }}
                         className='cursor-pointer hover:bg-[#E2E2E2]'
                     >
-                        <td className="px-6 py-2">
+                        {/* <td className="px-6 py-2">
                             <div className="flex space-x-4">
                                 <div className="text-sm font-medium text-gray-900">{proyectoAlberca.idproyectoalberca}</div>
                             </div>
-                        </td>
+                        </td> */}
                         <td className="px-6 py-2">
                             <div className="flex space-x-4">    
                                 <div className="text-sm font-medium text-gray-900 cursor-pointer">{proyectoAlberca.numeroproyecto}</div>                               

@@ -38,7 +38,7 @@ export const HomeScreem = ({titulo}) => {
         usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ? 
         <div className="flex flex-col items-center justify-center">
           <Link 
-            // to='/equipos'
+            to='/equipos'
           >
             <BotonMenu titulo='CATALOGO' icono='construct-outline'/>
           </Link>

@@ -31,7 +31,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
 
     },
     coordinador: {
-     
+      
     },
     operador: {
 

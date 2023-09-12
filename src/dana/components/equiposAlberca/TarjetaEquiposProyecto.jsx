@@ -1,43 +1,196 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { api } from '../../helpers/variablesGlobales';
+import { Dropdown } from 'primereact/dropdown';
 
-export const TarjetaEquiposProyecto = ({albercaSelected}) => {
+export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEquipos, setEquipoSelected, modalRegistroGuardado}) => {
+
+  const [equiposBomba, setEquiposBomba] = useState();
+  const [equiposFiltrado, setEquiposFiltrado] = useState();
+  const [equiposCalentamiento, setEquiposCalentamiento] = useState();
+  const [equiposDosificador, setEquiposDosificador] = useState();
+  const [equiposControlador, setEquiposControlador] = useState();
+  const [botonNuevaSede, setBotonNuevaSede ] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${api}/obtener/equipobomba`);
+        const jsonData = await response.json();
+        setEquiposBomba(jsonData);
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, [modalRegistroGuardado]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${api}/obtener/equipofiltrado`);
+        const jsonData = await response.json();
+        setEquiposFiltrado(jsonData);
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, [modalRegistroGuardado]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${api}/obtener/equipocalentamiento`);
+        const jsonData = await response.json();
+        setEquiposCalentamiento(jsonData);
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, [modalRegistroGuardado]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${api}/obtener/equipodosificador`);
+        const jsonData = await response.json();
+        setEquiposDosificador(jsonData);
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, [modalRegistroGuardado]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${api}/obtener/equipocontrolador`);
+        const jsonData = await response.json();
+        setEquiposControlador(jsonData);
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, [modalRegistroGuardado]);
+
+  const equiposbombasfiltradas = equiposBomba?.filter((equiBomba) => (equiBomba.alberca?.nombrealberca === albercaSelected?.nombrealberca));
+  const equiposFiltroFiltradas = equiposFiltrado?.filter((equiFiltro) => (equiFiltro.alberca?.nombrealberca === albercaSelected?.nombrealberca));
+  const equiposCalentamientoFiltradas = equiposCalentamiento?.filter((equiCalentamiento) => (equiCalentamiento.alberca?.nombrealberca === albercaSelected?.nombrealberca));
+  const equiposDosificadorFiltradas = equiposDosificador?.filter((equiDosificador) => (equiDosificador.alberca?.nombrealberca === albercaSelected?.nombrealberca));
+  const equiposControladorControlador = equiposControlador?.filter((equiControlador) => (equiControlador.alberca?.nombrealberca === albercaSelected?.nombrealberca));
   return (
     <>
         <div className="mb-6 transition duration-500 ease-in-out hover:shadow-2xl relative w-full max-w-full rounded overflow-hidden shadow-lg group">
-        <h1 className='text-2xl font-bold text-center'>EQUIPOS</h1>
-          <h1 className='text-2xl font-bold text-center text-[#245A95]'>{albercaSelected?.nombrealberca ?? ''}</h1>
-          <h1 className='text-lg font-bold text-center text-[#245A95]'>{albercaSelected?.tipoalberca ?? ''}</h1>
-          <div className="md:flex">
-            <div className="md:flex-shrink-0">
-              <img className="h-48 w-full object-cover md:w-48" src={albercaSelected?.sede?.cliente?.urllogo ?? ''} alt="Random image" />
-              <h1 className='text-md font-bold text-center text-[#245A95]'>{albercaSelected?.sede?.nombre ?? ''}</h1>
+        <h1 className='text-2xl font-bold text-[#245A95]'>EQUIPOS</h1>
+          <div className='grid grid-cols-6'>
+            <h1 className='col-span-6 text-2xl font-bold text-center'>{albercaSelected?.nombrealberca ?? ''}</h1>
+          </div>
+          <div className='grid grid-cols-6 justify-center'>
+            <h1 className='col-span-6 text-lg font-bold text-center text-[#245A95]'>{albercaSelected?.tipoalberca ?? ''}</h1>
+          </div>
+          <div className="grid grid-cols-6 border m-2">
+            <div className="p-4 border">
+              <div className="flex flex-col items-center">
+                <img className="h-48 w-full object-cover md:w-48" src={albercaSelected?.sede?.cliente?.urllogo ?? ''} alt="Random image" />
+                <h1 className='text-md font-bold text-center text-[#245A95] mt-2'>{albercaSelected?.sede?.nombre ?? ''}</h1>
+              </div>
             </div>
+
             <div className="p-4">
               <div className="uppercase tracking-wide text-sm text-[#245A95] font-semibold">Bombeo</div>
-              <p className="mt-2 text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dignissim purus vitae nulla maximus, eu dignissim velit porttitor.</p>
+              
+                {
+                  equiposbombasfiltradas?.map((equipoBomba) => 
+                    <li className='text-xs' key={equipoBomba.idbomba}>{equipoBomba.numero}</li>
+                  )
+                }
+                
+              
             </div>
             <div className="p-4">
               <div className="uppercase tracking-wide text-sm text-[#245A95] font-semibold">Filtrado</div>
-              <p className="mt-2 text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dignissim purus vitae nulla maximus, eu dignissim velit porttitor.</p>
+              
+                {
+                  equiposFiltroFiltradas?.map((equipoFiltro) => 
+                    <li className='text-xs' key={equipoFiltro.idfiltro}>{equipoFiltro.numero}</li>
+                  )
+                }
+              
             </div>
             <div className="p-4">
               <div className="uppercase tracking-wide text-sm text-[#245A95] font-semibold">Calentamiento</div>
-              <p className="mt-2 text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dignissim purus vitae nulla maximus, eu dignissim velit porttitor.</p>
+              
+                {
+                  equiposCalentamientoFiltradas?.map((equipoCalentamiento) => 
+                    <li className='text-xs' key={equipoCalentamiento.idcalentamiento}>{equipoCalentamiento.numero}</li>
+                  )
+                }
+              
             </div>
             <div className="p-4">
               <div className="uppercase tracking-wide text-sm text-[#245A95] font-semibold">Dosificador</div>
-              <p className="mt-2 text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dignissim purus vitae nulla maximus, eu dignissim velit porttitor.</p>
+              {
+                equiposDosificadorFiltradas?.map((equipoDosificador) => 
+                  <li className='text-xs' key={equipoDosificador.iddosificador}>{equipoDosificador.numero}</li>
+                )
+              }
             </div>
             <div className="p-4">
               <div className="uppercase tracking-wide text-sm text-[#245A95] font-semibold">Controlador</div>
-              <p className="mt-2 text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dignissim purus vitae nulla maximus, eu dignissim velit porttitor.</p>
+              {
+                equiposControladorControlador?.map((equipoControlador) => 
+                  <li className='text-xs' key={equipoControlador.idcontrolador}>{equipoControlador.numero}</li>
+                )
+              }
             </div>  
           </div>
-          <div className="p-6 bg-gray-50 transition duration-300 ease-in-out transform hover:-translate-y-2">
-            <a href="#" className="block text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110">
-              Click me
-            </a>
+          {
+            botonNuevaSede === null &&
+            <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+              <button
+                  type="submit"
+                  className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                  onClick={(e) => {setBotonNuevaSede(e)}}
+              >
+                  <ion-icon name="add-outline"></ion-icon>Nueva sede
+              </button>
+            </div>
+          }
+          
+          {
+            botonNuevaSede !== null &&
+            <div className="justify-end p-inputgroup mb-5 mt-8 col-span-2 px-2">
+              <div className="flex flex-col">
+                <span className='p-float-label relative'>
+                    <Dropdown
+                          className="w-full appearance-none focus:outline-none bg-transparent"
+                          name="selectalberca"
+                          value={equipoSelected}
+                          options={tiposEquipos}
+                          optionLabel='label'
+                          filter
+                          onChange={(e) => {setEquipoSelected(e.target.value)}}
+                    /> 
+                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                      <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
+                    </span>
+                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                      Selecciona el tipo de quipo
+                    </label>
+                </span>
+                <p className="text-sm text-[#245A95] font-semibold">3.- Selecciona el tipo de quipo que quieres agregar</p>
+              </div>
           </div>
+          }
+          
         </div>
     </>
   )

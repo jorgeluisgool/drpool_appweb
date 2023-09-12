@@ -41,7 +41,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
         observaciones: '',
     }
 
-    const onSubmit = (values) => {
+    const onSubmit = (values, { resetForm }) => {
         console.log(values);
 
         setVentanaCarga(true);
@@ -58,6 +58,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                     console.log(responseData);
                     setVentanaCarga(false);
                     setModalRegistroGuardado(true);
+                    resetForm();
               })
               .catch((error) => {
                 console.log(error);
@@ -69,7 +70,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form>
-                <div className='mt-4  p-4 bg-slate-50 shadow-md rounded-md border'>
+                <div className='mt-4 mb-8 p-4 transition duration-500 ease-in-out hover:shadow-2xl relative w-full max-w-full rounded overflow-hidden shadow-lg group'>
                 <h1 className='font-bold text-sm xl:text-2xl mb-2 text-[#245A95]'><ion-icon name="caret-forward-outline"></ion-icon>Filtrado</h1>
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6'>
                         <div className="p-inputgroup mb-5 mt-5">

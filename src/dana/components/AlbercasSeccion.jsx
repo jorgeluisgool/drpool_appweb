@@ -100,11 +100,6 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
               </th>
               <th scope="col" className="relative px-6 py-3">
               <div className="items-center">
-                  <span>Ubicación</span>
-                </div>
-              </th>
-              <th scope="col" className="relative px-6 py-3">
-              <div className="items-center">
                   <span>Sede</span>
                 </div>
               </th>
@@ -121,7 +116,7 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
               <tr
                 onClick={() => {
                   setAlbercaSeleccionada(alberca),
-                  // setModalAlberca(true)
+                  setModalAlberca(true)
                   setClienteSelect(alberca.sede.cliente)
                 }} 
                 key={index}
@@ -140,11 +135,6 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
                 <td className="px-6 py-2">
                   <div className="flex space-x-4">
                   <div className="text-sm font-medium text-gray-900">{alberca.capacidad}</div>
-                  </div>
-                </td>
-                <td className="px-6 py-2">
-                  <div className="flex space-x-4">
-                  <div className="text-sm font-medium text-gray-900">{alberca.ubicacion}</div>
                   </div>
                 </td>
                 <td className="px-6 py-2">

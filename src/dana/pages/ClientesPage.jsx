@@ -35,8 +35,6 @@ export const ClientesPage = () => {
 
     const [uploadedImage, setUploadedImage] = useState(null);
     const [file, setFile] = useState(null);
-
-    console.log(sedes);
     
     // obtener la lista de iusuarios
     const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers();
@@ -127,6 +125,8 @@ export const ClientesPage = () => {
   }
 
   const clientesActivos = filterClientes.filter(cliente => cliente.estatus === "ACTIVO");
+
+  console.log(sedeSeleccionada);
   
   return (
     <>
@@ -192,7 +192,7 @@ export const ClientesPage = () => {
                   key={index} 
                   onClick={() => {
                     setClienteState(cliente), 
-                    // setDialogEditatarClienteForm(true), 
+                    setDialogEditatarClienteForm(true), 
                     converImageUrlToFile(cliente.urllogo)}}
                   >
                   <div className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer">
@@ -302,7 +302,7 @@ export const ClientesPage = () => {
                   <tr
                     onClick={() => {
                       setSedeSeleccionada(sede)
-                      // setDialogNuevaSedeForm(true)
+                      setDialogNuevaSedeForm(true)
                     }} 
                     key={index}
                     className='cursor-pointer hover:bg-[#E2E2E2]'
@@ -334,7 +334,7 @@ export const ClientesPage = () => {
                     </td>
                     <td className="px-6 py-2">
                       <div className="flex space-x-4">
-                      <div className="text-sm font-medium text-gray-900">{""}</div>
+                      <div className="text-sm font-medium text-gray-900">{sede.cliente.cliente}</div>
                       </div>
                     </td>
                     <td className="px-6 py-2">

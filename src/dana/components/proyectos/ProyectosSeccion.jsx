@@ -22,7 +22,7 @@ export const ProyectosSeccion = () => {
   const [clienteSelect, setClienteSelect] = useState('');
   const [sedeSelect, setSedeSelect] = useState('');
 
-  console.log(proyectoAlbercaData)
+  console.log(proyectoAlbercaSeleccionado); 
     useEffect(() => {
         const fetchData = async () => {
           try {

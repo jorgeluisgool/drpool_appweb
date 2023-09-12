@@ -40,8 +40,6 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
   const [acordionEquipoAlberca, setAcordionEquipoAlberca] = useState(null);
   const [rotate, setRotate] = useState(false);
 
-    console.log(albercaSeleccionada);
-
     const initialValues = {
         nombrealberca: '',
         tipoalberca: '',

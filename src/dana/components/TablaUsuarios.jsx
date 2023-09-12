@@ -222,7 +222,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                         onClick={() => {
                                             //Click para mostrar informacion del usuario
                                             setUsuarioSeleccionado(usuario);
-                                            // setModalCrearEditarUsuario(true);
+                                            setModalCrearEditarUsuario(true);
                                         }}
 
                                         className='cursor-pointer hover:bg-[#E2E2E2]'>

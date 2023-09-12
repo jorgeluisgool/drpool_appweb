@@ -10,6 +10,8 @@ import { api } from '../helpers/variablesGlobales';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { Image } from 'primereact/image';
 import { VentanaCarga } from '../../ui/components/VentanaCarga';
+import { Dropdown } from 'primereact/dropdown';
+import { useEffect } from 'react';
 
 export const AsistenciaPage = () => {
     const [fechaInicio, setFechaInicio] = useState(null);
@@ -21,6 +23,8 @@ export const AsistenciaPage = () => {
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState();
     const [ventanaCarga, setVentanaCarga] = useState(false);
     const [modalAsistencia, setModalAsistencia] = useState(false);
+    const [sedeSeleccionada, setSedeSeleccionada] = useState({})
+    const [sedes, setSedes] = useState([]);
 
     //Pagination Table
     const [currentPage, setCurrentPage] = useState(1);
@@ -40,6 +44,21 @@ export const AsistenciaPage = () => {
         clear: 'Limpiar'
     });
 
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(`${api}/obtener/sedes`);
+            const jsonData = await response.json();
+            setSedes(jsonData);
+          } catch (error) {
+            console.log('Error:', error);
+          }
+        };
+    
+        fetchData();
+      }, []);
+
+      console.log(sedes)
     const totalRows = listaUsuarios.length;
     const totalPages = Math.ceil(totalRows / rowsPerPage);
 
@@ -67,7 +86,6 @@ export const AsistenciaPage = () => {
         if (fechaInicio != null && fechaFinal != null) {
             const formattedConsutaInicio = format(fechaInicio, 'yy/MM/dd');
             const formattedConsutaFin = format(fechaFinal, 'yy/MM/dd');
-
 
             if (fechaInicio <= fechaFinal) {
                 setVentanaCarga(true);
@@ -111,7 +129,7 @@ export const AsistenciaPage = () => {
             <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-12'>
                 <h1 className="text-2xl font-bold text-[#245A95] pb-4">Consulta de asistencia</h1>
                 <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-2 gap-8 m-4'>
-                    <div className="p-inputgroup mb-5 mt-8">
+                    <div className="p-inputgroup ">
                         <span className='p-float-label relative py-4 '>
                             <Calendar
                                 className="w-full appearance-none focus:outline-none bg-transparent"
@@ -129,7 +147,7 @@ export const AsistenciaPage = () => {
                             </label>
                         </span>
                     </div>
-                    <div className="p-inputgroup mb-5 mt-8">
+                    <div className="p-inputgroup ">
                         <span className='p-float-label relative py-4 '>
                             <Calendar
                                 className="w-full appearance-none focus:outline-none bg-transparent"
@@ -147,6 +165,25 @@ export const AsistenciaPage = () => {
                             </label>
                         </span>
                     </div>
+                    <div className="p-inputgroup">
+                            <span className='p-float-label relative'>
+                                <Dropdown
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    name="sede"
+                                    value={sedeSeleccionada}
+                                    options={sedes} 
+                                    optionLabel="nombre"
+                                    filter
+                                    onChange={(e) => setSedeSeleccionada(e.target.value)}
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Sede
+                                </label>
+                            </span>
+                        </div>
                 </div>
                 <button 
                 className='hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600'
