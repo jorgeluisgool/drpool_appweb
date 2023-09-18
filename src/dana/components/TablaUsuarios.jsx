@@ -37,7 +37,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
     const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
     const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers(modalCrearEditarUsuario);
 
-    // Función para convertir la fecha en formato válido de la fecha ingreso
+    // Función para convertir la fecha en formato válido de la fecha
     const parseDate = (dateString) => {
         if (typeof dateString === "string") {
             const parsedDate = parse(dateString, 'dd/MM/yy', new Date());
@@ -53,6 +53,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
         usuario.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
         usuario.usuario.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
 
     const usuarioVacio = {
         // idusuario: 0,

@@ -44,6 +44,7 @@ export const AsistenciaPage = () => {
         clear: 'Limpiar'
     });
 
+    console.log(sedeSeleccionada)
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -57,8 +58,11 @@ export const AsistenciaPage = () => {
     
         fetchData();
       }, []);
+    
+    const listUsuarioPorSede = listaUsuarios.filter((usuario) => (usuario.nombre === sedeSeleccionada.coordinador.nombre))
+    
+    
 
-      console.log(sedes)
     const totalRows = listaUsuarios.length;
     const totalPages = Math.ceil(totalRows / rowsPerPage);
 
@@ -67,7 +71,9 @@ export const AsistenciaPage = () => {
     // Obtener índice del primer registro en la página actual
     const indexOfFirstRow = indexOfLastRow - rowsPerPage;
     // Obtener los registros para la página actual
-    const currentRows = listaUsuarios.slice(indexOfFirstRow, indexOfLastRow);
+    const currentRows = listUsuarioPorSede.slice(indexOfFirstRow, indexOfLastRow);
+
+
 
     const totalRowsA = listaAsistencia.length;
     const totalPagesA = Math.ceil(totalRowsA / rowsPerPageA);
@@ -348,7 +354,7 @@ export const AsistenciaPage = () => {
                 }
             </div>
 
-            <Dialog header={`Asistencias`} visible={modalAsistencia} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalAsistencia(false)} className='mx-4 xl:mx-20 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
+            <Dialog header={`Asistencias`} visible={modalAsistencia} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalAsistencia(false)} className='pt-16'>
                 {
                     <div>
                         <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
@@ -362,6 +368,11 @@ export const AsistenciaPage = () => {
                                     <th scope="col" className="relative px-6 py-3">
                                         <div className="items-center">
                                             <span>Usuario</span>
+                                        </div>
+                                    </th>
+                                    <th scope="col" className="relative px-6 py-3">
+                                        <div className="items-center">
+                                            <span>Fecha</span>
                                         </div>
                                     </th>
                                     <th scope="col" className="relative px-6 py-3">
@@ -402,6 +413,11 @@ export const AsistenciaPage = () => {
                                         <td className="px-6 py-2">
                                             <div className="flex space-x-4">
                                                 <div className="text-sm font-medium text-gray-900">{asistencia.usuario.usuario}</div>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-2">
+                                            <div className="flex space-x-4">
+                                                <div className="text-sm font-medium text-gray-900">{asistencia.dia}</div>
                                             </div>
                                         </td>
                                         <td className="px-6 py-2">

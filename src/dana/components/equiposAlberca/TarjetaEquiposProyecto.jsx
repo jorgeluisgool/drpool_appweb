@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { api } from '../../helpers/variablesGlobales';
 import { Dropdown } from 'primereact/dropdown';
+import { ModalDetalleEquipo } from './ModalDetalleEquipo';
 
 export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEquipos, setEquipoSelected, modalRegistroGuardado}) => {
 
@@ -10,6 +11,14 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
   const [equiposDosificador, setEquiposDosificador] = useState();
   const [equiposControlador, setEquiposControlador] = useState();
   const [botonNuevaSede, setBotonNuevaSede ] = useState(null);
+  const [modalDetalleEquipo, setModalDetalleEquipo] = useState(false);
+  const [equipoSeleccionado, setEquipoSeleccionado] = useState({});
+
+  useEffect(() => {
+    setBotonNuevaSede(null);
+    setEquipoSelected('')
+  }, [albercaSelected]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,6 +97,12 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
   const equiposControladorControlador = equiposControlador?.filter((equiControlador) => (equiControlador.alberca?.nombrealberca === albercaSelected?.nombrealberca));
   return (
     <>
+      <ModalDetalleEquipo 
+        modalDetalleEquipo={modalDetalleEquipo}
+        setModalDetalleEquipo ={setModalDetalleEquipo}
+        equipoSeleccionado={equipoSeleccionado}
+      />
+
         <div className="mb-6 transition duration-500 ease-in-out hover:shadow-2xl relative w-full max-w-full rounded overflow-hidden shadow-lg group">
         <h1 className='text-2xl font-bold text-[#245A95]'>EQUIPOS</h1>
           <div className='grid grid-cols-6'>
@@ -105,62 +120,65 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
             </div>
 
             <div className="p-4">
-              <div className="uppercase tracking-wide text-sm text-[#245A95] font-semibold">Bombeo</div>
-              
+              <div className="uppercase tracking-wide text-lg text-[#245A95] font-semibold">Bombeo</div>
                 {
                   equiposbombasfiltradas?.map((equipoBomba) => 
-                    <li className='text-xs' key={equipoBomba.idbomba}>{equipoBomba.numero}</li>
+                  <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setModalDetalleEquipo(true), setEquipoSeleccionado(equipoBomba)}}>
+                    <li key={equipoBomba.idbomba}>{equipoBomba.numero}</li>
+                  </div>
                   )
-                }
-                
-              
+                } 
             </div>
             <div className="p-4">
-              <div className="uppercase tracking-wide text-sm text-[#245A95] font-semibold">Filtrado</div>
-              
+              <div className="uppercase tracking-wide text-lg text-[#245A95] font-semibold">Filtrado</div>
                 {
                   equiposFiltroFiltradas?.map((equipoFiltro) => 
-                    <li className='text-xs' key={equipoFiltro.idfiltro}>{equipoFiltro.numero}</li>
+                    <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setModalDetalleEquipo(true), setEquipoSeleccionado(equipoFiltro)}}>
+                      <li key={equipoFiltro.idfiltro}>{equipoFiltro.numero}</li>
+                    </div>
                   )
                 }
-              
             </div>
             <div className="p-4">
-              <div className="uppercase tracking-wide text-sm text-[#245A95] font-semibold">Calentamiento</div>
-              
+              <div className="uppercase tracking-wide text-lg text-[#245A95] font-semibold">Calentamiento</div>
                 {
                   equiposCalentamientoFiltradas?.map((equipoCalentamiento) => 
-                    <li className='text-xs' key={equipoCalentamiento.idcalentamiento}>{equipoCalentamiento.numero}</li>
+                    <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setModalDetalleEquipo(true), setEquipoSeleccionado(equipoCalentamiento)}}>
+                      <li key={equipoCalentamiento.idcalentamiento}>{equipoCalentamiento.numero}</li>
+                    </div>
                   )
-                }
-              
+                } 
             </div>
             <div className="p-4">
-              <div className="uppercase tracking-wide text-sm text-[#245A95] font-semibold">Dosificador</div>
+              <div className="uppercase tracking-wide text-lg text-[#245A95] font-semibold">Dosificador</div>
               {
                 equiposDosificadorFiltradas?.map((equipoDosificador) => 
-                  <li className='text-xs' key={equipoDosificador.iddosificador}>{equipoDosificador.numero}</li>
+                  <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setModalDetalleEquipo(true), setEquipoSeleccionado(equipoDosificador)}}>
+                    <li key={equipoDosificador.iddosificador}>{equipoDosificador.numero}</li>
+                  </div>
                 )
               }
             </div>
             <div className="p-4">
-              <div className="uppercase tracking-wide text-sm text-[#245A95] font-semibold">Controlador</div>
+              <div className="uppercase tracking-wide text-lg text-[#245A95] font-semibold">Controlador</div>
               {
                 equiposControladorControlador?.map((equipoControlador) => 
-                  <li className='text-xs' key={equipoControlador.idcontrolador}>{equipoControlador.numero}</li>
+                  <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setModalDetalleEquipo(true), setEquipoSeleccionado(equipoControlador)}}>
+                    <li key={equipoControlador.idcontrolador}>{equipoControlador.numero}</li>
+                  </div>
                 )
               }
             </div>  
           </div>
           {
             botonNuevaSede === null &&
-            <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+            <div className="mb-5 mt-8 px-2 cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
               <button
                   type="submit"
                   className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                   onClick={(e) => {setBotonNuevaSede(e)}}
               >
-                  <ion-icon name="add-outline"></ion-icon>Nueva sede
+                  <ion-icon name="add-outline"></ion-icon>Agregar equipo
               </button>
             </div>
           }
@@ -183,7 +201,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
                       <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
                     </span>
                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                      Selecciona el tipo de quipo
+                      Tipo de quipo
                     </label>
                 </span>
                 <p className="text-sm text-[#245A95] font-semibold">3.- Selecciona el tipo de quipo que quieres agregar</p>

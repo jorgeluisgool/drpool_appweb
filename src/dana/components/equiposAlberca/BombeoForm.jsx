@@ -11,10 +11,11 @@ const opcionesEstatusBombeo = [
     { label: 'NO FUNCIONANDO', value: 'NO FUNCIONANDO' }
 ];
 
-export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado}) => {
+export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado, equipoSelected}) => {
 
     const initialValues = {
         alberca: albercaSelected,
+        tipoequipo: equipoSelected,
         numero: '',
         potencia: '',
         marca: '',
@@ -68,8 +69,6 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                                 as={InputText}
                                 name="numero"
                                 value={values.numero}
-                                keyfilter="pint"
-
                             /> 
                             <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                               <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -243,15 +242,6 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                     >
                         Guardar
                     </button>
-                    {/* <button
-                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                        onClick={() => {
-                          setModalAlberca(false);
-                        }}
-                        type='button'
-                    >
-                        Cancelar
-                    </button> */}
                 </div>
             </div> 
               

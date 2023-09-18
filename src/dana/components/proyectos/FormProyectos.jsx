@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { api } from '../../helpers/variablesGlobales';
 import { addLocale } from 'primereact/api';
 
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 
 addLocale('es', {
   firstDayOfWeek: 1,
@@ -25,12 +25,10 @@ addLocale('es', {
 const initialValues = {
     nombreproyectoalberca: '',
     numeroproyecto: '',
-    proyectoSedes: [
-      
-    ],
+    proyectoSedes: [],
     tiposervicio: '',
-    fechainiciocontrato: '',
-    fechafincontrato: '', 
+    fechainiciocontrato: new Date(),
+    fechafincontrato: new Date(), 
     estatus: ''
 }
 
@@ -54,7 +52,7 @@ const initialValues = {
     { label: 'TURBIDIMETRO', value: 'TURBIDIMETRO' },
   ];
 
-export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarProyectos, proyectoAlbercaSeleccionado, setVentanaCarga, setModalRegistroGuardado, clienteSelect, setClienteSelect, clientesActivos, sedeSelect, setSedeSelect, sedes}) => {
+export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarProyectos, proyectoAlbercaSeleccionado, setVentanaCarga, setModalRegistroGuardado, clienteSelect, setClienteSelect, clientesActivos, sedeSelect, setSedeSelect, sedes, setMensajeNoAlbercasEnSedes, setModalWarning}) => {
 
     const [albercas, setAlbercas] = useState();
     const [fielValue, setFieldValue] = useState();
@@ -72,13 +70,33 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
         fetchData();
     }, []);
 
+    // Función para convertir la fecha en formato válido de la fecha
+    const parseDate = (dateString) => {
+      if (typeof dateString === "string") {
+          const parsedDate = parse(dateString, 'dd/MM/yy', new Date());
+          return parsedDate;
+      } else {
+          return dateString
+      }  
+    };
 
     const handleSubmit = (values) => {
       values.nombreproyectoalberca = values.nombreproyectoalberca.toUpperCase();
 
-      const formattedDate = format(values.fechainiciocontrato, "dd/MM/yy");
-      values.fechainiciocontrato = formattedDate;
-      values.fechafincontrato = formattedDate;
+      // const formattedDate = format(values.fechainiciocontrato, "dd/MM/yy");
+      // values.fechainiciocontrato = formattedDate;
+      // values.fechafincontrato = formattedDate;
+
+      if(typeof values.fechainiciocontrato !== "string"){
+        const formattedDate = format(values.fechainiciocontrato, "dd/MM/yy");
+        values.fechainiciocontrato = formattedDate;
+    }
+    if(typeof values.fechafincontrato !== "string"){
+        const formattedDate2 = format(values.fechafincontrato, "dd/MM/yy");
+        values.fechafincontrato = formattedDate2;
+    }
+
+      console.log(values.proyectoSedes);
 
         // Aquí es donde puedes manipular los valores antes de enviarlos al servidor
       const proyectoSedes = values.proyectoSedes.map(sede => ({
@@ -91,26 +109,46 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
         proyectoSedes: proyectoSedes
       };
 
-      console.log(valuesToSend);
-             setVentanaCarga(true);
+      console.log("PROYECTO--> ",valuesToSend);
 
-             fetch(`${api}/nuevo/proyectoalberca`, {
-                 method: 'POST',
-                 headers: {
-                   'Content-Type': 'application/json',
-                 },
-                 body: JSON.stringify(valuesToSend),
-               })
-                 .then((response) => response.text())
-                 .then((responseData) => {
-                    console.log(responseData);
-                    setModalCrearEditarProyectos(false);
-                    setVentanaCarga(false);
-                   setModalRegistroGuardado(true);
-                 })
-                 .catch((error) => {
-                   console.log(error);
-                 });
+      console.log(valuesToSend)
+              // setVentanaCarga(true);
+
+              // fetch(`${api}/nuevo/proyectoalberca`, {
+              //     method: 'POST',
+              //     headers: {
+              //       'Content-Type': 'application/json',
+              //     },
+              //     body: JSON.stringify(valuesToSend),
+              //   })
+              //     .then((response) => response.text())
+              //     .then((responseData) => {
+              //         console.log(responseData);
+
+              //         if(responseData == "se guardo correctamente el proyecto"){
+              //           setModalCrearEditarProyectos(false);
+              //           setVentanaCarga(false);
+              //           setModalRegistroGuardado(true);
+              //         }else{
+              //           if (responseData.match("No hay algun equipo relacionado con la alberca")) {
+              //             // setModalCrearEditarProyectos(false);
+              //             setVentanaCarga(false);
+              //             setMensajeNoAlbercasEnSedes(`No hay algun "EQUIPO" relacionado con la o las albercas: ${responseData.split(":")[1]}, de la sede o sedes selecionadas.`);
+              //             setModalWarning(true)
+              //           }
+              //           if (responseData.match("No hay albercas relacionadas")) {
+              //             // setModalCrearEditarProyectos(false);
+              //             setVentanaCarga(false);
+              //             setMensajeNoAlbercasEnSedes(`La sede o sedes: ${responseData.split(",")[1]} no tiene alguna alberca relacionada, deberas dar de alta una alberca o relacionarle a una ya existente. `);
+              //             setModalWarning(true)
+              //           }
+              //         }
+
+                     
+              //     })
+              //     .catch((error) => {
+              //       console.log(error);
+              //     });
     }
 
     const renderClienteOption = (option) => {
@@ -122,6 +160,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
       );
     };
 
+    console.log(proyectoAlbercaSeleccionado)
+    
   return (
     <Dialog header={`Proyectos`} visible={modalCrearEditarProyectos} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalCrearEditarProyectos(false)} className='pt-16'>
         <Formik initialValues={proyectoAlbercaSeleccionado === undefined? initialValues : proyectoAlbercaSeleccionado} onSubmit={handleSubmit}>
@@ -166,12 +206,15 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Dropdown}
-                                    name="clientes"
+                                    name="clienteSelect"
                                     value={clienteSelect}
                                     options={clientesActivos} 
                                     optionLabel="cliente"
                                     itemTemplate={renderClienteOption}
-                                    onChange={(e) => {setClienteSelect(e.target.value)}}
+                                    onChange={(e) => {
+                                      setClienteSelect(e.target.value)
+                                      values.proyectoSedes = [];
+                                    }}
                                     filter
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -184,6 +227,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                         </div> 
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
+
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={MultiSelect}
@@ -192,11 +236,6 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     options={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente)} 
                                     optionLabel="nombre"
                                     disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente).length === 0}
-                                    // onChange={(e) => {
-                                    //   //setSedeSelect(e.target.value)
-                                    //   values.proyectoSedes =[ {idproyectosedes:0, ...values.proyectoSedes}, e.target.value]
-                                    // }}
-                                  
                                     filter
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -253,7 +292,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     className="w-full appearance-none focus:outline-none bg-transparent md:w-20rem"
                                     as={Calendar}
                                     name="fechainiciocontrato"
-                                    value={values.fechainiciocontrato}
+                                    value={parseDate(values.fechainiciocontrato)}
                                     dateFormat="dd/MM/yy"
                                     locale='es'
                                 /> 
@@ -271,7 +310,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     className="w-full appearance-none focus:outline-none bg-transparent md:w-20rem"
                                     as={Calendar}
                                     name="fechafincontrato"
-                                    value={values.fechafincontrato}
+                                    value={parseDate(values.fechafincontrato)}
                                     dateFormat="dd/MM/yy"
                                     locale='es'
                                 /> 

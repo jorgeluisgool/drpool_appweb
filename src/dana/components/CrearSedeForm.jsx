@@ -18,6 +18,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
     nombre: '', 
     encargadosede: '',
     direccion: {
+      iddireccion: 0,
       calle: '',
       callenumero: '',
       estado: '',
@@ -51,24 +52,24 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
       
 
       console.log(values);
-     setVentanaCarga(true);
+       setVentanaCarga(true);
   
-      fetch(`${api}/nueva/sede`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      })
-        .then((response) => response.text())
-        .then((responseData) => {
-          setVentanaCarga(false);
-          setModalRegistroGuardado(true);
-          setDialogNuevaSedeForm(false);
+        fetch(`${api}/nueva/sede`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(values),
         })
-        .catch((error) => {
-          console.log(error);
-        });
+          .then((response) => response.text())
+          .then((responseData) => {
+            setVentanaCarga(false);
+            setModalRegistroGuardado(true);
+            setDialogNuevaSedeForm(false);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
   };
 
   return (
@@ -277,7 +278,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                       </span>
                   </div>
                   <div className="p-inputgroup mb-5 mt-8">
-                      <span className='p-float-label relative'>
+                      <span className='p-float-label relative'> 
                           <Field
                               className="w-full appearance-none focus:outline-none bg-transparent"
                               as={Dropdown}
@@ -286,7 +287,6 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               options={listaUsuarios.filter((usuario) => usuario.perfile.perfil === "COORDINADOR")} 
                               optionLabel="nombre"
                               filter
-                              // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -296,6 +296,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                           </label>
                       </span>
                   </div>
+                  <p>{values.coordinador.nombre}</p>
                   <div className="p-inputgroup mb-5 mt-8">
                       <span className='p-float-label relative'>
                           <Field

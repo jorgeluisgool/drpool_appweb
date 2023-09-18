@@ -31,6 +31,8 @@ export const EquiposAlbercaSeccion = () => {
   const [selectAlberca, setSelectAlberca] = useState(null);
   const [selectEquipo, setSelectEquipo ] = useState(null); 
 
+   
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -141,6 +143,7 @@ export const EquiposAlbercaSeccion = () => {
                   albercaSelected={albercaSelected}
                   setVentanaCarga={setVentanaCarga}
                   setModalRegistroGuardado={setModalRegistroGuardado}
+                  equipoSelected={equipoSelected}
                 />
               )
             }

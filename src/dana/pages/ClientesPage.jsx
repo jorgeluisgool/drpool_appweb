@@ -58,7 +58,7 @@ export const ClientesPage = () => {
 
     const filterSedes = sedes?? sedes.filter((sede) =>
       sede.nombre.toLowerCase().includes(searchSede.toLowerCase()) || 
-      sede.encargado.toLowerCase().includes(searchSede.toLowerCase())
+      sede.encargadosede.toLowerCase().includes(searchSede.toLowerCase())
     );
 
    useEffect(() => {

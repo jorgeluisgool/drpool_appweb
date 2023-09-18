@@ -70,7 +70,6 @@ export const DosificadorForm = ({albercaSelected, setVentanaCarga, setModalRegis
                                     as={InputText}
                                     name="numero"
                                     value={values.numero}
-                                    keyfilter="pint"
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>

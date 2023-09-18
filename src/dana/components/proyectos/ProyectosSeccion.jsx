@@ -6,6 +6,7 @@ import { DialogRegistroGuardado } from '../../../ui/components/DialogRegistroGua
 import { VentanaCarga } from '../../../ui/components/VentanaCarga'
 import { api } from '../../helpers/variablesGlobales'
 import useAuth from '../../hooks/useAuth'
+import { DialogWarning } from '../../../ui/components/DialogWarning'
 
 export const ProyectosSeccion = () => {
 
@@ -14,13 +15,15 @@ export const ProyectosSeccion = () => {
   const [clientes, setClientes] = useState([]);
   const [sedes, setSedes] = useState([]);
   const [modalCrearEditarProyectos, setModalCrearEditarProyectos] = useState(false);
-  const [proyectoAlbercaSeleccionado, setProyectoAlbercaSeleccionado] = useState([]);
+  const [proyectoAlbercaSeleccionado, setProyectoAlbercaSeleccionado] = useState(undefined);
   const [ventanaCarga, setVentanaCarga] = useState(false);
   const [modalRegistroGuardado, setModalRegistroGuardado] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [proyectoAlbercaData, setProyectoAlbercaData ] = useState([]);
-  const [clienteSelect, setClienteSelect] = useState('');
+  const [clienteSelect, setClienteSelect] = useState('TLAHUAC');
   const [sedeSelect, setSedeSelect] = useState('');
+  const [mensajeNoAlbercasEnSedes, setMensajeNoAlbercasEnSedes] = useState('');
+  const [modalWarning, setModalWarning] = useState(false);
 
   console.log(proyectoAlbercaSeleccionado); 
     useEffect(() => {
@@ -76,6 +79,7 @@ export const ProyectosSeccion = () => {
      
    );
 
+   console.log(clienteSelect);
   const clientesActivos = clientes.filter(cliente => cliente.estatus === "ACTIVO");
 
   return (
@@ -85,7 +89,15 @@ export const ProyectosSeccion = () => {
           <VentanaCarga/>
       )}
 
-      <DialogRegistroGuardado setModalRegistroGuardado={setModalRegistroGuardado} modalRegistroGuardado={modalRegistroGuardado}/>
+      <DialogRegistroGuardado 
+        setModalRegistroGuardado={setModalRegistroGuardado} 
+        modalRegistroGuardado={modalRegistroGuardado}
+      />
+      <DialogWarning 
+        modalWarning={modalWarning}
+        setModalWarning={setModalWarning}
+        mensajeNoAlbercasEnSedes={mensajeNoAlbercasEnSedes}
+      />
 
         <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-4'>
         <h1 className="text-2xl font-bold text-[#245A95] pb-4">ALTA DE PROYECTO</h1>
@@ -135,6 +147,7 @@ export const ProyectosSeccion = () => {
               modalRegistroGuardado={modalRegistroGuardado}
               filterProyectos={filterProyectos}
               setSedeSelect={setSedeSelect}
+              setClienteSelect={setClienteSelect}
             />
 
             <FormProyectos 
@@ -149,6 +162,8 @@ export const ProyectosSeccion = () => {
               sedeSelect={sedeSelect}
               setSedeSelect={setSedeSelect}
               sedes={sedes}
+              setMensajeNoAlbercasEnSedes={setMensajeNoAlbercasEnSedes}
+              setModalWarning={setModalWarning}
             />
         </div>
     </>
