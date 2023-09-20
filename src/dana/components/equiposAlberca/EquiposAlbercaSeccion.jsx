@@ -10,6 +10,7 @@ import { VentanaCarga } from '../../../ui/components/VentanaCarga'
 import { DialogRegistroGuardado } from '../../../ui/components/DialogRegistroGuardado'
 import { ControladorForm } from './ControladorForm'
 import { TarjetaEquiposProyecto } from './TarjetaEquiposProyecto'
+import { ReporteMensualForm } from '../ReporteMensualForm'
 
 const tiposEquipos = [
   { label: 'BOMBEO', value: 'BOMBEO' },
@@ -184,6 +185,8 @@ export const EquiposAlbercaSeccion = () => {
               )
             }  
         </div>
+
+        <ReporteMensualForm />
     </>
   )
 }
