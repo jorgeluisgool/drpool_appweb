@@ -41,7 +41,60 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
   // Función para cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const handleTableRowClick = (event, registro) => {
+    event.stopPropagation(); // Detiene la propagación del evento aquí
+    setProyectoSeleccionado(registro);
+    setCargando(true); // Mostrar ventana de carga
+    
+    fetch(`${api}/obtener/datoscompletos/registro/${registro.idinventario}/${registro.proyecto.idproyecto}/${usuariosSeleccionados[0] == null ? 0 : usuariosSeleccionados[0].idusuario }`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json' 
+      },
+    })
+      .then(response => response.json())
+      .then(responseData => {
+        setDataProyectoSeleccionado(responseData);
+        setCargando(false); // Ocultar ventana de carga
+        setModalAbrirCerrar(true);
+      })
+      .catch(error => {
+        console.log(error);
+        setCargando(false); // Ocultar ventana de carga en caso de error
+      });
+  };
+  
+  const handleButtonClick = (event, registro) => {
+    // Lógica específica del botón
+    event.preventDefault(); // Si es necesario
+    event.stopPropagation(); // Si es necesario
+    
+    fetch(`${api}/generar/nuevo/documento/${registro.idinventario}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json' 
+      },
+       
+    })
+      .then(response => console.log(response.text()))
+      .then(respuesta => console.log(respuesta))
+      .catch(error => console.log(error));
 
+      //  if (registro.estatus==='CERRADO') {
+         event.stopPropagation();
+          fetch(`${api}/abrir/documento/inventario/${registro.idinventario}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json' 
+            },
+            //  body: JSON.stringify(usuario.target.value) 
+          })
+            .then(response => console.log(response.blob))
+            .catch(error => console.log(error));
+         window.open(`${api}/abrir/documento/inventario/${registro.idinventario}`,'_blank')
+      //  }
+  };
+  
 
   return (
     <>
@@ -104,27 +157,7 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
         {currentRows.map((registro, index) => (
           <tr 
             key={index} 
-            onClick={() => {
-              setProyectoSeleccionado(registro);
-              setCargando(true); // Mostrar ventana de carga
-              
-              fetch(`${api}/obtener/datoscompletos/registro/${registro.idinventario}/${registro.proyecto.idproyecto}/${usuariosSeleccionados[0] == null ? 0 : usuariosSeleccionados[0].idusuario }`, {
-                method: 'GET',
-                headers: {
-                  'Content-Type': 'application/json' 
-                },
-              })
-                .then(response => response.json())
-                .then(responseData => {
-                  setDataProyectoSeleccionado(responseData);
-                  setCargando(false); // Ocultar ventana de carga
-                  setModalAbrirCerrar(true);
-                })
-                .catch(error => {
-                  console.log(error);
-                  setCargando(false); // Ocultar ventana de carga en caso de error
-                });
-            }}
+            onClick={(event) => handleTableRowClick(event, registro)}
             
             className='cursor-pointer hover:bg-[#E2E2E2]'
           >
@@ -169,34 +202,7 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
             <td className="px-6">
               <div className="flex space-x-4">
                 <button 
-                  onClick={ (event)=>{
-
-                    fetch(`${api}/generar/nuevo/documento/${registro.idinventario}`, {
-                      method: 'GET',
-                      headers: {
-                        'Content-Type': 'application/json' 
-                      },
-                       
-                    })
-                      .then(response => console.log(response.text()))
-                      .then(respuesta => console.log(respuesta))
-                      .catch(error => console.log(error));
-
-                      // if (registro.estatus==='CERRADO') {
-                      //   event.stopPropagation();
-                      //    fetch(`${api}/abrir/documento/inventario/${registro.idinventario}`, {
-                      //      method: 'GET',
-                      //      headers: {
-                      //        'Content-Type': 'application/json' 
-                      //      },
-                      //       body: JSON.stringify(usuario.target.value) 
-                      //    })
-                      //      .then(response => console.log(response.blob))
-                      //      .catch(error => console.log(error));
-                      //   window.open(`${api}/abrir/documento/inventario/${registro.idinventario}`,'_blank')
-                      // }
-                    }
-                  }
+                  onClick={(event) => handleButtonClick(event, registro)}
                   className="w-14 h-14 object-cover active:scale-[.98] py-3 bg-transparent hover:bg-[#245A95] hover:text-white text-[#245A95] text-2xl font-bold inline-block rounded-full bg-primary p-2 uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] mt-4">
                   <i className="pi pi-file-pdf" style={{ fontSize: '1.5rem' }}></i>
                 </button>
