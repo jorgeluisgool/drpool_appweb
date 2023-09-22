@@ -12,7 +12,7 @@ import { api } from '../helpers/variablesGlobales';
     console.log(values);
   };
 
-const RegistrosForm = ({usuarios, listaRegistros, setListaRegistros, usuariosSeleccionados, setUsuariosSeleccionados, proyectosClientes}) => {
+const RegistrosForm = ({usuarios, listaRegistros, setListaRegistros, usuariosSeleccionados, setUsuariosSeleccionados, proyectosClientes, setModalNuevoReporteMensual}) => {
 
   const [listaRegistrosValor, setListaRegistrosValor] = useState([]);
   const [listaProyectos, setListaProyectos] = useState([]);
@@ -369,6 +369,18 @@ const handleUsuarioChange = (usuario) => {
                               </div>
                           }       
                         </div>
+                    </div>
+                    <div className="flex py-2 mt-6 justify-end">
+                      <button
+                        type="button"
+                        // disabled={!formik.dirty || formik.isSubmitting}
+                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                        onClick={()=>{
+                          setModalNuevoReporteMensual(true);
+                        }}
+                      >
+                        <ion-icon name="eye" className="mr-2 text-2xl"></ion-icon> Nuevo reporte mensual
+                      </button>
                     </div>
                     <div className="flex py-2 mt-6 justify-end">
                       <button

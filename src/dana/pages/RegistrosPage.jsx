@@ -14,6 +14,7 @@ import { api } from '../helpers/variablesGlobales';
 import { DialogConfirmacion } from '../../ui/components/DialogConfirmacion';
 import { DialogDuplicidad } from '../../ui/components/DialogDuplicidad';
 import { DialogRegistroGuardado } from '../../ui/components/DialogRegistroGuardado';
+import { ReporteMensualForm } from '../components/ReporteMensualForm';
 
 export const RegistrosPage = () => {
 
@@ -36,6 +37,7 @@ export const RegistrosPage = () => {
   const [dataProyectoSeleccionado, setDataProyectoSeleccionado] = useState([]);
   const [showAcordion, setShowAcordion] = useState(null);
   const [ventanaCarga, setVentanaCarga] = useState(false);
+  const [modalNuevoReporteMensual, setModalNuevoReporteMensual] = useState(false);
 
   const toggleShow = (index) => {
     if (index === showAcordion) {
@@ -216,6 +218,7 @@ export const RegistrosPage = () => {
           listaRegistros={listaRegistros} 
           setListaRegistros={setListaRegistros}
           proyectosClientes={proyectosClientes}
+          setModalNuevoReporteMensual={setModalNuevoReporteMensual}
         />
     </div>
     <div className="overflow-x-auto">
@@ -331,6 +334,11 @@ export const RegistrosPage = () => {
       setModalHistorialAbrirCerrar={setModalHistorialAbrirCerrar} 
       proyectoSeleccionado={proyectoSeleccionado}
       handleReset={handleReset}
+    />
+
+    <ReporteMensualForm 
+      modalNuevoReporteMensual={modalNuevoReporteMensual}
+      setModalNuevoReporteMensual={setModalNuevoReporteMensual}
     />
 
     <BotonFlotanteRegresar  onClick={handleClickRegresar} />
