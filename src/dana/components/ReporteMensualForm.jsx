@@ -5,56 +5,8 @@ import { Dialog } from 'primereact/dialog'
 import { Dropdown } from 'primereact/dropdown'
 import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
-import React, { useState } from 'react'
-
-// const initialValues = {
-//     FECHA: "",
-//     FIRSTDATE: "",
-//     LASTDATE: "",
-//     SEDE: "",
-//     ALCALDIA: "",
-//     ALBERCA: "",
-//     TIPOALBERCA: "",
-//     CARACTERISTICA: "",
-//     REALIZO: "",
-//     REVISO: "",
-//     REPORT_LIST_IMAGES:[
-//         [{
-//             ACTIVITY: ""
-//         },
-//         {   
-//             IMAGES: []
-//         },
-//         {
-//             TEXT_IMAGES:""
-//         },
-//         {
-//             OBSERVACIONES: ""
-//         }
-//         ]
-//     ]
-// }
-
-// const initialValues2 = {
-//     FECHA: "",
-//     FIRSTDATE: "",
-//     LASTDATE: "",
-//     SEDE: "",
-//     ALCALDIA: "",
-//     ALBERCA: "",
-//     TIPOALBERCA: "",
-//     CARACTERISTICA: "",
-//     REALIZO: "",
-//     REVISO: "",
-//     REPORT_LIST_IMAGES:[
-//         {
-//             ACTIVITY: "",
-//             IMAGES: [], 
-//             TEXT_IMAGES:"", 
-//             OBSERVACIONES: ""
-//         }
-//     ]
-// }
+import React, { useEffect, useState } from 'react'
+import { api } from '../helpers/variablesGlobales'
 
 const opcionesActividades = [
     { label: 'Limpieza de trampas de pelo', value: 'Limpieza de trampas de pelo' },
@@ -68,17 +20,35 @@ const opcionesActividades = [
     { label: 'Otro', value: 'otro' },
 ];
 
-const opcionesTextoImagenes = [
-    { label2: 'Limpieza de trampas', value: 'El operador de mantenimiento de la piscina tiene que destapar la trampa de pelo para su limpieza cada vez que realice el aspirado, ya que, es el que protege a la motobomba de obstrucciónes y evita que los sólidos de tamaño grande y mediano entren en ella.' },
-    { label2: 'Retiro de sólidos', value: 'Al inicio de las actividades y a lo largo del día el operador de mantenimiento de la piscina se encuentra al pendiente de retirar los sólidos flotantes, suspendidos y sedimentados que estén dentro de la alberca. La mayoría de ellos están conformados por hojas, insectos o artículos de los usuarios; en albercas techadas y al aire libre. Dependiendo del tipo de sólidos que contaminen la alberca con mayor frecuencia, el operador decidirá si le es más práctico usar una red de pala o tipo bolsa.' },
-    { label2: 'Retrolavado', value: 'Es muy importante que el operador de mantenimiento de la piscina lo haga semanalmente, porque es la forma en la que el filtro se limpia, cuando el operador haga un retro lavado mire el color del agua del pequeño visor de vidrio (frasco o burbuja), inicialmente el agua pasara sucia hasta ponerse transparente, este proceso debería de llevar menos de cinco minutos pero la claridad del agua es el mejor indicio.' },
-    { label2: 'Cepillado', value: 's de suma importancia realizar el cepillado de las paredes y piso de la piscina para evitar la formación de biopelícula, generada principalmente por la formación de colonias de bacterias, algas y hongos. Adicionalmente también sirve para eliminar la suciedad pegada en las paredes.' },
-    { label2: 'Aspirado', value: 'En la piscina también es muy común encontrar sólidos precipitados, que son partículas que no se disuelven en agua, y que por su tamaño y peso se depositan en el fondo, tales como pequeñas piedras, arena, hojas podridas, insectos, monedas, pasadores, etcétera. Todos estos sólidos deberán ser removidos utilizando el sistema de aspirado, que está compuesto por el cabezal de aspirado, maneral, manguera y línea de aspirado (tubería de succión). Los aspirados se realizan lento, para poder atrapar los sólidos de menor tamaño que por lo general son muy ligeros, ya que aspirar a una velocidad mayor provocará que los sólidos que ya habían logrado sedimentar, se dispersen de nuevo.' },
-    { label2: 'Limpieza cenefa', value: 'En piscinas que no tienen rejilla de rebosamiento, y que por tanto no pueden ser completamente llenas con agua, siempre se forma una línea perimetral oscura sobre el azulejo, como resultado de todos los contaminantes insolubles que flotan en el agua (grasa corporal, productos para el cabello, cremas, maquillaje, protector solar, entre otros). Para eliminar esta suciedad se recomienda tallar la cenefa con alguna fibra que sea capaz de eliminar la mugre y de esta manera la estética y salud del vaso de la alberca se mantenga.' },
-];
+// const opcionesTextoImagenes = [
+//     { label2: 'Limpieza de trampas', value: 'El operador de mantenimiento de la piscina tiene que destapar la trampa de pelo para su limpieza cada vez que realice el aspirado, ya que, es el que protege a la motobomba de obstrucciónes y evita que los sólidos de tamaño grande y mediano entren en ella.' },
+//     { label2: 'Retiro de sólidos', value: 'Al inicio de las actividades y a lo largo del día el operador de mantenimiento de la piscina se encuentra al pendiente de retirar los sólidos flotantes, suspendidos y sedimentados que estén dentro de la alberca. La mayoría de ellos están conformados por hojas, insectos o artículos de los usuarios; en albercas techadas y al aire libre. Dependiendo del tipo de sólidos que contaminen la alberca con mayor frecuencia, el operador decidirá si le es más práctico usar una red de pala o tipo bolsa.' },
+//     { label2: 'Retrolavado', value: 'Es muy importante que el operador de mantenimiento de la piscina lo haga semanalmente, porque es la forma en la que el filtro se limpia, cuando el operador haga un retro lavado mire el color del agua del pequeño visor de vidrio (frasco o burbuja), inicialmente el agua pasara sucia hasta ponerse transparente, este proceso debería de llevar menos de cinco minutos pero la claridad del agua es el mejor indicio.' },
+//     { label2: 'Cepillado', value: 's de suma importancia realizar el cepillado de las paredes y piso de la piscina para evitar la formación de biopelícula, generada principalmente por la formación de colonias de bacterias, algas y hongos. Adicionalmente también sirve para eliminar la suciedad pegada en las paredes.' },
+//     { label2: 'Aspirado', value: 'En la piscina también es muy común encontrar sólidos precipitados, que son partículas que no se disuelven en agua, y que por su tamaño y peso se depositan en el fondo, tales como pequeñas piedras, arena, hojas podridas, insectos, monedas, pasadores, etcétera. Todos estos sólidos deberán ser removidos utilizando el sistema de aspirado, que está compuesto por el cabezal de aspirado, maneral, manguera y línea de aspirado (tubería de succión). Los aspirados se realizan lento, para poder atrapar los sólidos de menor tamaño que por lo general son muy ligeros, ya que aspirar a una velocidad mayor provocará que los sólidos que ya habían logrado sedimentar, se dispersen de nuevo.' },
+//     { label2: 'Limpieza cenefa', value: 'En piscinas que no tienen rejilla de rebosamiento, y que por tanto no pueden ser completamente llenas con agua, siempre se forma una línea perimetral oscura sobre el azulejo, como resultado de todos los contaminantes insolubles que flotan en el agua (grasa corporal, productos para el cabello, cremas, maquillaje, protector solar, entre otros). Para eliminar esta suciedad se recomienda tallar la cenefa con alguna fibra que sea capaz de eliminar la mugre y de esta manera la estética y salud del vaso de la alberca se mantenga.' },
+// ];
+
+const opcionesTipoAlberca = [
+    { label: 'OLÍMPICA', value: 'OLIMPICA' },
+    { label: 'SEMIOLÍMPICA', value: 'SEMIOLÍMPICA' },
+    { label: 'FOSA DE CLAVADOS', value: 'FOSA DE CLAVADOS' },
+    { label: 'CHAPOTEADERO', value: 'CHAPOTEADERO' },
+    { label: 'ALBERCA RECREATIVA', value: 'ALBERCA RECREATIVA' },
+    { label: 'JACUZZI', value: 'JACUZZI' }
+  ];
+  
+  const opcionesCaracteristicaAlberca = [
+    { label: 'TECHADA', value: 'TECHADA' },
+    { label: 'NO TECHADA', value: 'NO TECHADA' }
+  ];
 
 export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoReporteMensual}) => {
     
+    const [sedes, setSedes] = useState();
+    const [albercas, setAlbercas] = useState();
+    const [sedeSeleccionada, setSedeSeleccionada] = useState();
+
     const initialValues = {
         FECHA: "",
         FIRSTDATE: "",
@@ -87,87 +57,80 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         ALCALDIA: "",
         ALBERCA: "",
         TIPOALBERCA: "",
-        CARACTERISTICA: "gggg",
+        CARACTERISTICA: "",
         REALIZO: "",
         REVISO: "",
-        REPORT_LIST_IMAGES: {
-            ACTIVITY: "actividad1",
-            IMAGES: ['1233', '1233', '123d'],
-            TEXT_IMAGES: "imagen",
-            OBSERVACIONES: "obser"
-        }
+        REPORT_LIST_IMAGES: [{
+            ACTIVITY: "",
+            IMAGES: [],
+            TEXT_IMAGES: "",
+            OBSERVACIONES: ""
+        }]
     };
     
-    const initialValues2 = {
-        FECHA: initialValues.FECHA,
-        FIRSTDATE: initialValues.FIRSTDATE,
-        LASTDATE: initialValues.LASTDATE,
-        SEDE: initialValues.SEDE,
-        ALCALDIA: initialValues.ALCALDIA,
-        ALBERCA: initialValues.ALBERCA,
-        TIPOALBERCA: initialValues.TIPOALBERCA,
-        CARACTERISTICA: initialValues.CARACTERISTICA,
-        REALIZO: initialValues.REALIZO,
-        REVISO: initialValues.REVISO,
-        REPORT_LIST_IMAGES: [
-            {
-                ACTIVITY: initialValues.REPORT_LIST_IMAGES.ACTIVITY
-            },
-            {
-                IMAGES: initialValues.REPORT_LIST_IMAGES.IMAGES
-            },
-            {
-                TEXT_IMAGES: initialValues.REPORT_LIST_IMAGES.TEXT_IMAGES
-            },
-            {
-                OBSERVACIONES: initialValues.REPORT_LIST_IMAGES.OBSERVACIONES
-            }
-        ]
-    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(`${api}/obtener/sedes`);
+            const jsonData = await response.json();
+            setSedes(jsonData);
+          } catch (error) {
+            console.log('Error:', error);
+          }
+        };
     
-    console.log(initialValues2);
+        fetchData();
+      }, []);
+
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(`${api}/obtener/albercas`);
+            const jsonData = await response.json();
+            setAlbercas(jsonData);
+          } catch (error) {
+            console.log('Error:', error);
+          }
+        };
     
-    // const [actividadSeleccionada, setActividadSeleccionada] = useState('');
-    
-    const [actividadLimpiezaTrampas, setActividadLimpiezaTrampas] = useState('El operador de mantenimiento de la piscina tiene que destapar la trampa de pelo para su limpieza cada vez que realice el aspirado, ya que, es el que protege a la motobomba de obstrucciónes y evita que los sólidos de tamaño grande y mediano entren en ella.');
-    const [actividadRetiroSolidos, setActividadRetiroSolidos] = useState('Al inicio de las actividades y a lo largo del día el operador de mantenimiento de la piscina se encuentra al pendiente de retirar los sólidos flotantes, suspendidos y sedimentados que estén dentro de la alberca. La mayoría de ellos están conformados por hojas, insectos o artículos de los usuarios; en albercas techadas y al aire libre. Dependiendo del tipo de sólidos que contaminen la alberca con mayor frecuencia, el operador decidirá si le es más práctico usar una red de pala o tipo bolsa.');
-    const [actividadRetrolavado, setActividadRetrolavado] = useState('Es muy importante que el operador de mantenimiento de la piscina lo haga semanalmente, porque es la forma en la que el filtro se limpia, cuando el operador haga un retro lavado mire el color del agua del pequeño visor de vidrio (frasco o burbuja), inicialmente el agua pasara sucia hasta ponerse transparente, este proceso debería de llevar menos de cinco minutos pero la claridad del agua es el mejor indicio.')
-    const [actividadCepillado, setActividadCepillado] = useState('En piscinas que no tienen rejilla de rebosamiento, y que por tanto no pueden ser completamente llenas con agua, siempre se forma una línea perimetral oscura sobre el azulejo, como resultado de todos los contaminantes insolubles que flotan en el agua (grasa corporal, productos para el cabello, cremas, maquillaje, protector solar, entre otros). Para eliminar esta suciedad se recomienda tallar la cenefa con alguna fibra que sea capaz de eliminar la mugre y de esta manera la estética y salud del vaso de la alberca se mantenga.');
-    const [actividadAspirado, setActividadAspirado] = useState('En la piscina también es muy común encontrar sólidos precipitados, que son partículas que no se disuelven en agua, y que por su tamaño y peso se depositan en el fondo, tales como pequeñas piedras, arena, hojas podridas, insectos, monedas, pasadores, etcétera. Todos estos sólidos deberán ser removidos utilizando el sistema de aspirado, que está compuesto por el cabezal de aspirado, maneral, manguera y línea de aspirado (tubería de succión). Los aspirados se realizan lento, para poder atrapar los sólidos de menor tamaño que por lo general son muy ligeros, ya que aspirar a una velocidad mayor provocará que los sólidos que ya habían logrado sedimentar, se dispersen de nuevo.');
-    const [actividadLimpiezaCenefa, setActividadLimpiezaCenefa] = useState('En piscinas que no tienen rejilla de rebosamiento, y que por tanto no pueden ser completamente llenas con agua, siempre se forma una línea perimetral oscura sobre el azulejo, como resultado de todos los contaminantes insolubles que flotan en el agua (grasa corporal, productos para el cabello, cremas, maquillaje, protector solar, entre otros). Para eliminar esta suciedad se recomienda tallar la cenefa con alguna fibra que sea capaz de eliminar la mugre y de esta manera la estética y salud del vaso de la alberca se mantenga.');
-    const [actividadLimpiezaRejilla, setActividadLimpiezaRejilla] = useState('');
-    const [actividadLimpiezaAreaPeri, setActividadLimpiezaAreaPeri] = useState('');
+        fetchData();
+      }, []);
+
+    console.log(albercas)
 
     const onSubmit = (values, { resetForm }) => {
         console.log(values);
-    }
 
-    const handleActividad = (value) => {
-        setActividadSeleccionada(value);
-    }
-
-    
-
-    const [actividadesSeleccionadas, setActividadesSeleccionadas] = useState({});
-
-    // Para establecer la actividad seleccionada para un índice específico:
-    const setActividadSeleccionada = (index, value) => {
-      setActividadesSeleccionadas({
-        ...actividadesSeleccionadas,
-        [index]: value,
-      });
-    };
-
-    const [textoImagenes, setTextoImagenes] = useState({
-        'Limpieza de trampas de pelo': 'El operador de mantenimiento de la piscina tiene que destapar la trampa de pelo...',
-        'Retiro de sólidos suspendidos': 'Al inicio de las actividades y a lo largo del día el operador de mantenimiento de la piscina...',
-        'Retrolavado de filtro': 'Es muy importante que el operador de mantenimiento de la piscina lo haga semanalmente, porque es la forma en la que el filtro se limpia, cuando el operador haga un retro lavado mire el color del agua del pequeño visor de vidrio (frasco o burbuja), inicialmente el agua pasara sucia hasta ponerse transparente, este proceso debería de llevar menos de cinco minutos pero la claridad del agua es el mejor indicio.'
-        // Otras actividades
-      });
-      
-      // Para obtener el texto de imágenes según la actividad seleccionada:
-    //   const textoImagenesActividad = textoImagenes[actividadesSeleccionadas[index]];
-      
+        const initialValues2 = {
+            FECHA: values.FECHA,
+            FIRSTDATE: values.FIRSTDATE,
+            LASTDATE: values.LASTDATE,
+            SEDE: values.SEDE,
+            ALCALDIA: values.ALCALDIA,
+            ALBERCA: values.ALBERCA,
+            TIPOALBERCA: values.TIPOALBERCA,
+            CARACTERISTICA: values.CARACTERISTICA,
+            REALIZO: values.REALIZO,
+            REVISO: values.REVISO,
+            REPORT_LIST_IMAGES: [
+                {
+                    ACTIVITY: values.REPORT_LIST_IMAGES[0].ACTIVITY
+                },
+                {
+                    IMAGES: values.REPORT_LIST_IMAGES[0].IMAGES
+                },
+                {
+                    TEXT_IMAGES: values.REPORT_LIST_IMAGES[0].TEXT_IMAGES
+                },
+                {
+                    OBSERVACIONES: values.REPORT_LIST_IMAGES[0].OBSERVACIONES
+                }
+            ]
+        };
+        
+        console.log(initialValues2);
+    } 
 
   return (
         <>
@@ -185,7 +148,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         as={Calendar}
                                         name="FECHA"
                                         value={values.FECHA}
-
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -202,7 +164,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         as={Calendar}
                                         name="FIRSTDATE"
                                         value={values.FIRSTDATE}
-
                                     />  
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -235,9 +196,11 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                         as={Dropdown}
                                         name="SEDE"
-                                        value={values.SEDE}
-                                        // options={opcionesEstatusBombeo}
-                                        // optionLabel="label" 
+                                        value={sedeSeleccionada}
+                                        options={sedes}
+                                        optionLabel="nombre" 
+                                        onChange={(e) => setSedeSeleccionada(e.target.value)}
+                                        filter
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -290,8 +253,8 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         as={Dropdown}
                                         name="tipoalberca"
                                         value={values.TIPOALBERCA}
-                                        // options={opcionesEstatusBombeo}
-                                        // optionLabel="label" 
+                                        options={opcionesTipoAlberca}
+                                        optionLabel="label" 
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -308,8 +271,8 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         as={Dropdown}
                                         name="caracteristica"
                                         value={values.CARACTERISTICA}
-                                        // options={opcionesEstatusBombeo}
-                                        // optionLabel="label" 
+                                        options={opcionesCaracteristicaAlberca}
+                                        optionLabel="label" 
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -343,12 +306,11 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                         <Field
                                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                                             as={Dropdown}
-                                                            name={`REPORT_LIST_IMAGES.${index}.[0].ACTIVITY`}
-                                                            value={actividadesSeleccionadas[index]}
+                                                            name={`REPORT_LIST_IMAGES.${index}.ACTIVITY`}
                                                             options={opcionesActividades}
                                                             optionLabel="label"
-                                                            onChange={(e) => setActividadSeleccionada(index, e.target.value)}
-                                                            // onChange={(e) => {setActividadSeleccionada(e.target.value)}} 
+                                                            // onChange={(e) => setSelectedActivity(e.value)}
+                                                            // value={selectedActivity}
                                                         /> 
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -371,38 +333,14 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                         <Field
                                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                                             as={InputTextarea}
-                                                            name={`REPORT_LIST_IMAGES.${index}.[2].TEXT_IMAGES`}
-                                                            // value={textoImagenesActividad}
-                                                            value={
-                                                                textoImagenes[actividadesSeleccionadas[index]] || ''
-                                                            } // Usar el índice para obtener el texto de imágenes
-                                                            // onChange={(e) => setTextoImagenes(actividadesSeleccionadas[index], e.target.value)}
+                                                            name={`REPORT_LIST_IMAGES.${index}.TEXT_IMAGES`}
                                                             // value={
-                                                            //     actividadSeleccionada === 'Limpieza de trampas de pelo' && 
-                                                            //     actividadLimpiezaTrampas ||
-
-                                                            //     actividadSeleccionada === 'Retiro de sólidos suspendidos' && 
-                                                            //     actividadRetiroSolidos ||
-
-                                                            //     actividadSeleccionada === 'Retrolavado de filtro' && 
-                                                            //     actividadRetrolavado || 
-
-                                                            //     actividadSeleccionada === 'Cepillado de paredes y piso' && 
-                                                            //     actividadCepillado ||
-
-                                                            //     actividadSeleccionada === 'Aspirado' && 
-                                                            //     actividadAspirado ||
-
-                                                            //     actividadSeleccionada === 'Limpieza de cenefa' && 
-                                                            //     actividadLimpiezaCenefa ||
-
-                                                            //     actividadSeleccionada === 'Limpieza de la rejilla perimetral' && 
-                                                            //     actividadLimpiezaRejilla ||
-
-                                                            //     actividadSeleccionada === 'Limpieza de área perimetral' && 
-                                                            //     actividadLimpiezaAreaPeri
-                                                            // } 
-                                                            onChange={(e) => {setActividadLimpiezaTrampas(e.target.value), setActividadRetiroSolidos(e.target.value)}}
+                                                            //     selectedActivity === "Limpieza de trampas de pelo" // Reemplaza "Actividad1" con el valor de la actividad que quieras asociar con el texto predeterminado
+                                                            //       ? "Texto predeterminado para Actividad1"
+                                                            //       : selectedActivity === "Retiro de sólidos suspendidos" // Reemplaza "Actividad2" con otro valor de actividad
+                                                            //       ? "Texto predeterminado para Actividad2"
+                                                            //       : "" // Puedes agregar más condiciones según sea necesario
+                                                            //   }
                                                         /> 
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -417,7 +355,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                         <Field
                                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                                             as={InputTextarea}
-                                                            name={`REPORT_LIST_IMAGES.${index}.[3].OBSERVACIONES`}
+                                                            name={`REPORT_LIST_IMAGES.${index}.OBSERVACIONES`}
                                                         /> 
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
