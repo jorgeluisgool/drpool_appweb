@@ -17,10 +17,11 @@ const opcionesEstatus = [
     { label: 'NO FUNCIONANDO', value: 'NO FUNCIONANDO' }
 ];
 
-export const CalentamientoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado}) => {
+export const CalentamientoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado, equipoSelected}) => {
 
     const initialValues = {
         alberca: albercaSelected,
+        tipoequipo: equipoSelected,
         numero: '',
         estatus: '',
         fecha_ultimo_mantenimiento: '',
@@ -51,7 +52,8 @@ export const CalentamientoForm = ({albercaSelected, setVentanaCarga, setModalReg
             fetch(`${api}/nuevo/equipocalentamiento`, {
               method: 'POST',
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
               },
               body: JSON.stringify(values),
             })
@@ -60,7 +62,7 @@ export const CalentamientoForm = ({albercaSelected, setVentanaCarga, setModalReg
                     console.log(responseData);
                     setVentanaCarga(false);
                     setModalRegistroGuardado(true);
-                    resetForm();
+                    // resetForm();
               })
               .catch((error) => {
                 console.log(error);

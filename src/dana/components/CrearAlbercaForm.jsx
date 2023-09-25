@@ -200,7 +200,6 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     itemTemplate={renderClienteOption}
                                     onChange={(e) => {setClienteSelect(e.target.value)}}
                                     filter
-                                    
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>

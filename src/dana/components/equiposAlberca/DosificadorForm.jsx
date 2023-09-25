@@ -11,10 +11,11 @@ const opcionesEstatus = [
     { label: 'NO FUNCIONANDO', value: 'NO FUNCIONANDO' }
 ];
 
-export const DosificadorForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado}) => {
+export const DosificadorForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado, equipoSelected}) => {
 
     const initialValues = {
         alberca: albercaSelected,
+        tipoequipo: equipoSelected,
         numero: '',
         estatus: '',
         fecha_ultimo_mantenimiento: '',
@@ -39,7 +40,8 @@ export const DosificadorForm = ({albercaSelected, setVentanaCarga, setModalRegis
             fetch(`${api}/nuevo/equipodosificador`, {
               method: 'POST',
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
               },
               body: JSON.stringify(values),
             })

@@ -11,10 +11,11 @@ const opcionesEstatus = [
     { label: 'NO FUNCIONANDO', value: 'NO FUNCIONANDO' }
 ];
 
-export const ControladorForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado}) => {
+export const ControladorForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado, equipoSelected}) => {
 
     const initialValues = {
         alberca: albercaSelected,
+        tipoequipo: equipoSelected,
         numero: '',
         estatus: '',
         fecha_ultimo_mantenimiento: '',
@@ -32,8 +33,9 @@ export const ControladorForm = ({albercaSelected, setVentanaCarga, setModalRegis
              fetch(`${api}/nuevo/equipocontrolador`, {
                method: 'POST',
                headers: {
-                 'Content-Type': 'application/json',
-               },
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+              },
                body: JSON.stringify(values),
              })
                .then((response) => response.text())

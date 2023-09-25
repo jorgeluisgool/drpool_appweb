@@ -154,6 +154,7 @@ export const EquiposAlbercaSeccion = () => {
                   albercaSelected={albercaSelected}
                   setVentanaCarga={setVentanaCarga}
                   setModalRegistroGuardado={setModalRegistroGuardado}
+                  equipoSelected={equipoSelected}
                 />
               )
             }
@@ -163,6 +164,7 @@ export const EquiposAlbercaSeccion = () => {
                   albercaSelected={albercaSelected}
                   setVentanaCarga={setVentanaCarga}
                   setModalRegistroGuardado={setModalRegistroGuardado}
+                  equipoSelected={equipoSelected}
                 />
               )
             }
@@ -172,6 +174,7 @@ export const EquiposAlbercaSeccion = () => {
                   albercaSelected={albercaSelected}
                   setVentanaCarga={setVentanaCarga}
                   setModalRegistroGuardado={setModalRegistroGuardado}
+                  equipoSelected={equipoSelected}
                 />
               )
             }
@@ -181,6 +184,7 @@ export const EquiposAlbercaSeccion = () => {
                   albercaSelected={albercaSelected}
                   setVentanaCarga={setVentanaCarga}
                   setModalRegistroGuardado={setModalRegistroGuardado}
+                  equipoSelected={equipoSelected}
                 />
               )
             }  

@@ -11,9 +11,10 @@ const opcionesEstatusBombeo = [
     { label: 'NO FUNCIONANDO', value: 'NO FUNCIONANDO' }
 ];
 
-export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado}) => {
+export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado, equipoSelected}) => {
 
     const initialValues = {
+        tipoequipo: equipoSelected,
         alberca: albercaSelected,
         numero: '',
         estatus: '',
@@ -49,7 +50,8 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
             fetch(`${api}/nuevo/equipofiltrado`, {
               method: 'POST',
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
               },
               body: JSON.stringify(values),
             })
