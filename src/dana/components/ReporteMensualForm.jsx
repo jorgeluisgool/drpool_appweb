@@ -1,4 +1,4 @@
-import { Field, FieldArray, Form, Formik } from 'formik'
+import { Field, FieldArray, Form, Formik} from 'formik'
 import { Button } from 'primereact/button'
 import { Calendar } from 'primereact/calendar'
 import { Dialog } from 'primereact/dialog'
@@ -7,6 +7,19 @@ import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
 import React, { useEffect, useState } from 'react'
 import { api } from '../helpers/variablesGlobales'
+import { format, parse } from 'date-fns'
+import { addLocale } from 'primereact/api'
+
+addLocale('es', {
+    firstDayOfWeek: 1,
+    dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+    dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+    dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+    monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+    monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+    today: 'Hoy',
+    clear: 'Limpiar'
+  });
 
 const opcionesActividades = [
     { label: 'Limpieza de trampas de pelo', value: 'Limpieza de trampas de pelo' },
@@ -43,17 +56,21 @@ const opcionesTipoAlberca = [
     { label: 'NO TECHADA', value: 'NO TECHADA' }
   ];
 
-export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoReporteMensual}) => {
+  
+
+export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas}) => {
     
-    const [sedes, setSedes] = useState();
-    const [albercas, setAlbercas] = useState();
-    const [sedeSeleccionada, setSedeSeleccionada] = useState();
+    // const [sedes, setSedes] = useState([]);
+    
+    // const [albercaSeleciona, setAlbercaSeleciona] = useState(initialValues)
+
+    console.log(sedeSeleccionada)
 
     const initialValues = {
         FECHA: "",
         FIRSTDATE: "",
         LASTDATE: "",
-        SEDE: "",
+        SEDE: sedeSeleccionada,
         ALCALDIA: "",
         ALBERCA: "",
         TIPOALBERCA: "",
@@ -68,65 +85,64 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         }]
     };
     
-
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await fetch(`${api}/obtener/sedes`);
-            const jsonData = await response.json();
-            setSedes(jsonData);
-          } catch (error) {
-            console.log('Error:', error);
-          }
-        };
     
-        fetchData();
-      }, []);
 
-      useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await fetch(`${api}/obtener/albercas`);
-            const jsonData = await response.json();
-            setAlbercas(jsonData);
-          } catch (error) {
-            console.log('Error:', error);
-          }
-        };
-    
-        fetchData();
-      }, []);
+    // Función para convertir la fecha en formato válido de la fecha
+    const parseDate = (dateString) => {
+        if (typeof dateString === "string") {
+            const parsedDate = parse(dateString, 'dd/MM/yy', new Date());
+            return parsedDate;
+        } else {
+            return dateString
+        }  
+      };
 
     console.log(albercas)
 
     const onSubmit = (values, { resetForm }) => {
-        console.log(values);
 
+        if(typeof values.FECHA !== "string"){
+            const formattedDate = format(values.FECHA, "dd/MM/yy");
+            values.FECHA = formattedDate;
+        }
+
+        if(typeof values.FIRSTDATE !== "string"){
+            const formattedDate = format(values.FIRSTDATE, "dd/MM/yy");
+            values.FIRSTDATE = formattedDate;
+        }
+
+        if(typeof values.LASTDATE !== "string"){
+            const formattedDate = format(values.LASTDATE, "dd/MM/yy");
+            values.LASTDATE = formattedDate;
+        }
+  
         const initialValues2 = {
             FECHA: values.FECHA,
             FIRSTDATE: values.FIRSTDATE,
             LASTDATE: values.LASTDATE,
-            SEDE: values.SEDE,
+            SEDE: values.SEDE.nombre,
             ALCALDIA: values.ALCALDIA,
-            ALBERCA: values.ALBERCA,
+            ALBERCA: values.ALBERCA.nombrealberca,
             TIPOALBERCA: values.TIPOALBERCA,
             CARACTERISTICA: values.CARACTERISTICA,
             REALIZO: values.REALIZO,
             REVISO: values.REVISO,
-            REPORT_LIST_IMAGES: [
-                {
-                    ACTIVITY: values.REPORT_LIST_IMAGES[0].ACTIVITY
-                },
-                {
-                    IMAGES: values.REPORT_LIST_IMAGES[0].IMAGES
-                },
-                {
-                    TEXT_IMAGES: values.REPORT_LIST_IMAGES[0].TEXT_IMAGES
-                },
-                {
-                    OBSERVACIONES: values.REPORT_LIST_IMAGES[0].OBSERVACIONES
-                }
-            ]
+            REPORT_LIST_IMAGES: values.REPORT_LIST_IMAGES.map((item, index) => ( 
+                [
+                    {
+                        ACTIVITY: values.REPORT_LIST_IMAGES[index].ACTIVITY
+                    },
+                    {
+                        IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES
+                    },
+                    {
+                        TEXT_IMAGES: values.REPORT_LIST_IMAGES[index].TEXT_IMAGES
+                    },
+                    {
+                        OBSERVACIONES: values.REPORT_LIST_IMAGES[index].OBSERVACIONES
+                    }
+                ]
+            ))
         };
         
         console.log(initialValues2);
@@ -135,8 +151,47 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
   return (
         <>
         <Dialog header='Reporte Fotográfico Mensual' visible={modalNuevoReporteMensual} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalNuevoReporteMensual(false)} className='pt-20'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6'>
+            <div className="p-inputgroup mb-5 mt-5">
+                <span className='p-float-label relative'>
+                    <Dropdown
+                        className="w-full appearance-none focus:outline-none bg-transparent"
+                        name="sede"
+                        value={sedeSeleccionada}
+                        options={sedes} 
+                        optionLabel="nombre"
+                        // itemTemplate={renderClienteOption}
+                        onChange={(e) => {setSedeSeleccionada(e.target.value)}}
+                        filter
+                    /> 
+                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                    </span>
+                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                      Sede
+                    </label>
+                </span>
+            </div>
+            <div className="p-inputgroup mb-5 mt-5">
+                <span className='p-float-label relative'>
+                    <Dropdown
+                        className="w-full appearance-none focus:outline-none bg-transparent"
+                        name="alberca"
+                        options={albercas}
+                        optionLabel="nombrealberca" 
+                        getOptionValue={(option) => option.nombrealberca}
+                    /> 
+                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                    </span>
+                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                        Alberca
+                    </label>
+                </span>
+            </div>
+        </div>
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
-            {({ values, handleChange, isSubmitting  }) => (
+            {({ values, handleChange, isSubmitting, setFieldValue  }) => (
                 <Form>
                     <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2'>
                     <h1 className='text-2xl font-semibold'>Datos generales</h1>
@@ -147,7 +202,9 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                         as={Calendar}
                                         name="FECHA"
-                                        value={values.FECHA}
+                                        value={parseDate(values.FECHA)}
+                                        dateFormat="dd/MM/yy"
+                                        locale='es'
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -163,7 +220,9 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                         as={Calendar}
                                         name="FIRSTDATE"
-                                        value={values.FIRSTDATE}
+                                        value={parseDate(values.FIRSTDATE)}
+                                        dateFormat="dd/MM/yy"
+                                        locale='es'
                                     />  
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -179,7 +238,9 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                         as={Calendar}
                                         name="LASTDATE"
-                                        value={values.LASTDATE}
+                                        value={parseDate(values.LASTDATE)}
+                                        dateFormat="dd/MM/yy"
+                                        locale='es'
 
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -190,17 +251,19 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                     </label>
                                 </span>
                             </div>
-                            <div className="p-inputgroup mb-5 mt-5">
+                            {/* <div className="p-inputgroup mb-5 mt-5">
                                 <span className='p-float-label relative'>
                                     <Field
                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                         as={Dropdown}
-                                        name="SEDE"
+                                        name="clientes"
                                         value={sedeSeleccionada}
-                                        options={sedes}
-                                        optionLabel="nombre" 
-                                        onChange={(e) => setSedeSeleccionada(e.target.value)}
+                                        optionLabel="nombre"
+                                        // itemTemplate={renderClienteOption}
+                                        onChange={(e) => {setSedeSeleccionada(e.target.value)}}
                                         filter
+                                        options={sedes} 
+                                        
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -209,7 +272,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                       Sede
                                     </label>
                                 </span>
-                            </div>
+                            </div> */}
                             <div className="p-inputgroup mb-5 mt-5">
                                 <span className='p-float-label relative'>
                                     <Field
@@ -228,15 +291,15 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                     </label>
                                 </span>
                             </div>
-                            <div className="p-inputgroup mb-5 mt-5">
+                            {/* <div className="p-inputgroup mb-5 mt-5">
                                 <span className='p-float-label relative'>
                                     <Field
                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                         as={Dropdown}
                                         name="ALBERCA"
-                                        value={values.ALBERCA}
-                                        // options={opcionesEstatusBombeo}
-                                        // optionLabel="label" 
+                                        options={albercas}
+                                        optionLabel="nombrealberca" 
+                                        getOptionValue={(option) => option.nombrealberca}
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -245,14 +308,14 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         Alberca
                                     </label>
                                 </span>
-                            </div>
+                            </div> */}
                             <div className="p-inputgroup mb-5 mt-5">
                                 <span className='p-float-label relative'>
                                     <Field
                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                         as={Dropdown}
-                                        name="tipoalberca"
-                                        value={values.TIPOALBERCA}
+                                        name="TIPOALBERCA"
+                                        // value={values.TIPOALBERCA}
                                         options={opcionesTipoAlberca}
                                         optionLabel="label" 
                                     /> 
@@ -269,8 +332,8 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                     <Field
                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                         as={Dropdown}
-                                        name="caracteristica"
-                                        value={values.CARACTERISTICA}
+                                        name="CARACTERISTICA"
+                                        // value={values.CARACTERISTICA}
                                         options={opcionesCaracteristicaAlberca}
                                         optionLabel="label" 
                                     /> 
@@ -297,6 +360,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                 className='hover:shadow-slate-600 border h-10 px-4 bg-[#BE1622] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-[#d52935] text-left ml-auto flex items-center'
                                                 type="button"
                                                 onClick={() => remove(index)}
+
                                             >
                                                 <ion-icon name="trash"></ion-icon>
                                             </button>

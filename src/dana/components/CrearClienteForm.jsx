@@ -125,6 +125,7 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
                                         handleChange(e);
                                         setNombreCliente(e.target.value.toUpperCase());
                                       }}
+                                      required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -199,6 +200,7 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
                                     //   handleChange(e);
                                     //   setNombreSede(e.target.value.toUpperCase());
                                     // }}
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>

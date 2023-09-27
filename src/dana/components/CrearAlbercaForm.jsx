@@ -37,6 +37,7 @@ const opcionesFormaAlberca = [
 
 export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaSeleccionada, ventanaCarga, setVentanaCarga, setModalRegistroGuardado, clientesActivos, clienteSelect, setClienteSelect}) => {
 
+  console.log(clienteSelect)
   const [acordionEquipoAlberca, setAcordionEquipoAlberca] = useState(null);
   const [rotate, setRotate] = useState(false);
 
@@ -126,12 +127,13 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     //   handleChange(e);
                                     //   setNombreSede(e.target.value.toUpperCase());
                                     // }}
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Nombre de la alberca
+                                  Nombre de la alberca *
                                 </label>
                             </span>
                         </div>
@@ -144,12 +146,13 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     value={values.tipoalberca}
                                     options={opcionesTipoAlberca}
                                     optionLabel="label"
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Tipo de alberca
+                                  Tipo de alberca *
                                 </label>
                             </span>
                         </div> 
@@ -162,12 +165,13 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     value={values.caracteristica}
                                     options={opcionesCaracteristicaAlberca}
                                     optionLabel="label"
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Caracteristica de la alberca
+                                  Caracteristica de la alberca *
                                 </label>
                             </span>
                         </div> 
@@ -184,7 +188,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Observaciones de la alberca
+                                  Observaciones de la alberca 
                                 </label>
                             </span>
                         </div>
@@ -200,12 +204,13 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     itemTemplate={renderClienteOption}
                                     onChange={(e) => {setClienteSelect(e.target.value)}}
                                     filter
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Cliente al que pertenece
+                                  Cliente al que pertenece *
                                 </label>
                             </span>
                         </div>
@@ -220,12 +225,13 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     optionLabel="nombre"
                                     disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente).length === 0}
                                     filter
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Sede a la que pertenece
+                                  Sede a la que pertenece *
                                 </label>
                             </span>
                         </div>
@@ -238,12 +244,13 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     value={values.estatus}
                                     options={opcionesStatus} 
                                     optionLabel="value"
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Estatus
+                                  Estatus *
                                 </label>
                             </span>
                         </div>
@@ -264,12 +271,13 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     options={opcionesFormaAlberca} 
                                     optionLabel="value"
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Forma de la alberca
+                                  Forma de la alberca *
                                 </label>
                             </span>
                         </div>
@@ -281,12 +289,13 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     name="capacidad"
                                     value={values.capacidad}
                                     keyfilter="pint"
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Volumen (m³)
+                                  Volumen (m³) *
                                 </label>
                             </span>
                         </div>  

@@ -175,12 +175,13 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     as={InputText}
                                     name="nombreproyectoalberca"
                                     value={values.nombreproyectoalberca.toUpperCase()}
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Nombre del proyecto
+                                  Nombre del proyecto *
                                 </label>
                             </span>
                         </div>
@@ -191,13 +192,13 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     as={InputText}
                                     name="numeroproyecto"
                                     value={values.numeroproyecto}
-                                    
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Número del proyecto
+                                  Número del proyecto *
                                 </label>
                             </span>
                         </div>
@@ -216,12 +217,13 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                       values.proyectoSedes = [];
                                     }}
                                     filter
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Cliente
+                                  Cliente *
                                 </label>
                             </span>
                         </div> 
@@ -237,12 +239,13 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     optionLabel="nombre"
                                     disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente).length === 0}
                                     filter
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Sedes
+                                  Sedes *
                                 </label>
                             </span>
                         </div> 
@@ -277,12 +280,13 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={values.tiposervicio}
                                     options={opcionesTipoServicio}
                                     optionLabel="value"
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Tipo de servicio
+                                  Tipo de servicio *
                                 </label>
                             </span>
                         </div>
@@ -295,12 +299,13 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={parseDate(values.fechainiciocontrato)}
                                     dateFormat="dd/MM/yy"
                                     locale='es'
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                Fecha de inicio de contratación 
+                                Fecha de inicio de contratación *
                                 </label>
                             </span>
                         </div>
@@ -313,12 +318,13 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={parseDate(values.fechafincontrato)}
                                     dateFormat="dd/MM/yy"
                                     locale='es'
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                Fecha de finalización de contratación
+                                Fecha de finalización de contratación *
                                 </label>
                             </span>
                         </div>
@@ -331,12 +337,13 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={values.estatus}
                                     options={opcionesStatus} 
                                     optionLabel="value"
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Estatus 
+                                  Estatus *
                                 </label>
                             </span>
                         </div>         

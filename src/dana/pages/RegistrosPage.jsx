@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import RegistrosForm from '../components/RegistrosForm'
 import TableRegistros from '../components/TablaRegistros'
 import { Dialog } from 'primereact/dialog';
@@ -38,6 +38,9 @@ export const RegistrosPage = () => {
   const [showAcordion, setShowAcordion] = useState(null);
   const [ventanaCarga, setVentanaCarga] = useState(false);
   const [modalNuevoReporteMensual, setModalNuevoReporteMensual] = useState(false);
+  const [sedes, setSedes] = useState();
+  const [sedeSeleccionada, setSedeSeleccionada] = useState({});
+  const [albercas, setAlbercas] = useState();
 
   const toggleShow = (index) => {
     if (index === showAcordion) {
@@ -47,7 +50,33 @@ export const RegistrosPage = () => {
     }
   }
    
-  // console.log(dataProyectoSeleccionado);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${api}/obtener/sedes`);
+        const jsonData = await response.json();
+        setSedes(jsonData);
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${api}/obtener/albercas`);
+        const jsonData = await response.json();
+        setAlbercas(jsonData);
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
 
   // Aqui obtengo el context del cliente seleccionado
@@ -219,6 +248,11 @@ export const RegistrosPage = () => {
           setListaRegistros={setListaRegistros}
           proyectosClientes={proyectosClientes}
           setModalNuevoReporteMensual={setModalNuevoReporteMensual}
+          sedes={sedes}
+          sedeSeleccionada={sedeSeleccionada}
+          setSedeSeleccionada={setSedeSeleccionada}
+          albercas={albercas}
+          setAlbercas={setAlbercas}
         />
     </div>
     <div className="overflow-x-auto">
@@ -339,6 +373,11 @@ export const RegistrosPage = () => {
     <ReporteMensualForm 
       modalNuevoReporteMensual={modalNuevoReporteMensual}
       setModalNuevoReporteMensual={setModalNuevoReporteMensual}
+      sedes={sedes}
+      sedeSeleccionada={sedeSeleccionada}
+      setSedeSeleccionada={setSedeSeleccionada}
+      albercas={albercas}
+      setAlbercas={setAlbercas}
     />
 
     <BotonFlotanteRegresar  onClick={handleClickRegresar} />

@@ -67,7 +67,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
         fechanacimiento: new Date(),
         ubicacion: "",
         usuario: "",
-        status: "",
+        status: "ACTIVO",
         token: "",
         perfile: {
 
@@ -330,12 +330,13 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
                                                         // }}
+                                                        required
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Nombre completo del colaborador
+                                                      Nombre completo del colaborador *
                                                     </label>
                                                 </span>
                                             </div>
@@ -352,12 +353,13 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
                                                         // }}
+                                                        required
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Rol
+                                                      Rol *
                                                     </label>
                                                 </span>
                                             </div>
@@ -372,12 +374,13 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
                                                         // }}
+                                                        required
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Nombre de usuario
+                                                      Nombre de usuario *
                                                     </label>
                                                 </span>
                                             </div>
@@ -392,12 +395,13 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
                                                         // }}
+                                                        required
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Correo electrónico del colaborador
+                                                      Correo electrónico del colaborador *
                                                     </label>
                                                 </span>
                                             </div>
@@ -476,12 +480,13 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
                                                         // }}
+                                                        required
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Teléfono del colaborador
+                                                      Teléfono del colaborador *
                                                     </label>
                                                 </span>
                                             </div>
@@ -496,12 +501,13 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         options={listaUsuarios}
                                                         optionLabel="nombre"
                                                         filter
+                                                        required
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Jefe inmediato
+                                                      Jefe inmediato *
                                                     </label>
                                                 </span>
                                             </div>
@@ -518,12 +524,13 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
                                                         // }}
+                                                        required
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Estatus
+                                                      Estatus *
                                                     </label>
                                                 </span>
                                             </div>
@@ -539,12 +546,13 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
                                                         // }}
+                                                        required
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>
                                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                      Contraseña
+                                                      Contraseña *
                                                     </label>
                                                 </span>
                                             </div>
