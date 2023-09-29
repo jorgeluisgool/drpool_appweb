@@ -12,7 +12,13 @@ import { api } from '../helpers/variablesGlobales';
     console.log(values);
   };
 
-const RegistrosForm = ({usuarios, listaRegistros, setListaRegistros, usuariosSeleccionados, setUsuariosSeleccionados, proyectosClientes, setModalNuevoReporteMensual}) => {
+  const opcionesTipoReporte = [
+    {label: 'BITACORA DIARIA', value: 'BITACORA DIARIA'},
+    {label: 'REPORTE SEMANAL', value: 'REPORTE SEMANAL'},
+    {label: 'REPORTE FOTOFRAFICO MENSUAL', value: 'REPORTE FOTOFRAFICO MENSUAL'},
+  ]
+
+const RegistrosForm = ({usuarios, listaRegistros, setListaRegistros, usuariosSeleccionados, setUsuariosSeleccionados, proyectosClientes, setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas}) => {
 
   const [listaRegistrosValor, setListaRegistrosValor] = useState([]);
   const [listaProyectos, setListaProyectos] = useState([]);
@@ -183,12 +189,14 @@ const handleUsuarioChange = (usuario) => {
                                 <span className='p-float-label relative'>
                                   <Field
                                     as={Dropdown}
-                                    name="listaProyectosFiltrados"
-                                    options={proyectosClientes}
-                                    optionLabel="proyecto"
+                                    name="sedes"
+                                    value={sedeSeleccionada}
+                                    options={sedes}
+                                    optionLabel="nombre"
                                     filter
-                                    emptyFilterMessage='No se encontarron proyectos'
-                                    onChange={handleProyectoChange}
+                                    emptyFilterMessage='No se encontarron sedes'
+                                    onChange={(e) => setSedeSeleccionada(e.target.value)}
+
                                     // onChange={(proyecto) => {
                                     //   setProyectosSeleccionados([proyecto.target.value]);
                                     //   const ListaUsuariosProyectos = {usuarios: usuariosSeleccionados, proyectos: [proyecto.target.value]}
@@ -224,7 +232,7 @@ const handleUsuarioChange = (usuario) => {
                                     //       })
                                     //       .catch(error => console.log(error));
                                     // }}
-                                    value={proyectosSeleccionados[0]}
+                    
                                     
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                   />
@@ -239,16 +247,16 @@ const handleUsuarioChange = (usuario) => {
                         </div>
                         <div className="mt-8 mx-4 flex flex-col">
                           {
-                            listaCampos.length === 0 ? <div></div> :
+                            sedeSeleccionada.length === 0 ? <div></div> :
                             <div className='p-inputgroup flex-1'>
                               <span className='p-float-label relative'>
                                 <Field
-                                  as={MultiSelect}
-                                  name="usuarios"
-                                  options={usuarios}
-                                  optionLabel="usuario"
+                                  as={Dropdown}
+                                  name="albercas"
+                                  options={albercas?.filter((alberca) => (alberca.sede.nombre === sedeSeleccionada.nombre && alberca.estatus === "ACTIVO"))}
+                                  optionLabel="nombrealberca"
                                   filter
-                                  emptyFilterMessage='No se encontraron usuarios'
+                                  emptyFilterMessage='No se encontraron albercas'
                                   onChange={handleUsuarioChange}
                                   // onChange={(usuario)=>{
                                   //   setUsuariosSeleccionados(usuario.target.value);
@@ -278,7 +286,7 @@ const handleUsuarioChange = (usuario) => {
                                   <i className="pi pi-users text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Usuarios
+                                  Selecciona la alberca
                                 </label>
                               </span>
                             </div>
@@ -288,14 +296,14 @@ const handleUsuarioChange = (usuario) => {
                         
                         <div className="mt-8 mx-4 flex flex-col">
                           {
-                            listaCampos.length === 0 ? <div></div> :
+                            // listaCampos.length === 0 ? <div></div> :
                             <div className='p-inputgroup flex-1'>
                                 <span className='p-float-label relative'>
                                   <Field
                                     as={Dropdown}
                                     name="BuscarCampo"
-                                    options={listaCampos}
-                                    optionLabel='campo'
+                                    options={opcionesTipoReporte}
+                                    optionLabel='label'
                                     filter
                                     emptyFilterMessage='Campo no encontradofh'
                                     filterPlaceholder='Campo'
@@ -325,7 +333,7 @@ const handleUsuarioChange = (usuario) => {
                                     <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
                                   </span>
                                   <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Buscar por:
+                                    Selecciona el tipo de reporte
                                   </label>
                                 </span>
                               </div>

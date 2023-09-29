@@ -37,7 +37,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
     operador: {
 
     },
-    estatus: ''
+    estatus: 'ACTIVO'
   };
 
 
@@ -91,12 +91,13 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                                 handleChange(e);
                                 setNombreSede(e.target.value.toUpperCase());
                               }}
+                              required
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                           </span>
                           <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                            Nombre de la sede
+                            Nombre de la sede *
                           </label>
                       </span>
                   </div>
@@ -107,12 +108,13 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               as={InputText}
                               name="encargadosede"
                               value={values.encargadosede.toUpperCase()}
+                              required
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                           </span>
                           <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                            Administrador de la sede
+                            Administrador de la sede *
                           </label>
                       </span>
                   </div>
@@ -216,7 +218,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                           </span>
                           <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                            Alcaldía o municipio
+                            Alcaldía o municipio *
                           </label>
                       </span>
                   </div>
@@ -268,12 +270,13 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               options={clientes.filter(cliente => cliente.estatus === "ACTIVO")} 
                               optionLabel="cliente"
                               filter
+                              required
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                           </span>
                           <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                            Cliente al que pertenece
+                            Cliente al que pertenece *
                           </label>
                       </span>
                   </div>
@@ -287,16 +290,18 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               options={listaUsuarios.filter((usuario) => usuario.perfile.perfil === "COORDINADOR")} 
                               optionLabel="nombre"
                               filter
+                              required
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                           </span>
                           <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                            Coordinador de la sede
+                            Coordinador de la sede *
                           </label>
                       </span>
+                      <p>{values.coordinador.nombre}</p>
                   </div>
-                  <p>{values.coordinador.nombre}</p>
+                  
                   <div className="p-inputgroup mb-5 mt-8">
                       <span className='p-float-label relative'>
                           <Field
@@ -307,15 +312,17 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               options={listaUsuarios.filter((usuario) => usuario.perfile.perfil === "OPERADOR")} 
                               optionLabel="nombre"
                               filter
+                              required
                               // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                           </span>
                           <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                            Operador de la sede
+                            Operador de la sede *
                           </label>
                       </span>
+                      <p>{values.operador.nombre}</p>
                   </div>
                   <div className="p-inputgroup mb-5 mt-8">
                       <span className='p-float-label relative'>
@@ -326,12 +333,13 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               value={values.estatus}
                               options={opcionesStatus} 
                               optionLabel="value"
+                              required
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                           </span>
                           <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                            Estatus
+                            Estatus *
                           </label>
                       </span>
                   </div>

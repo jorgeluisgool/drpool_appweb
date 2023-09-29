@@ -8,7 +8,7 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
    useEffect(() => {
      const fetchData = async () => {
        try {
-         const response = await fetch(`${api}/obtener/registros/231`);
+         const response = await fetch(`${api}/obtener/registros/233`);
          const jsonData = await response.json();
          console.log(jsonData)
          setRegistrosDrPool(jsonData);
