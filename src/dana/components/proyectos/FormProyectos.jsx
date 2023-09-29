@@ -178,11 +178,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     as={InputText}
                                     name="nombreproyectoalberca"
                                     value={values.nombreproyectoalberca.toUpperCase()}
-<<<<<<< HEAD
                                     disabled = {editFields}
-=======
                                     required
->>>>>>> d2b56680ba51a959265b149c2f53d960168132d6
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -199,12 +196,9 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     as={InputText}
                                     name="numeroproyecto"
                                     value={values.numeroproyecto}
-<<<<<<< HEAD
                                     disabled = {editFields}
                                     
-=======
                                     required
->>>>>>> d2b56680ba51a959265b149c2f53d960168132d6
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -229,11 +223,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                       values.proyectoSedes = [];
                                     }}
                                     filter
-<<<<<<< HEAD
                                     disabled = {editFields}
-=======
                                     required
->>>>>>> d2b56680ba51a959265b149c2f53d960168132d6
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -253,14 +244,10 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={values.proyectoSedes}
                                     options={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente)} 
                                     optionLabel="nombre"
-<<<<<<< HEAD
                                     disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente && editFields == false).length === 0}
                                     filter                                    
-=======
-                                    disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente).length === 0}
-                                    filter
+                                    //disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente).length === 0}
                                     required
->>>>>>> d2b56680ba51a959265b149c2f53d960168132d6
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -301,11 +288,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={values.tiposervicio}
                                     options={opcionesTipoServicio}
                                     optionLabel="value"
-<<<<<<< HEAD
                                     disabled = {editFields}
-=======
                                     required
->>>>>>> d2b56680ba51a959265b149c2f53d960168132d6
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -324,11 +308,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={parseDate(values.fechainiciocontrato)}
                                     dateFormat="dd/MM/yy"
                                     locale='es'
-<<<<<<< HEAD
                                     disabled = {editFields}
-=======
                                     required
->>>>>>> d2b56680ba51a959265b149c2f53d960168132d6
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -370,11 +351,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={values.estatus}
                                     options={opcionesStatus} 
                                     optionLabel="value"
-<<<<<<< HEAD
                                     disabled = {editFields}
-=======
                                     required
->>>>>>> d2b56680ba51a959265b149c2f53d960168132d6
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
