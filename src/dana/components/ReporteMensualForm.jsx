@@ -97,8 +97,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         }  
       };
 
-    console.log(albercas)
-
     const onSubmit = (values, { resetForm }) => {
 
         if(typeof values.FECHA !== "string"){

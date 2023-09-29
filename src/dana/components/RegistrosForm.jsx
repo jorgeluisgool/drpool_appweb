@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { MultiSelect } from 'primereact/multiselect';
 import { Dropdown } from 'primereact/dropdown';
 import { api } from '../helpers/variablesGlobales';
+import { InputText } from 'primereact/inputtext';
   
   const initialValues = {
     multiSelectField: [],
@@ -13,12 +14,12 @@ import { api } from '../helpers/variablesGlobales';
   };
 
   const opcionesTipoReporte = [
-    {label: 'BITACORA DIARIA', value: 'BITACORA DIARIA'},
+    {label: 'BITÁCORA DIARIA', value: 'BITACORA DIARIA'},
     {label: 'REPORTE SEMANAL', value: 'REPORTE SEMANAL'},
-    {label: 'REPORTE FOTOFRAFICO MENSUAL', value: 'REPORTE FOTOFRAFICO MENSUAL'},
+    {label: 'REPORTE FOTOFRÁFICO MENSUAL', value: 'REPORTE FOTOFRÁFICO MENSUAL'},
   ]
 
-const RegistrosForm = ({usuarios, listaRegistros, setListaRegistros, usuariosSeleccionados, setUsuariosSeleccionados, proyectosClientes, setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas}) => {
+const RegistrosForm = ({usuarios, listaRegistros, setListaRegistros, usuariosSeleccionados, setUsuariosSeleccionados, proyectosClientes, setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, registrosDrPool, setRegistrosDrPool, tipoReporSeleccionado, setTipoReporSeleccionado, setSearchSede}) => {
 
   const [listaRegistrosValor, setListaRegistrosValor] = useState([]);
   const [listaProyectos, setListaProyectos] = useState([]);
@@ -30,6 +31,7 @@ const RegistrosForm = ({usuarios, listaRegistros, setListaRegistros, usuariosSel
   const [valorSeleccionado, setValorSeleccionado] = useState([]);
 
   const [cargando, setCargando] = useState(false);
+  const [albercaSeleccionada, setAlbercaSeleccionada] = useState({});
 
   // const [lista, setLista] = useState([]);
 
@@ -185,200 +187,101 @@ const handleUsuarioChange = (usuario) => {
                     <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-3">
 
                     <div className="mt-8 mx-4 flex flex-col">
-                              <div className='p-inputgroup flex-1'>
-                                <span className='p-float-label relative'>
-                                  <Field
-                                    as={Dropdown}
-                                    name="sedes"
-                                    value={sedeSeleccionada}
-                                    options={sedes}
-                                    optionLabel="nombre"
-                                    filter
-                                    emptyFilterMessage='No se encontarron sedes'
-                                    onChange={(e) => setSedeSeleccionada(e.target.value)}
-
-                                    // onChange={(proyecto) => {
-                                    //   setProyectosSeleccionados([proyecto.target.value]);
-                                    //   const ListaUsuariosProyectos = {usuarios: usuariosSeleccionados, proyectos: [proyecto.target.value]}
-
-                                    //   // obtencion de los registros de acuerdo a los usuarios selecionados y al proyecto seleccionado
-                                    //   fetch(`${api}/obtener/registros/asignados/usuario/proyecto`, {
-                                    //     method: 'POST',
-                                    //     headers: {
-                                    //       'Content-Type': 'application/json' 
-                                    //     },
-                                    //     body: JSON.stringify(ListaUsuariosProyectos) 
-                                    //   })
-                                    //     .then(response => response.json())
-                                    //     .then(responseData => {
-                                    //       console.log(responseData)
-                                    //       setListaRegistros(responseData);
-                                    //       setListaRegistrosValor(responseData);                
-                                    //     })
-                                    //     .catch(error => console.log(error)); 
-                                        
-                                    //     // obenemos los campos para el select de buscar por
-                                    //     fetch(`${api}/obtener/campos/proyectos`, {
-                                    //       method: 'POST',
-                                    //       headers: {
-                                    //         'Content-Type': 'application/json' 
-                                    //       },
-                                    //       body: JSON.stringify([proyecto.target.value]) 
-                                    //     })
-                                    //       .then(response => response.json())
-                                    //       .then(responseData => {
-                                    //         console.log(responseData)
-                                    //         setListaCampos(responseData);                
-                                    //       })
-                                    //       .catch(error => console.log(error));
-                                    // }}
-                    
-                                    
-                                    className="w-full appearance-none focus:outline-none bg-transparent"
-                                  />
-                                  <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                    <i className="pi pi-file text-[#245A95] font-bold text-2xl"></i>
-                                  </span>
-                                  <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Selecciona la sede
-                                  </label>
-                                </span>
-                              </div>
-                        </div>
-                        <div className="mt-8 mx-4 flex flex-col">
-                          {
-                            sedeSeleccionada.length === 0 ? <div></div> :
-                            <div className='p-inputgroup flex-1'>
-                              <span className='p-float-label relative'>
-                                <Field
-                                  as={Dropdown}
-                                  name="albercas"
-                                  options={albercas?.filter((alberca) => (alberca.sede.nombre === sedeSeleccionada.nombre && alberca.estatus === "ACTIVO"))}
-                                  optionLabel="nombrealberca"
-                                  filter
-                                  emptyFilterMessage='No se encontraron albercas'
-                                  onChange={handleUsuarioChange}
-                                  // onChange={(usuario)=>{
-                                  //   setUsuariosSeleccionados(usuario.target.value);
-                                  //   // console.log(usuario.target.value);
-
-                                  //   fetch(`${api}/obtener/proyectos/asignados/usuarios`, {
-                                  //     method: 'POST',
-                                  //     headers: {
-                                  //       'Content-Type': 'application/json' 
-                                  //     },
-                                  //     body: JSON.stringify(usuario.target.value) 
-                                  //   })
-                                  //     .then(response => response.json())
-                                  //     .then(responseData => {
-                                  //       // console.log(responseData)
-                                  //       // obtenemos los proyectos
-                                  //       setListaProyectos(responseData)
-                                        
-                                  //     })
-                                  //     .catch(error => console.log(error));
-                                  // }}
-                                  value={usuariosSeleccionados}
-                                  display="chip"
-                                  className="w-full appearance-none focus:outline-none bg-transparent"
-                                />
-                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                  <i className="pi pi-users text-[#245A95] font-bold text-2xl"></i>
-                                </span>
-                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Selecciona la alberca
-                                </label>
-                              </span>
-                            </div>
-                          }
-                            
-                        </div>
-                        
-                        <div className="mt-8 mx-4 flex flex-col">
-                          {
-                            // listaCampos.length === 0 ? <div></div> :
-                            <div className='p-inputgroup flex-1'>
-                                <span className='p-float-label relative'>
-                                  <Field
-                                    as={Dropdown}
-                                    name="BuscarCampo"
-                                    options={opcionesTipoReporte}
-                                    optionLabel='label'
-                                    filter
-                                    emptyFilterMessage='Campo no encontradofh'
-                                    filterPlaceholder='Campo'
-                                    onChange={handleCampoChange}
-                                    // onChange={(campo) =>{
-
-                                    //   setCampoSeleccionado(campo.target.value)
-                                    //   fetch(`${api}/obtener/valores/busqueda`, {
-                                    //     method: 'POST',
-                                    //     headers: {
-                                    //       'Content-Type': 'application/json' 
-                                    //     },
-                                    //     body: JSON.stringify({usuarios: usuariosSeleccionados, proyecto:proyectosSeleccionados, campo:campo.target.value}) 
-                                    //   })
-                                    //     .then(response => response.json())
-                                    //     .then(responseData => {
-                                    //       console.log(responseData)
-                                    //       setListaValores(responseData);                  
-                                    //     })
-                                    //     .catch(error => console.log(error)); 
-                                    // }}
-                                    value={campoSeleccionado}
-                                    display="chip"
-                                    className="w-full appearance-none focus:outline-none bg-transparent"
-                                  />
-                                  <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                    <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
-                                  </span>
-                                  <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Selecciona el tipo de reporte
-                                  </label>
-                                </span>
-                              </div>
-                          }
-                                
-                        </div>
-                        <div className="mt-8 mx-4 flex flex-col">
-                          {
-                            listaValores.length === 0 ? <></> :
-                            <div className='p-inputgroup flex-1'>
-                                <span className='p-float-label relative'>
-                                  <Field
-                                    as={Dropdown}
-                                    name="valores"
-                                    options={listaValoresFiltrados}
-                                    optionLabel="valor"
-                                    filter
-                                    emptyFilterMessage='Valor del campo no encontrado'
-                                    filterPlaceholder='Nombre de proyecto'
-                                    onChange={(valor) => {
-                                      setValorSeleccionado(valor.target.value);
-                                      console.log(valor.target.value);
-
-                                     const resultados =  listaValores.filter(item => item.valor.trim() === valor.target.value.valor.trim());
-
-                                    
-
-                                      setListaRegistros(resultados.map(item => item.inventario));
-                                    }}
-                                    value={valorSeleccionado}
-                                    display="chip"
-                                    className="w-full appearance-none focus:outline-none bg-transparent"
-                                  />
-                                  <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                    <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
-                                  </span>
-                                  <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Buscar:
-                                  </label>
-                                </span>
-                              </div>
-                          }       
+                        <div className='p-inputgroup flex-1'>
+                          <span className='p-float-label relative'>
+                            <Field
+                              className="w-full appearance-none focus:outline-none bg-transparent"
+                              as={Dropdown}
+                              name="sedes"
+                              value={sedeSeleccionada}
+                              options={sedes?.filter((sede) => (sede.cliente.cliente === clienteSeleccionado.cliente))}
+                              optionLabel="nombre"
+                              filter
+                              emptyFilterMessage='No se encontarron sedes'
+                              onChange={(e) => setSedeSeleccionada(e.target.value)}
+                            />
+                            <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                              <i className="pi pi-file text-[#245A95] font-bold text-2xl"></i>
+                            </span>
+                            <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                              Selecciona la sede
+                            </label>
+                          </span>
                         </div>
                     </div>
-                    <div className="flex py-2 mt-6 justify-end">
+                    <div className="mt-8 mx-4 flex flex-col">
+                      {
+                        sedeSeleccionada != null && 
+                        <div className='p-inputgroup flex-1'>
+                          <span className='p-float-label relative'>
+                            <Field
+                              as={Dropdown}
+                              name="albercas"
+                              options={albercas?.filter((alberca) => (alberca.sede.nombre === sedeSeleccionada.nombre && alberca.estatus === "ACTIVO"))}
+                              optionLabel="nombrealberca"
+                              filter
+                              emptyFilterMessage='No se encontraron albercas'
+                              value={albercaSeleccionada}
+                              onChange={(e)=>{   
+                                setAlbercaSeleccionada(e.target.value);
+                                fetch(`${api}/obtener/registrosalberca/${e.target.value.idalberca}`, {
+                                  method: 'GET',
+                                  headers: {
+                                    'Content-Type': 'application/json' 
+                                  },
+                                  
+                                })
+                                  .then(response => response.json())
+                                  .then(responseData => {
+                                    // console.log(responseData)
+                                    // obtenemos los proyectos
+                                    setRegistrosDrPool(responseData)                     
+                                  })
+                                  .catch(error => console.log(error));
+                              }}
+                              display="chip"
+                              className="w-full appearance-none focus:outline-none bg-transparent"
+                            />
+                            <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                              <i className="pi pi-users text-[#245A95] font-bold text-2xl"></i>
+                            </span>
+                            <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                              Selecciona la alberca
+                            </label>
+                          </span>
+                        </div>
+                      }   
+                    </div>     
+                    <div className="mt-8 mx-4 flex flex-col">
+                      {
+                        // listaCampos.length === 0 ? <div></div> :
+                        <div className='p-inputgroup flex-1'>
+                            <span className='p-float-label relative'>
+                              <Field
+                                as={Dropdown}
+                                name="tiporeporte"
+                                value={tipoReporSeleccionado}
+                                options={opcionesTipoReporte}
+                                optionLabel='label'
+                                emptyFilterMessage='Campo no encontradofh'
+                                filterPlaceholder='Campo'
+                                onChange={(e) => (setTipoReporSeleccionado(e.target.value))}
+                                display="chip"
+                                className="w-full appearance-none focus:outline-none bg-transparent"
+                              />
+                              <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
+                              </span>
+                              <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                Selecciona el tipo de reporte
+                              </label>
+                            </span>
+                          </div>
+                      }        
+                    </div>
+                    {
+                      tipoReporSeleccionado === 'REPORTE FOTOFRÁFICO MENSUAL' &&
+                      <div className="mt-8 mx-4 flex-col flex py-2">
                       <button
                         type="button"
                         // disabled={!formik.dirty || formik.isSubmitting}
@@ -390,24 +293,30 @@ const handleUsuarioChange = (usuario) => {
                         <ion-icon name="eye" className="mr-2 text-2xl"></ion-icon> Nuevo reporte mensual
                       </button>
                     </div>
-                    <div className="flex py-2 mt-6 justify-end">
-                      <button
-                        type="submit"
-                        // disabled={!formik.dirty || formik.isSubmitting}
-                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                        onClick={()=>{
-                          console.log(listaRegistrosValor);
-                          setListaRegistros(listaRegistrosValor);
-                        }}
-                      >
-                        <ion-icon name="eye" className="mr-2 text-2xl"></ion-icon> Ver todos
-                      </button>
+                    }
                     </div>
-                    {/* <div className="flex">
-                        <button type="submit" disabled={!formik.dirty || formik.isSubmitting} className="ml-auto w-14 h-14 object-cover active:scale-[.98] py-3 bg-transparent hover:bg-[#245A95] hover:text-white text-[#245A95] text-2xl font-bold inline-block rounded-full bg-primary p-2 uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] mt-4">
-                            <ion-icon name="search"></ion-icon>
-                        </button>
-                    </div> */}
+                    {/* <div className="mt-8 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-4"> */}
+                      <div className="mt-8 px-64 flex flex-col p-inputgroup justify-self-center">
+                          <div className="flex flex-col">
+                            <span className='p-float-label relative'>
+                                <InputText
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    name="direccion"
+                                    type='text'
+                                    // value={searchTerm.toUpperCase()}
+                                    onChange={(e) => (setSearchSede(e.target.value))}  
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Buscar reporte
+                                </label>
+                            </span>
+                            <p className="text-base text-[#245A95] font-semibold">Buscar por folio o fecha de creación</p>
+                          </div>         
+                      </div>
+                    {/* </div> */}
                 </div>
             </Form>
         )}

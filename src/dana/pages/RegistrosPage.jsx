@@ -39,8 +39,11 @@ export const RegistrosPage = () => {
   const [ventanaCarga, setVentanaCarga] = useState(false);
   const [modalNuevoReporteMensual, setModalNuevoReporteMensual] = useState(false);
   const [sedes, setSedes] = useState();
-  const [sedeSeleccionada, setSedeSeleccionada] = useState({});
+  const [sedeSeleccionada, setSedeSeleccionada] = useState(null);
   const [albercas, setAlbercas] = useState();
+  const [registrosDrPool, setRegistrosDrPool] = useState();
+  const [tipoReporSeleccionado, setTipoReporSeleccionado] = useState('');
+  const [searchSede, setSearchSede] = useState('');
 
   const toggleShow = (index) => {
     if (index === showAcordion) {
@@ -84,8 +87,6 @@ export const RegistrosPage = () => {
 
   const { data: usuarios, loading } = useFetchUsers();
   const { data: proyectosClientes, loadingProyectosClientes } = useFetchProjetsClientes(clienteSeleccionado);
-
-  // console.log(proyectosClientes);
 
   const handleSelectedRow = (index) => {
     if (selectedRows.includes(index)) {
@@ -197,10 +198,6 @@ export const RegistrosPage = () => {
         }
       })
       .catch(error => console.log(error));
-
-      
-
-
   }
 
   const handleClickRegresar = () => {
@@ -253,6 +250,12 @@ export const RegistrosPage = () => {
           setSedeSeleccionada={setSedeSeleccionada}
           albercas={albercas}
           setAlbercas={setAlbercas}
+          clienteSeleccionado={clienteSeleccionado}
+          registrosDrPool={registrosDrPool}
+          setRegistrosDrPool={setRegistrosDrPool}
+          tipoReporSeleccionado={tipoReporSeleccionado}
+          setTipoReporSeleccionado={setTipoReporSeleccionado}
+          setSearchSede={setSearchSede}
         />
     </div>
     <div className="overflow-x-auto">
@@ -268,6 +271,10 @@ export const RegistrosPage = () => {
             setProyectoSeleccionado={setProyectoSeleccionado}
             setDataProyectoSeleccionado={setDataProyectoSeleccionado}
             usuariosSeleccionados={usuariosSeleccionados}
+            registrosDrPool={registrosDrPool}
+            setRegistrosDrPool={setRegistrosDrPool}
+            tipoReporSeleccionado={tipoReporSeleccionado}
+            searchSede={searchSede}
           />
     </div>
     </div>

@@ -1,33 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../helpers/variablesGlobales';
 
-const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelected, onSelectedRow, setModalAbrirCerrar, listaRegistros, setProyectoSeleccionado, setDataProyectoSeleccionado, usuariosSeleccionados}) => {
+const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelected, onSelectedRow, setModalAbrirCerrar, listaRegistros, setProyectoSeleccionado, setDataProyectoSeleccionado, usuariosSeleccionados, registrosDrPool, tipoReporSeleccionado, toLowerCase, searchSede}) => {
 
-  const [registrosDrPool, setRegistrosDrPool] = useState();
+  
+console.log(searchSede)
+  //  useEffect(() => {
+  //    const fetchData = async () => {
+  //      try {
+  //        const response = await fetch(`${api}/obtener/registros/233`);
+  //        const jsonData = await response.json();
+  //        console.log(jsonData)
+  //        setRegistrosDrPool(jsonData);
+  //      } catch (error) {
+  //        console.log('Error:', error);
+  //      }
+  //    };
 
-   useEffect(() => {
-     const fetchData = async () => {
-       try {
-         const response = await fetch(`${api}/obtener/registros/233`);
-         const jsonData = await response.json();
-         console.log(jsonData)
-         setRegistrosDrPool(jsonData);
-       } catch (error) {
-         console.log('Error:', error);
-       }
-     };
+  //    fetchData();
+  //  }, []);
 
-     fetchData();
-   }, []);
+  const registrosDrPoolFilterTipo = registrosDrPool?.filter((registro) => ( registro.proyecto.proyecto.includes(tipoReporSeleccionado) ));
+  
+  
+//   const filterRegistrosSearch = registrosDrPool?.filter((registro) =>
+//   registro.folio && searchSede &&
+//   registro.folio.toLowerCase().includes(searchSede.toLowerCase())
+// );
 
-   console.log(registrosDrPool);
+
+  // const filterRegistrosSearch = registrosDrPool?.filter((registro) =>
+    
+  // );
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [cargando, setCargando] = useState(false);
 
-  const totalRows = listaRegistros.length;
+  const totalRows = registrosDrPoolFilterTipo?.length;
   const totalPages = Math.ceil(totalRows / rowsPerPage);
 
   // Obtener índice del último registro en la página actual
@@ -35,9 +46,9 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
   // Obtener índice del primer registro en la página actual
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
   // Obtener los registros para la página actual
-  const currentRows = registrosDrPool?.slice(indexOfFirstRow, indexOfLastRow) || [];
+  const currentRows = registrosDrPoolFilterTipo?.slice(indexOfFirstRow, indexOfLastRow) || [];
 
-
+  const currentRows2 = currentRows?.filter((registroRows) => ( registroRows.folio.toLowerCase().includes(searchSede.toLowerCase()) ));
   // Función para cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -116,14 +127,14 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
       <thead className="bg-[#245A95] text-white uppercase">
         <tr className='text-left'>
           <th scope="col" className="relative px-6 py-3">
-            <input
+            {/* <input
               type="checkbox"
               className="absolute h-4 w-4 top-3 left-3"
               onChange={() => {}}
               // checked={selectedRows.length === data.length}
-            />
+            /> */}
             <div className="items-center pl-12">
-              <span>Proyecto</span>
+              <span>Tipo reporte - sede</span>
             </div>
           </th>
           <th scope="col" className="relative px-6 py-3">
@@ -146,15 +157,10 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
               <span>PDF</span>
             </div>
           </th>
-          <th scope="col" className="relative px-6 py-3">
-          <div className="items-center">
-              <span>Evidencia</span>
-            </div>
-          </th>
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200" >
-        {currentRows.map((registro, index) => (
+        {currentRows2.map((registro, index) => (
           <tr 
             key={index} 
             onClick={(event) => handleTableRowClick(event, registro)}
@@ -163,14 +169,14 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
           >
             <td className="px-6">
               <div className="flex items-center">
-                <div className="flex-shrink-0 h-4 w-4">
+                {/* <div className="flex-shrink-0 h-4 w-4">
                   <input
                     type="checkbox"
                     className=" top-3 left-3 p-2"
                     checked={isSelected(index)}
                     onChange={() => onSelectedRow(index)}
                   />
-                </div>
+                </div> */}
                 {/* <div className="flex-shrink-0 h-10 w-10">
                   <img
                     className="h-10 w-10 rounded-full"
@@ -203,12 +209,12 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
               <div className="flex space-x-4">
                 <button 
                   onClick={(event) => handleButtonClick(event, registro)}
-                  className="w-14 h-14 object-cover active:scale-[.98] py-3 bg-transparent hover:bg-[#245A95] hover:text-white text-[#245A95] text-2xl font-bold inline-block rounded-full bg-primary p-2 uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] mt-4">
+                  className="w-11 h-11 object-cover active:scale-[.98] py-1 bg-transparent hover:bg-[#245A95] hover:text-white text-[#245A95] text-2xl font-bold inline-block rounded-full bg-primary p-2 uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] mt-4">
                   <i className="pi pi-file-pdf" style={{ fontSize: '1.5rem' }}></i>
                 </button>
               </div>
             </td>
-            <td className="px-6">
+            {/* <td className="px-6">
               <div className="flex space-x-4">        
               <button
                 type="submit"
@@ -217,7 +223,7 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
                 <ion-icon name="document-attach"></ion-icon>
               </button>
               </div>
-            </td>
+            </td> */}
           </tr>
         ))}
       </tbody>
