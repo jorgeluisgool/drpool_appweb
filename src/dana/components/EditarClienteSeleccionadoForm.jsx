@@ -7,6 +7,7 @@ import { useDropzone } from 'react-dropzone';
 import { api } from '../helpers/variablesGlobales'
 import useAuth from '../hooks/useAuth'
 import { Dropdown } from 'primereact/dropdown'
+import { DialogConfirmacion } from '../../ui/components/DialogConfirmacion'
 
 const opcionesStatus = [
   { label: 'ACTIVO', value: 'ACTIVO' },
@@ -25,7 +26,9 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
         setUploadedImage(URL.createObjectURL(file));
     };
 
-    const { getRootProps, getInputProps } = useDropzone({ onDrop, accept: 'image/*', maxFiles: 1 });
+    const [editFields, setEditFields] = useState(true);
+    const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
+    const { getRootProps, getInputProps } = useDropzone({ onDrop, accept: 'image/*', maxFiles: 1, disabled: editFields});
 
       const onSubmit = (values, { resetForm }) => {
         setVentanaCarga(true);
@@ -83,10 +86,6 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
         reader.readAsArrayBuffer(data);
       };
 
-      const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
-      const [editFields, setEditFields] = useState(true);
-
-
   return (
     <Dialog header='' visible={dialogEditatarClienteForm} baseZIndex={-1} style={{ width: '70vw', height: '36vw' }} onHide={() => setDialogEditatarClienteForm(false)} className='mx-4 xl:mx-20 my-4 px-4 mt-20 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
         <Formik initialValues={clienteState} onSubmit={onSubmit}>
@@ -114,7 +113,7 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                                     as={InputText}
                                     name="cliente"
                                     value={values.cliente.toUpperCase()}
-                                    disable={editFields}
+                                    disabled = {true}
                                     // onChange={(e) => {
                                     //     handleChange(e);
                                     //     setNombreCliente(e.target.value.toUpperCase());
@@ -135,8 +134,8 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                                     as={InputText}
                                     name="direccion"
                                     value={values.direccion.toUpperCase()}
-                                    disable={editFields}
-                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                    disabled = {editFields}
+// onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -153,6 +152,7 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                                     as={InputText}
                                     name="rfc"
                                     value={values.rfc}
+                                    disabled = {editFields}
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -171,6 +171,7 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                                     name="telefono"
                                     value={values.telefono}
                                     keyfilter="pint"
+                                    disabled = {editFields}
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -190,6 +191,7 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                                     value={values.estatus}
                                     options={opcionesStatus} 
                                     optionLabel="value"
+                                    disabled = {editFields}
                                     // onChange={(e) => {
                                     //   handleChange(e);
                                     //   setNombreSede(e.target.value.toUpperCase());
@@ -205,19 +207,32 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                         </div>
                         {/* <Toast ref={toast}></Toast> */}
                         {/* <FileUpload mode="basic" name="demo[]" url="/api/upload" accept="image/*" maxFileSize={1000000} onUpload={onUpload} /> */}
-                        <div {...getRootProps()} style={{ border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
+                        <div {...getRootProps()} style={{ border: '2px dashed gray', padding: '20px', textAlign: 'center'}}>
                           <input {...getInputProps()} />
                           <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar una.</p>
                         </div>
                     </div>
                 </div>
                 <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+                <button
+                            type="button"
+                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => setModaAceptarlAbrirCerrar(true)}
+                        >
+                          <ion-icon name="save"></ion-icon> Guardar
+                        </button>
+                        
+                        {modaAceptarlAbrirCerrar ?
+                         <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}
                     <button
-                        type="submit"
-                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                    >
-                        Guardar
-                    </button>
+                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => {
+                                setEditFields(!editFields);
+                            }}
+                            type='button'
+                        >
+                            {editFields ? <p> <ion-icon name="create"></ion-icon> Editar</p> :  <p> <ion-icon name="alert-circle"></ion-icon> No editar</p>}
+                        </button>
                     <button
                         className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                         onClick={() => {
@@ -225,16 +240,7 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                         }}
                         type='button'
                     >
-                        Editar
-                    </button>
-                    <button
-                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                        onClick={() => {
-                          setDialogEditatarClienteForm(false);
-                        }}
-                        type='button'
-                    >
-                        Cancelar
+                        <ion-icon name="close-circle"></ion-icon> Cancelar
                     </button>
                 </div>
             </Form>

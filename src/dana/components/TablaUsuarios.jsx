@@ -12,6 +12,7 @@ import useAuth from '../hooks/useAuth';
 import { Calendar } from 'primereact/calendar';
 import { addLocale } from 'primereact/api';
 import { format, parse } from 'date-fns';
+import { DialogConfirmacion } from '../../ui/components/DialogConfirmacion';
 
 addLocale('es', {
     firstDayOfWeek: 1,
@@ -32,6 +33,8 @@ const opcionesStatus = [
 export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuario, setUsuarioSeleccionado, usuarioSeleccionado, setVentanaCarga, setModalRegistroGuardado, searchTerm}) => {
 
     const [selectedDateIngreso, setSelectedDateIngreso] = useState(null);
+    const [editFields, setEditFields] = useState(true);
+    const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
 
     console.log(selectedDateIngreso)
     const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
@@ -314,7 +317,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                             </div>
                         </div>
                         {/* MODAL DEL FORMULARIO USUARIOS */}
-                        <Dialog header={`Usuario`} visible={modalCrearEditarUsuario} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalCrearEditarUsuario(false)}  className='pt-12'>
+                        <Dialog header={`Usuario`} visible={modalCrearEditarUsuario} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => {setModalCrearEditarUsuario(false); setEditFields(true)}}  className='pt-12'>
                             <Formik initialValues={ usuarioSeleccionado === undefined ? usuarioVacio : usuarioSeleccionado} onSubmit={handleSubmit}>
                                 {({ values, setFieldValue }) => (
                                     <Form>
@@ -330,6 +333,9 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
                                                         // }}
+                                                        disabled = {
+                                                            usuarioSeleccionado != undefined &&
+                                                            editFields}
                                                         required
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -349,6 +355,9 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         value={values.perfile}
                                                         options={perfil} 
                                                         optionLabel="perfil"
+                                                        disabled = {
+                                                            usuarioSeleccionado != undefined &&
+                                                            editFields}
                                                         // onChange={(e) => {
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
@@ -370,6 +379,9 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         as={InputText}
                                                         name="usuario"
                                                         value={values.usuario.toUpperCase()}
+                                                        disabled = {
+                                                            usuarioSeleccionado != undefined &&
+                                                            editFields}
                                                         // onChange={(e) => {
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
@@ -391,6 +403,9 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         as={InputText}
                                                         name="correo"
                                                         value={values.correo}
+                                                        disabled = {
+                                                            usuarioSeleccionado != undefined &&
+                                                            editFields}
                                                         // onChange={(e) => {
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
@@ -414,6 +429,9 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         value={parseDate(values.fechaingreso)}
                                                         dateFormat="dd/MM/yy"
                                                         locale='es'
+                                                        disabled = {
+                                                            usuarioSeleccionado != undefined &&
+                                                            editFields}
                                                         // onChange={(date) => {
                                                         //     // Realiza el procesamiento de fecha con parseDateIngreso
                                                         //     const processedDate = parseDateIngreso(date);
@@ -439,6 +457,9 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         value={parseDate(values.fechanacimiento)}
                                                         dateFormat="dd/MM/yy"
                                                         locale='es'
+                                                        disabled = {
+                                                            usuarioSeleccionado != undefined &&
+                                                            editFields}
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -455,6 +476,9 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         as={InputText}
                                                         name="ubicacion"
                                                         value={values.ubicacion.toUpperCase()}
+                                                        disabled = {
+                                                            usuarioSeleccionado != undefined &&
+                                                            editFields}
                                                         // onChange={(e) => {
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
@@ -476,6 +500,9 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         name="telefono"
                                                         value={values.telefono.toUpperCase()}
                                                         keyfilter="pint"
+                                                        disabled = {
+                                                            usuarioSeleccionado != undefined &&
+                                                            editFields}
                                                         // onChange={(e) => {
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
@@ -500,6 +527,9 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         optionValue="nombre"
                                                         options={listaUsuarios}
                                                         optionLabel="nombre"
+                                                        disabled = {
+                                                            usuarioSeleccionado != undefined &&
+                                                            editFields}
                                                         filter
                                                         required
                                                     /> 
@@ -520,6 +550,9 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         value={values.status}
                                                         options={opcionesStatus} 
                                                         optionLabel="value"
+                                                        disabled = {
+                                                            usuarioSeleccionado != undefined &&
+                                                            editFields}
                                                         // onChange={(e) => {
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
@@ -542,6 +575,9 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         name="pass"
                                                         value={values.pass}
                                                         toggleMask
+                                                        disabled = {
+                                                            usuarioSeleccionado != undefined &&
+                                                            editFields}
                                                         // onChange={(e) => {
                                                         //   handleChange(e);
                                                         //   setNombreSede(e.target.value.toUpperCase());
@@ -560,17 +596,29 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                         </div>
                                             
                                         <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-                                            <button
-                                                type="submit"
-                                                className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                                                // onClick={() => {
+                                        <button
+                            type="button"
+                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => setModaAceptarlAbrirCerrar(true)}
+                        >
+                          <ion-icon name="save"></ion-icon> Guardar
+                        </button>
+                        
+                        {modaAceptarlAbrirCerrar ?
+                         <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}
 
-                                                //     const s = guardarUsuario(usuarioSeleccionado);
-                                                //     console.log('Respuesta peticion: ', s);
-                                                // }}
-                                            >
-                                                Aceptar
-                                            </button>
+                        
+                        {usuarioSeleccionado != undefined ? (<button
+                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => {
+                              
+                                setEditFields(!editFields);
+                            }}
+                            type='button'
+                        >
+                            {editFields ? <p> <ion-icon name="create"></ion-icon> Editar</p> :  <p> <ion-icon name="alert-circle"></ion-icon> No editar</p>}
+                        </button>
+): <></>}
                                             <button
                                                 className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                                                 onClick={() => {
@@ -579,7 +627,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                 }}
                                                 type='button'
                                             >
-                                                Cancelar
+                                               <ion-icon name="close-circle"></ion-icon> Cancelar
                                             </button>
                                         </div>
                                     </Form>

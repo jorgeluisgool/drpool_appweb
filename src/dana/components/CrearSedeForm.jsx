@@ -4,6 +4,7 @@ import { InputText } from 'primereact/inputtext'
 import React, { useState } from 'react'
 import { api } from '../helpers/variablesGlobales'
 import { Dropdown } from 'primereact/dropdown'
+import { DialogConfirmacion } from '../../ui/components/DialogConfirmacion'
 
 const opcionesStatus = [
   { label: 'ACTIVO', value: 'ACTIVO' },
@@ -13,6 +14,8 @@ const opcionesStatus = [
 export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setVentanaCarga, setModalRegistroGuardado, setSedeSeleccionada, sedeSeleccionada, clientes, listaUsuarios}) => {
 
   const [nombreSede, setNombreSede] = useState('NUEVA SEDE')
+  const [editFields, setEditFields] = useState(true);
+  const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
 
   const initialValues = {
     nombre: '', 
@@ -72,8 +75,10 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
           });
   };
 
+  console.log(sedeSeleccionada)
+
   return (
-    <Dialog header='Sede' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setDialogNuevaSedeForm(false)} className='pt-16'>
+    <Dialog header='Sede' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => {setDialogNuevaSedeForm(false); setEditFields(true)}} className='pt-16'>
         <Formik initialValues={sedeSeleccionada === undefined?  initialValues : sedeSeleccionada} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form> 
@@ -91,6 +96,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                                 handleChange(e);
                                 setNombreSede(e.target.value.toUpperCase());
                               }}
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                               required
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -108,6 +116,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               as={InputText}
                               name="encargadosede"
                               value={values.encargadosede.toUpperCase()}
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                               required
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -125,6 +136,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               as={InputText}
                               name="correo"
                               value={values.correo}
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -142,6 +156,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               name="telefono"
                               value={values.telefono}
                               keyfilter="pint"
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                               // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -164,6 +181,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               as={InputText}
                               name="direccion.calle"
                               value={values.direccion.calle.toUpperCase()}
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -181,6 +201,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               name="direccion.callenumero"
                               value={values.direccion.callenumero}
                               keyfilter="pint"
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -197,6 +220,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               as={InputText}
                               name="direccion.estado"
                               value={values.direccion.estado.toUpperCase()}
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -213,6 +239,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               as={InputText}
                               name="direccion.alcaldia"
                               value={values.direccion.alcaldia.toUpperCase()}
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -229,6 +258,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               as={InputText}
                               name="direccion.colonia"
                               value={values.direccion.colonia.toUpperCase()}
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -246,6 +278,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               name="direccion.codigopostal"
                               value={values.direccion.codigopostal}
                               keyfilter="pint"
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -271,6 +306,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               optionLabel="cliente"
                               filter
                               required
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -291,6 +329,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               optionLabel="nombre"
                               filter
                               required
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -313,6 +354,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               optionLabel="nombre"
                               filter
                               required
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                               // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -334,6 +378,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               options={opcionesStatus} 
                               optionLabel="value"
                               required
+                              disabled ={
+                                sedeSeleccionada != undefined &&
+                                editFields}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -346,12 +393,27 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                 </div>
               </div> 
               <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-                  <button
-                      type="submit"
-                      className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                  >
-                      Guardar
-                  </button>
+              <button
+                            type="button"
+                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => setModaAceptarlAbrirCerrar(true)}
+                        >
+                          <ion-icon name="save"></ion-icon> Guardar
+                        </button>
+                        
+                        {modaAceptarlAbrirCerrar ?
+                         <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}
+                  {sedeSeleccionada != undefined ? (<button
+                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => {
+                              
+                                setEditFields(!editFields);
+                            }}
+                            type='button'
+                        >
+                            {editFields ? <p> <ion-icon name="create"></ion-icon> Editar</p> :  <p> <ion-icon name="alert-circle"></ion-icon> No editar</p>}
+                        </button>
+                    ): <></>}
                   <button
                       className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                       onClick={() => {

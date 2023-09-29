@@ -87,7 +87,7 @@ export const ClientesPage = () => {
     };
 
     fetchData();
-  }, [dialogNuevaSedeForm]);
+  }, [dialogNuevaSedeForm, uploadedImage]);
 
   // Estados y logica para que funcione el paginator
   const [currentPage, setCurrentPage] = useState(1);
