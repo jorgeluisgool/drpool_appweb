@@ -8,6 +8,8 @@ import React, { useState } from 'react'
 import { api } from '../helpers/variablesGlobales';
 import { AlbercaDraw } from './AlbercaDraw';
 import { FormAlbercaEquipo } from './alberca/FormAlbercaEquipo';
+import { DialogConfirmacion } from '../../ui/components/DialogConfirmacion';
+
 
 const opcionesStatus = [
   { label: 'ACTIVO', value: 'ACTIVO' },
@@ -39,6 +41,8 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
 
   const [acordionEquipoAlberca, setAcordionEquipoAlberca] = useState(null);
   const [rotate, setRotate] = useState(false);
+  const [editFields, setEditFields] = useState(true);
+  const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
 
     const initialValues = {
         nombrealberca: '',
@@ -105,9 +109,11 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
         setRotate(!rotate);
       }
 
+      console.log(albercaSeleccionada)
+
   return (
     <>
-    <Dialog header='Albercas' visible={modalAlberca} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalAlberca(false)} className='pt-20'>
+    <Dialog header='Albercas' visible={modalAlberca} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => {setModalAlberca(false); setEditFields(true)}} className='pt-20'>
         <Formik initialValues={albercaSeleccionada === undefined? initialValues : albercaSeleccionada} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form>  
@@ -122,6 +128,10 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     as={InputText}
                                     name="nombrealberca"
                                     value={values.nombrealberca.toUpperCase()}
+                                    disabled={
+                                      albercaSeleccionada != undefined &&
+                                      editFields
+                                    }
                                     // onChange={(e) => {
                                     //   handleChange(e);
                                     //   setNombreSede(e.target.value.toUpperCase());
@@ -144,6 +154,10 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     value={values.tipoalberca}
                                     options={opcionesTipoAlberca}
                                     optionLabel="label"
+                                    disabled={
+                                      albercaSeleccionada != undefined &&
+                                      editFields
+                                    }
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -178,6 +192,10 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     as={InputText}
                                     name="observaciones"
                                     value={values.observaciones.toUpperCase()}
+                                    disabled={
+                                      albercaSeleccionada != undefined &&
+                                      editFields
+                                    }
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -199,6 +217,10 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     optionLabel="cliente"
                                     itemTemplate={renderClienteOption}
                                     onChange={(e) => {setClienteSelect(e.target.value)}}
+                                    disabled={
+                                      albercaSeleccionada != undefined &&
+                                      editFields
+                                    }
                                     filter
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -218,7 +240,11 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     value={values.sede}
                                     options={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente)} 
                                     optionLabel="nombre"
-                                    disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente).length === 0}
+                                    //disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente).length === 0}
+                                    disabled={
+                                      albercaSeleccionada != undefined &&
+                                      editFields
+                                    }
                                     filter
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -238,6 +264,10 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     value={values.estatus}
                                     options={opcionesStatus} 
                                     optionLabel="value"
+                                    disabled={
+                                      albercaSeleccionada != undefined &&
+                                      editFields
+                                    }
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -263,6 +293,10 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     value={values.forma}
                                     options={opcionesFormaAlberca} 
                                     optionLabel="value"
+                                    disabled={
+                                      albercaSeleccionada != undefined &&
+                                      editFields
+                                    }
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -281,6 +315,10 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     name="capacidad"
                                     value={values.capacidad}
                                     keyfilter="pint"
+                                    disabled={
+                                      albercaSeleccionada != undefined &&
+                                      editFields
+                                    }
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -299,6 +337,10 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     name="medidalargo"
                                     value={values.medidalargo}
                                     keyfilter="pint"
+                                    disabled={
+                                      albercaSeleccionada != undefined &&
+                                      editFields
+                                    }
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -316,6 +358,10 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     name="medidaancho"
                                     value={values.medidaancho}
                                     keyfilter="pint"
+                                    disabled={
+                                      albercaSeleccionada != undefined &&
+                                      editFields
+                                    }
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -333,6 +379,10 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     name="profundidadminima"
                                     value={values.profundidadminima}
                                     keyfilter={/^\d+(\.\d{0,2})?$/}
+                                    disabled={
+                                      albercaSeleccionada != undefined &&
+                                      editFields
+                                    }
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -351,6 +401,10 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     name="profundidadmaxima"
                                     value={values.profundidadmaxima}
                                     keyfilter={/^\d+(\.\d{0,2})?$/}
+                                    disabled={
+                                      albercaSeleccionada != undefined &&
+                                      editFields
+                                    }
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -391,12 +445,29 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                     
                 {/* </div>  */}
                 <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-                    <button
-                        type="submit"
-                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                    >
-                        Guardar
-                    </button>
+                <button
+                            type="button"
+                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => setModaAceptarlAbrirCerrar(true)}
+                        >
+                          <ion-icon name="save"></ion-icon> Guardar
+                        </button>
+                        
+                        {modaAceptarlAbrirCerrar ?
+                         <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}
+
+                        
+                        {albercaSeleccionada != undefined ? (<button
+                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => {
+                              
+                                setEditFields(!editFields);
+                            }}
+                            type='button'
+                        >
+                            {editFields ? <p> <ion-icon name="create"></ion-icon> Editar</p> :  <p> <ion-icon name="alert-circle"></ion-icon> No editar</p>}
+                        </button>
+): <></>}
                     <button
                         className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                         onClick={() => {
@@ -404,7 +475,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                         }}
                         type='button'
                     >
-                        Cancelar
+                        <ion-icon name="close-circle"></ion-icon> Cancelar
                     </button>
                 </div> 
             </Form>

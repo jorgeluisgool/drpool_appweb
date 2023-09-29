@@ -59,6 +59,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
     const [fielValue, setFieldValue] = useState();
     const [editFields, setEditFields] = useState(true);
     const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -71,6 +72,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
           }
         };
         fetchData();
+        
+
     }, []);
 
     // Función para convertir la fecha en formato válido de la fecha
@@ -111,6 +114,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
         ...values,
         proyectoSedes: proyectoSedes
       };
+
+
 
       console.log("PROYECTO--> ",valuesToSend);
 
@@ -164,23 +169,32 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
     };
 
     console.log(proyectoAlbercaSeleccionado)
+
+    
     
   return (
-    <Dialog header={`Proyectos`} visible={modalCrearEditarProyectos} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalCrearEditarProyectos(false)} className='pt-16'>
+    
+    
+    <Dialog header={`Proyectos`} visible={modalCrearEditarProyectos} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() =>{ setModalCrearEditarProyectos(false); setEditFields(true)}} className='pt-16'>
         <Formik initialValues={proyectoAlbercaSeleccionado === undefined? initialValues : proyectoAlbercaSeleccionado} onSubmit={handleSubmit}>
             {({ values, field, form }) => (
+              
                 <Form>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
                                 <Field
+                                
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={InputText}
                                     name="nombreproyectoalberca"
                                     value={values.nombreproyectoalberca.toUpperCase()}
-                                    disabled = {editFields}
+                                    disabled = {
+                                      proyectoAlbercaSeleccionado != undefined &&
+                                      editFields}
                                     required
                                 /> 
+                              
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
@@ -196,7 +210,9 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     as={InputText}
                                     name="numeroproyecto"
                                     value={values.numeroproyecto}
-                                    disabled = {editFields}
+                                    disabled = {
+                                      proyectoAlbercaSeleccionado != undefined &&
+                                      editFields}
                                     
                                     required
                                 /> 
@@ -223,7 +239,9 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                       values.proyectoSedes = [];
                                     }}
                                     filter
-                                    disabled = {editFields}
+                                    disabled = {
+                                      proyectoAlbercaSeleccionado != undefined &&
+                                      editFields}
                                     required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -244,7 +262,9 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={values.proyectoSedes}
                                     options={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente)} 
                                     optionLabel="nombre"
-                                    disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente && editFields == false).length === 0}
+                                    //disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente && editFields == false).length === 0}
+                                    disabled = {proyectoAlbercaSeleccionado != undefined &&
+                                      editFields }
                                     filter                                    
                                     //disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente).length === 0}
                                     required
@@ -288,7 +308,9 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={values.tiposervicio}
                                     options={opcionesTipoServicio}
                                     optionLabel="value"
-                                    disabled = {editFields}
+                                    disabled = {
+                                      proyectoAlbercaSeleccionado != undefined &&
+                                      editFields}
                                     required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -308,7 +330,9 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={parseDate(values.fechainiciocontrato)}
                                     dateFormat="dd/MM/yy"
                                     locale='es'
-                                    disabled = {editFields}
+                                    disabled = {
+                                      proyectoAlbercaSeleccionado != undefined &&
+                                      editFields}
                                     required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -329,7 +353,9 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     dateFormat="dd/MM/yy"
                                     locale='es'
 
-                                    disabled = {editFields}
+                                    disabled = {
+                                      proyectoAlbercaSeleccionado != undefined &&
+                                      editFields}
 
                                     required
 
@@ -351,7 +377,9 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={values.estatus}
                                     options={opcionesStatus} 
                                     optionLabel="value"
-                                    disabled = {editFields}
+                                    disabled = {
+                                      proyectoAlbercaSeleccionado != undefined &&
+                                      editFields}
                                     required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -377,7 +405,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                          <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}
 
                         
-                        <button
+                        {proyectoAlbercaSeleccionado != undefined ? (<button
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                             onClick={() => {
                               
@@ -387,6 +415,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                         >
                             {editFields ? <p> <ion-icon name="create"></ion-icon> Editar</p> :  <p> <ion-icon name="alert-circle"></ion-icon> No editar</p>}
                         </button>
+): <></>}
+                          
                         <button
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                             onClick={() => {
