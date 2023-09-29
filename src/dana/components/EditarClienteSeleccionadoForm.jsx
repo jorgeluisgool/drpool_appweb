@@ -83,6 +83,10 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
         reader.readAsArrayBuffer(data);
       };
 
+      const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
+      const [editFields, setEditFields] = useState(true);
+
+
   return (
     <Dialog header='' visible={dialogEditatarClienteForm} baseZIndex={-1} style={{ width: '70vw', height: '36vw' }} onHide={() => setDialogEditatarClienteForm(false)} className='mx-4 xl:mx-20 my-4 px-4 mt-20 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
         <Formik initialValues={clienteState} onSubmit={onSubmit}>
@@ -110,6 +114,7 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                                     as={InputText}
                                     name="cliente"
                                     value={values.cliente.toUpperCase()}
+                                    disable={editFields}
                                     // onChange={(e) => {
                                     //     handleChange(e);
                                     //     setNombreCliente(e.target.value.toUpperCase());
@@ -130,6 +135,7 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                                     as={InputText}
                                     name="direccion"
                                     value={values.direccion.toUpperCase()}
+                                    disable={editFields}
                                     // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -211,6 +217,15 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                         className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                     >
                         Guardar
+                    </button>
+                    <button
+                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                        onClick={() => {
+                          setDialogEditatarClienteForm(false);
+                        }}
+                        type='button'
+                    >
+                        Editar
                     </button>
                     <button
                         className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"

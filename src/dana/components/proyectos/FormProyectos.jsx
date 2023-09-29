@@ -10,6 +10,7 @@ import { api } from '../../helpers/variablesGlobales';
 import { addLocale } from 'primereact/api';
 
 import { format, parse } from 'date-fns';
+import { DialogConfirmacion } from '../../../ui/components/DialogConfirmacion';
 
 addLocale('es', {
   firstDayOfWeek: 1,
@@ -56,6 +57,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
 
     const [albercas, setAlbercas] = useState();
     const [fielValue, setFieldValue] = useState();
+    const [editFields, setEditFields] = useState(true);
+    const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -175,6 +178,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     as={InputText}
                                     name="nombreproyectoalberca"
                                     value={values.nombreproyectoalberca.toUpperCase()}
+                                    disabled = {editFields}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -191,6 +195,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     as={InputText}
                                     name="numeroproyecto"
                                     value={values.numeroproyecto}
+                                    disabled = {editFields}
                                     
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -216,6 +221,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                       values.proyectoSedes = [];
                                     }}
                                     filter
+                                    disabled = {editFields}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -235,8 +241,8 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={values.proyectoSedes}
                                     options={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente)} 
                                     optionLabel="nombre"
-                                    disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente).length === 0}
-                                    filter
+                                    disabled={sedes.filter(sede => sede.estatus === "ACTIVO" && sede.cliente.cliente === clienteSelect.cliente && editFields == false).length === 0}
+                                    filter                                    
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -277,6 +283,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={values.tiposervicio}
                                     options={opcionesTipoServicio}
                                     optionLabel="value"
+                                    disabled = {editFields}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -295,6 +302,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={parseDate(values.fechainiciocontrato)}
                                     dateFormat="dd/MM/yy"
                                     locale='es'
+                                    disabled = {editFields}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -313,6 +321,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={parseDate(values.fechafincontrato)}
                                     dateFormat="dd/MM/yy"
                                     locale='es'
+                                    disabled = {editFields}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -331,6 +340,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                                     value={values.estatus}
                                     options={opcionesStatus} 
                                     optionLabel="value"
+                                    disabled = {editFields}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -342,11 +352,28 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                         </div>         
                     </div>                     
                     <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+                    
                         <button
-                            type="submit"
+                            type="button"
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => setModaAceptarlAbrirCerrar(true)}
                         >
-                            Guardar
+                          <ion-icon name="save"></ion-icon> Guardar
+                        </button>
+                        
+                        {modaAceptarlAbrirCerrar ?
+                         <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}
+
+                        
+                        <button
+                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => {
+                              
+                                setEditFields(!editFields);
+                            }}
+                            type='button'
+                        >
+                            {editFields ? <p> <ion-icon name="create"></ion-icon> Editar</p> :  <p> <ion-icon name="alert-circle"></ion-icon> No editar</p>}
                         </button>
                         <button
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
@@ -355,7 +382,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                             }}
                             type='button'
                         >
-                            Cancelar
+                           <ion-icon name="close-circle"></ion-icon> Cancelar
                         </button>
                     </div>
                 </Form>

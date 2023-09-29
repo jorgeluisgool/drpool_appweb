@@ -2,7 +2,7 @@ import { Dialog } from 'primereact/dialog'
 import React, { useState } from 'react'
 import { useFormikContext } from 'formik';
 
-export const DialogConfirmacion = ({handleMensajeAceptar, modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar}) => { 
+export const DialogConfirmacion = ({handleMensajeAceptar, modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar, setEditFields}) => { 
     const formik = useFormikContext();
 
     const handleChildSubmit = () => {
@@ -21,7 +21,11 @@ export const DialogConfirmacion = ({handleMensajeAceptar, modaAceptarlAbrirCerra
             <div className='mt-8'>
                 <button 
                     type='submit'
-                    onClick={handleChildSubmit}
+                    onClick={()=> {
+                        handleChildSubmit();
+                        setModaAceptarlAbrirCerrar(false);
+                        setEditFields(true);
+                    }}
                     className='hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 mr-4'
                 >
                     ACEPTAR
