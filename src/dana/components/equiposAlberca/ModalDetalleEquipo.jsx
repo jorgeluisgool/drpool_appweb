@@ -1,22 +1,50 @@
 import { Dialog } from 'primereact/dialog'
-import React from 'react'
+import React, { useState } from 'react'
+import { BombeoForm } from './BombeoForm';
+import { addLocale } from 'primereact/api';
 
-export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, equipoSeleccionado}) => {
+addLocale('es', {
+    firstDayOfWeek: 1,
+    dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+    dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+    dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+    monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+    monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+    today: 'Hoy',
+    clear: 'Limpiar'
+  });
 
-    console.log(equipoSeleccionado);
+
+export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, equipoSeleccionado, albercaSelected, setVentanaCarga}) => {
+
+    console.log(equipoSeleccionado.idbomba);
+    const [editForm, setEditForm] = useState(false);
+
+    const parseDate = (dateString) => {
+        if (typeof dateString === "string") {
+            const parsedDate = parse(dateString, 'dd/MM/yy', new Date());
+            return parsedDate;
+        } else {
+            return dateString
+        }  
+      };
+
+      console.log(equipoSeleccionado)
 
   return (
-    <Dialog header={equipoSeleccionado.numero} visible={modalDetalleEquipo} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalDetalleEquipo(false)} className='pt-20'>
+    <Dialog header={equipoSeleccionado.numero} visible={modalDetalleEquipo} baseZIndex={-1} style={{ width: '85vw', height: '40vw' }} onHide={() => {setModalDetalleEquipo(false); setEditForm(false)}} className='pt-20'>
         {
         equipoSeleccionado.tipoequipo === 'BOMBEO' &&  
         <div className="max-w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-full hover:shadow-2xl">
             {/* <div className="pl-2 uppercase tracking-wide text-lg text-[#245A95] font-semibold">Card subtitle</div> */}
+            {!editForm &&
+            (<div>
             <div className="md:flex pt-3">
               <div className="px-4">
                   <p className='text-black text-lg font-bold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus}</span></p>
               </div>
               <div className="px-4">
-                  <p className='text-black text-lg font-bold'>Fecha de último mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento}</span></p>
+                  <p className='text-black text-lg font-bold'>Fecha de último mantenimiento: <span className='text-slate-600'>{(equipoSeleccionado.fecha_ultimo_mantenimiento)}</span></p>
               </div>
             </div>
           <div className='border'>
@@ -31,7 +59,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                       <p className='text-black font-semibold'>Modelo: <span className='text-slate-600'>{equipoSeleccionado.modelo}</span></p>
                   </div>
                   <div className="px-4">
-                      <p className='text-black font-semibold'>Capacidad: <span className='text-slate-600'>{equipoSeleccionado.capacidad}</span></p>
+                      <p className='text-black font-semibold'>Corriente nominal: <span className='text-slate-600'>{equipoSeleccionado.capacidad}</span></p>
                   </div>
                 </div>
                 <div className="md:flex pt-3">
@@ -48,28 +76,34 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                   </div>
                 </div>
           </div>
+          </div>)}
+
+          {editForm && (<BombeoForm equipoSeleccionado = {equipoSeleccionado} idbomba = {equipoSeleccionado.idbomba} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></BombeoForm>)}
           <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
                 <button
                     type="submit"
                     className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                    onClick={()=> setEditForm(!editForm)}
                 >
-                    <ion-icon name="create-outline"></ion-icon> Editar
+                    <ion-icon name="create-outline"></ion-icon> {!editForm ? <span>Editar</span> : <span>No editar</span>}
                 </button>
             </div>
+
+           
         </div>
         }
 
         {
         equipoSeleccionado.tipoequipo === 'FILTRADO' &&  
         <div className="max-w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-full hover:shadow-2xl">
-          <div className="md:flex pt-3">
+          {/* <div className="md:flex pt-3">
             <div className="px-4">
                 <p className='text-black text-lg font-bold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus}</span></p>
             </div>
             <div className="px-4">
                 <p className='text-black text-lg font-bold'>Fecha de último mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento}</span></p>
             </div>
-          </div>
+          </div> */}
           <div className='border'>
             <h1 className="pl-4 pt-4 uppercase tracking-wide text-lg text-[#245A95] font-semibold">Arena</h1>
             <div className="md:flex">
@@ -87,6 +121,15 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
               </div>
               <div className="px-4">
                   <p className='text-black font-semibold'>Cantidad maxima: <span className='text-slate-600'>{equipoSeleccionado.cantidadmaxarena}</span></p>
+              </div>
+              <div className="px-4">
+                  <p className='text-black font-semibold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus_arena}</span></p>
+              </div>
+              <div className="px-4">
+                  <p className='text-black font-semibold'>Fecha de ultimo mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento_arena}</span></p>
+              </div>
+              <div className="px-4">
+                  <p className='text-black font-semibold'>Observaciones: <span className='text-slate-600'>{equipoSeleccionado.observaciones_arena}</span></p>
               </div>
             </div>
             <h1 className="pl-4 pt-4 uppercase tracking-wide text-lg text-[#245A95] font-semibold">Zeolita</h1>
@@ -106,6 +149,15 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
               <div className="px-4">
                   <p className='text-black font-semibold'>Cantidad maxima: <span className='text-slate-600'>{equipoSeleccionado.cantidadmaxzeolita}</span></p>
               </div>
+              <div className="px-4">
+                  <p className='text-black font-semibold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus_zeolita}</span></p>
+              </div>
+              <div className="px-4">
+                  <p className='text-black font-semibold'>Fecha de ultimo mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento_zeolita}</span></p>
+              </div>
+              <div className="px-4">
+                  <p className='text-black font-semibold'>Observaciones: <span className='text-slate-600'>{equipoSeleccionado.observaciones_zeolita}</span></p>
+              </div>
             </div>
             <h1 className="pl-4 pt-4 uppercase tracking-wide text-lg text-[#245A95] font-semibold">Cartucho</h1>
             <div className="md:flex">
@@ -124,6 +176,15 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
               <div className="px-4">
                   <p className='text-black font-semibold'>Cantidad maxima: <span className='text-slate-600'>{equipoSeleccionado.cantidadmaxcartucho}</span></p>
               </div>
+              <div className="px-4">
+                  <p className='text-black font-semibold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus_cartucho}</span></p>
+              </div>
+              <div className="px-4">
+                  <p className='text-black font-semibold'>Fecha de ultimo mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento_cartucho}</span></p>
+              </div>
+              <div className="px-4">
+                  <p className='text-black font-semibold'>Observaciones: <span className='text-slate-600'>{equipoSeleccionado.observaciones_cartucho}</span></p>
+              </div>
             </div>
             <h1 className="pl-4 pt-4 uppercase tracking-wide text-lg text-[#245A95] font-semibold">Esponja vidrio/otra</h1>
             <div className="md:flex">
@@ -141,6 +202,15 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
               </div>
               <div className="px-4">
                   <p className='text-black font-semibold'>Cantidad maxima: <span className='text-slate-600'>{equipoSeleccionado.cantidadmaxesponja}</span></p>
+              </div>
+              <div className="px-4">
+                  <p className='text-black font-semibold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus_esponja}</span></p>
+              </div>
+              <div className="px-4">
+                  <p className='text-black font-semibold'>Fecha de ultimo mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento_esponja}</span></p>
+              </div>
+              <div className="px-4">
+                  <p className='text-black font-semibold'>Observaciones: <span className='text-slate-600'>{equipoSeleccionado.observaciones_esponja}</span></p>
               </div>
             </div>
             <div className="md:flex pt-5">
@@ -181,7 +251,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                   <p className='text-black font-semibold'>Modelo: <span className='text-slate-600'>{equipoSeleccionado.modelobomba}</span></p>
               </div>
               <div className="px-4">
-                  <p className='text-black font-semibold'>Capacidad: <span className='text-slate-600'>{equipoSeleccionado.capacidadbomba}</span></p>
+                  <p className='text-black font-semibold'>Corriente nominal: <span className='text-slate-600'>{equipoSeleccionado.capacidadbomba}</span></p>
               </div>
               <div className="px-4">
                   <p className='text-black font-semibold'>Voltaje: <span className='text-slate-600'>{equipoSeleccionado.voltajebomba}</span></p>
@@ -238,15 +308,20 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
               </div>
             </div>
           </div>
+          
+
           <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
                 <button
                     type="submit"
                     className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                    onClick={setEditForm(!editForm)}
                 >
                     <ion-icon name="create-outline"></ion-icon> Editar
                 </button>
             </div>
         </div>
+
+        
         }
 
 {
@@ -348,7 +423,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                     type="submit"
                     className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                 >
-                    <ion-icon name="create-outline"></ion-icon> Editar
+                    <ion-icon name="create-outline"></ion-icon> {editForm ? <p>Editar</p> : <p>No editar</p>}
                 </button>
             </div>
         </div>

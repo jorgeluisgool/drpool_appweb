@@ -62,6 +62,7 @@ const opcionesTipoAlberca = [
 export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, albercaSeleccionada, setAlbercaSeleccionada}) => {
 
     const [modalSeleccionImagenes, setModalSeleccionImagenes] = useState(false);
+    //console.log(sedeSeleccionada)
 
     const initialValues = {
         FECHA: "",

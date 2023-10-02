@@ -3,7 +3,7 @@ import { api } from '../../helpers/variablesGlobales';
 import { Dropdown } from 'primereact/dropdown';
 import { ModalDetalleEquipo } from './ModalDetalleEquipo';
 
-export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEquipos, setEquipoSelected, modalRegistroGuardado}) => {
+export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEquipos, setEquipoSelected, modalRegistroGuardado, setVentanaCarga, ventanaCarga}) => {
 
   const [equiposBomba, setEquiposBomba] = useState();
   const [equiposFiltrado, setEquiposFiltrado] = useState();
@@ -17,7 +17,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
   useEffect(() => {
     setBotonNuevaSede(null);
     setEquipoSelected('')
-  }, [albercaSelected]);
+  }, [albercaSelected, ventanaCarga]);
 
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
     };
 
     fetchData();
-  }, [modalRegistroGuardado]);
+  }, [modalRegistroGuardado, ventanaCarga]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +46,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
     };
 
     fetchData();
-  }, [modalRegistroGuardado]);
+  }, [modalRegistroGuardado, ventanaCarga]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,7 +60,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
     };
 
     fetchData();
-  }, [modalRegistroGuardado]);
+  }, [modalRegistroGuardado, ventanaCarga]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,7 +74,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
     };
 
     fetchData();
-  }, [modalRegistroGuardado]);
+  }, [modalRegistroGuardado, ventanaCarga]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,7 +88,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
     };
 
     fetchData();
-  }, [modalRegistroGuardado]);
+  }, [modalRegistroGuardado, ventanaCarga]);
 
   const equiposbombasfiltradas = equiposBomba?.filter((equiBomba) => (equiBomba.alberca?.nombrealberca === albercaSelected?.nombrealberca));
   const equiposFiltroFiltradas = equiposFiltrado?.filter((equiFiltro) => (equiFiltro.alberca?.nombrealberca === albercaSelected?.nombrealberca));
@@ -101,6 +101,8 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
         modalDetalleEquipo={modalDetalleEquipo}
         setModalDetalleEquipo ={setModalDetalleEquipo}
         equipoSeleccionado={equipoSeleccionado}
+        albercaSelected={albercaSelected}
+        setVentanaCarga={setVentanaCarga}
       />
 
         <div className="mb-6 transition duration-500 ease-in-out hover:shadow-2xl relative w-full max-w-full rounded overflow-hidden shadow-lg group">

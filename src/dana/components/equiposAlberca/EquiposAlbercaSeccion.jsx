@@ -136,6 +136,8 @@ export const EquiposAlbercaSeccion = () => {
                 tiposEquipos={tiposEquipos}
                 setEquipoSelected={setEquipoSelected}
                 modalRegistroGuardado={modalRegistroGuardado}
+                setVentanaCarga={setVentanaCarga}
+                ventanaCarga={ventanaCarga}
               />
             }
             {
