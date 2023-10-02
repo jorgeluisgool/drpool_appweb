@@ -3,37 +3,57 @@ import { Calendar } from 'primereact/calendar'
 import { Dropdown } from 'primereact/dropdown'
 import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
-import React from 'react'
+import React, { useState } from 'react'
 import { api } from '../../helpers/variablesGlobales'
+import { DialogConfirmacion } from '../../../ui/components/DialogConfirmacion'
+import { addLocale } from 'primereact/api'
+
+
+
+addLocale('es', {
+    firstDayOfWeek: 1,
+    dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+    dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+    dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+    monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+    monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+    today: 'Hoy',
+    clear: 'Limpiar'
+  });
 
 const opcionesEstatusBombeo = [
     { label: 'FUNCIONANDO', value: 'FUNCIONANDO' },
     { label: 'NO FUNCIONANDO', value: 'NO FUNCIONANDO' }
 ];
 
-export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado, equipoSelected}) => {
+export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado, equipoSelected, equipoSeleccionado = {}, idbomba = 0}) => {
+
+    const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
+    const [editFields, setEditFields] = useState(true);
 
     const initialValues = {
         alberca: albercaSelected,
+        idbomba: idbomba,
         tipoequipo: equipoSelected,
-        numero: '',
-        potencia: '',
-        marca: '',
-        modelo: '',
-        capacidad: '',
-        voltaje: '',
-        estatus: '',
-        numerofases: '',
-        observaciones: '',
-        fecha_ultimo_mantenimiento: ''
+        numero: equipoSeleccionado.numero,
+        potencia: equipoSeleccionado.potencia,
+        marca: equipoSeleccionado.marca,
+        modelo: equipoSeleccionado.modelo,
+        capacidad: equipoSeleccionado.capacidad,
+        voltaje: equipoSeleccionado.voltaje,
+        estatus: equipoSeleccionado.estatus,
+        numerofases: equipoSeleccionado.numerofases,
+        observaciones: equipoSeleccionado.observaciones,
+        fecha_ultimo_mantenimiento: new Date(equipoSeleccionado.fecha_ultimo_mantenimiento)
     }
+
 
     const onSubmit = (values, { resetForm }) => {
         console.log(values);
 
         setVentanaCarga(true);
        
-            fetch(`${api}/nuevo/equipobomba`, {
+           fetch(`${api}/nuevo/equipobomba`, {
               method: 'POST',
               headers: {
                 "Content-Type": "application/json",
@@ -53,7 +73,14 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
               });
     }
 
-
+    const parseDate = (dateString) => {
+        if (typeof dateString === "string") {
+            const parsedDate = parse(dateString, 'dd/MM/yy', new Date());
+            return parsedDate;
+        } else {
+            return dateString
+        }  
+      };
 
   return (
     <>
@@ -147,7 +174,7 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                               <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                             </span>
                             <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                Capacidad 
+                            Corriente nominal 
                             </label>
                         </span>
                     </div>
@@ -192,7 +219,9 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                                 className="w-full appearance-none focus:outline-none bg-transparent"
                                 as={Calendar}
                                 name="fecha_ultimo_mantenimiento"
-                                value={values.fecha_ultimo_mantenimiento}
+                                value={parseDate(values.fecha_ultimo_mantenimiento)}
+                                dateFormat="dd/MM/yy"
+                                locale='es'
 
                             /> 
                             <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -238,12 +267,18 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                     </div>
                 </div>
                 <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+                   
+
                     <button
-                        type="submit"
-                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                    >
-                        Guardar
-                    </button>
+                            type="button"
+                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => setModaAceptarlAbrirCerrar(true)}
+                        >
+                          <ion-icon name="save"></ion-icon> Guardar
+                        </button>
+                        
+                        {modaAceptarlAbrirCerrar ?
+                         <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields={setEditFields}/> : <></>}
                 </div>
             </div> 
               

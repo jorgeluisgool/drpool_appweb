@@ -64,7 +64,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     
     // const [albercaSeleciona, setAlbercaSeleciona] = useState(initialValues)
 
-    console.log(sedeSeleccionada)
+    //console.log(sedeSeleccionada)
 
     const initialValues = {
         FECHA: "",
