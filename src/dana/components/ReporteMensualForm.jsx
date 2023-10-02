@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { api } from '../helpers/variablesGlobales'
 import { format, parse } from 'date-fns'
 import { addLocale } from 'primereact/api'
+import ModalSeleccionImagenesReporMensual from './ModalSeleccionImagenesReporMensual'
 
 addLocale('es', {
     firstDayOfWeek: 1,
@@ -58,21 +59,17 @@ const opcionesTipoAlberca = [
 
   
 
-export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas}) => {
-    
-    // const [sedes, setSedes] = useState([]);
-    
-    // const [albercaSeleciona, setAlbercaSeleciona] = useState(initialValues)
+export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, albercaSeleccionada, setAlbercaSeleccionada}) => {
 
-    console.log(sedeSeleccionada)
+    const [modalSeleccionImagenes, setModalSeleccionImagenes] = useState(false);
 
     const initialValues = {
         FECHA: "",
         FIRSTDATE: "",
         LASTDATE: "",
         SEDE: sedeSeleccionada,
-        ALCALDIA: "",
-        ALBERCA: "",
+        ALCALDIA: sedeSeleccionada?.direccion.alcaldia,
+        ALBERCA: albercaSeleccionada,
         TIPOALBERCA: "",
         CARACTERISTICA: "",
         REALIZO: "",
@@ -85,8 +82,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         }]
     };
     
-    
-
     // Función para convertir la fecha en formato válido de la fecha
     const parseDate = (dateString) => {
         if (typeof dateString === "string") {
@@ -146,8 +141,15 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         console.log(initialValues2);
     } 
 
+    console.log(sedes);
+
   return (
         <>
+        <ModalSeleccionImagenesReporMensual
+            modalSeleccionImagenes={modalSeleccionImagenes}
+            setModalSeleccionImagenes={setModalSeleccionImagenes}
+        />
+
         <Dialog header='Reporte Fotográfico Mensual' visible={modalNuevoReporteMensual} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalNuevoReporteMensual(false)} className='pt-20'>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6'>
             <div className="p-inputgroup mb-5 mt-5">
@@ -156,11 +158,12 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                         className="w-full appearance-none focus:outline-none bg-transparent"
                         name="sede"
                         value={sedeSeleccionada}
-                        options={sedes} 
+                        options={sedes?.filter((sede) => (sede.cliente.cliente === clienteSeleccionado.cliente))} 
                         optionLabel="nombre"
                         // itemTemplate={renderClienteOption}
                         onChange={(e) => {setSedeSeleccionada(e.target.value)}}
                         filter
+                        required
                     /> 
                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -175,9 +178,12 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                     <Dropdown
                         className="w-full appearance-none focus:outline-none bg-transparent"
                         name="alberca"
-                        options={albercas}
+                        value={albercaSeleccionada}
+                        options={albercas?.filter((alberca) => (alberca.sede.nombre === sedeSeleccionada?.nombre && alberca.estatus === "ACTIVO"))}
                         optionLabel="nombrealberca" 
                         getOptionValue={(option) => option.nombrealberca}
+                        required
+                        onChange={(e) => setAlbercaSeleccionada(e.target.value)}
                     /> 
                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -275,11 +281,9 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                 <span className='p-float-label relative'>
                                     <Field
                                         className="w-full appearance-none focus:outline-none bg-transparent"
-                                        as={Dropdown}
+                                        as={InputText}
                                         name="ALCALDIA"
                                         value={values.ALCALDIA}
-                                        // options={opcionesEstatusBombeo}
-                                        // optionLabel="label" 
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -384,7 +388,8 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                 </div>
                                                 <div className="p-inputgroup mb-5 mt-5 cursor-pointer flex gap-3 justify-center">
                                                         <button
-                                                            type="submit"
+                                                            type="button"
+                                                            onClick={() => (setModalSeleccionImagenes(true))}
                                                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                                                         >
                                                             Imagenes
@@ -457,7 +462,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                         </span>
                                         <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                            Realizo 
+                                            Realizo (Cordinador) 
                                         </label>
                                     </span>
                                 </div>
@@ -467,14 +472,13 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                             as={InputText}
                                             name="REVISO"
-                                            value={values.REVISO}
-                                            
+                                            value={values.REVISO}   
                                         /> 
                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                         </span>
                                         <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                            Reviso 
+                                            Reviso (Administrador de la sede)
                                         </label>
                                     </span>
                                 </div>

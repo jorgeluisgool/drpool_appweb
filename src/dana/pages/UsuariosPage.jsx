@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TabaUsuarios } from '../components/TablaUsuarios'
 import { AlbercaDraw } from '../components/AlbercaDraw'
 import { InputText } from 'primereact/inputtext'
 import { Player } from '@lottiefiles/react-lottie-player'
 import { DialogRegistroGuardado } from '../../ui/components/DialogRegistroGuardado'
 import { VentanaCarga } from '../../ui/components/VentanaCarga'
+import useAuth from '../hooks/useAuth'
 
 export const UsuariosPage = () => {
+
+  const { userAuth, setUserAuth } = useAuth();
 
   const [modalCrearEditarUsuario, setModalCrearEditarUsuario] = useState(false);
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState();
@@ -17,6 +20,16 @@ export const UsuariosPage = () => {
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
+
+  // funcion que hace que al hacer refesh se mantenga el usuario activo
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setUserAuth(foundUser);
+    }
+  }, []);
 
   return (
     <>

@@ -12,8 +12,12 @@ import { Image } from 'primereact/image';
 import { VentanaCarga } from '../../ui/components/VentanaCarga';
 import { Dropdown } from 'primereact/dropdown';
 import { useEffect } from 'react';
+import useAuth from '../hooks/useAuth';
 
 export const AsistenciaPage = () => {
+
+    const { setUserAuth } = useAuth();
+
     const [fechaInicio, setFechaInicio] = useState(null);
     const [fechaFinal, setFechaFinal] = useState(null);
     const [listaUsuarios, setListaUsuarios] = useState([]);
@@ -124,6 +128,16 @@ export const AsistenciaPage = () => {
     const showError = (titulo, mensaje) => {
         toast.current.show({ severity: 'error', summary: titulo, detail: mensaje, life: 3000 });
     }
+
+      // funcion que hace que al hacer refesh se mantenga el usuario activo
+    useEffect(() => {
+      const loggedInUser = localStorage.getItem("user");
+    
+      if (loggedInUser) {
+        const foundUser = JSON.parse(loggedInUser);
+        setUserAuth(foundUser);
+      }
+    }, []);
 
     return (
         <>

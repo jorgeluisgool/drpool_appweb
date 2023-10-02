@@ -34,6 +34,16 @@ export const ClientesRegistrosPage = () => {
     cliente.cliente.toLowerCase().includes(searchCliente.toLowerCase())
     );
 
+    // funcion que hace que al hacer refesh se mantenga el usuario activo
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setUserAuth(foundUser);
+    }
+  }, []);
+
   return (
     <>
       <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">Clientes</h1>

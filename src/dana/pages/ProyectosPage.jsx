@@ -22,14 +22,16 @@ const ProyectosPage = () => {
     }
   }, []);
 
-  const { data: proyectos, loading } = useFetchProjects();
-
-    const headers = [
-        "idproyecto",
-        "proyecto",
-        "descripcion",
-        "fechacreacion",
-    ];
+  // funcion que hace que al hacer refesh se mantenga el usuario activo
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setUserAuth(foundUser);
+    }
+  }, []);
+  
   return (
         <>
         <div className="py-8">

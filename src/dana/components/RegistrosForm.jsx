@@ -8,10 +8,6 @@ import { InputText } from 'primereact/inputtext';
   const initialValues = {
     multiSelectField: [],
   };
-  
-  const onSubmit = (values) => {
-    console.log(values);
-  };
 
   const opcionesTipoReporte = [
     {label: 'BITÁCORA DIARIA', value: 'BITACORA DIARIA'},
@@ -19,147 +15,12 @@ import { InputText } from 'primereact/inputtext';
     {label: 'REPORTE FOTOFRÁFICO MENSUAL', value: 'REPORTE FOTOFRÁFICO MENSUAL'},
   ]
 
-const RegistrosForm = ({usuarios, listaRegistros, setListaRegistros, usuariosSeleccionados, setUsuariosSeleccionados, proyectosClientes, setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, registrosDrPool, setRegistrosDrPool, tipoReporSeleccionado, setTipoReporSeleccionado, setSearchSede}) => {
-
-  const [listaRegistrosValor, setListaRegistrosValor] = useState([]);
-  const [listaProyectos, setListaProyectos] = useState([]);
-  const [proyectosSeleccionados, setProyectosSeleccionados] = useState([]);
-  const [listaCampos, setListaCampos] = useState([]);
-  // const [listaRegistros, setListaRegistros] = useState([]);
-  const [campoSeleccionado, setCampoSeleccionado] = useState([]);
-  const [listaValores, setListaValores] = useState([]);
-  const [valorSeleccionado, setValorSeleccionado] = useState([]);
+const RegistrosForm = ({setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, registrosDrPool, setRegistrosDrPool, tipoReporSeleccionado, setTipoReporSeleccionado, setSearchSede, albercaSeleccionada, setAlbercaSeleccionada}) => {
 
   const [cargando, setCargando] = useState(false);
-  const [albercaSeleccionada, setAlbercaSeleccionada] = useState({});
 
-  // const [lista, setLista] = useState([]);
-
-  // console.log(proyectosSeleccionados);
-
-  const listaProyectosFiltrados = listaProyectos.filter((obj, index, self) =>
-    index === self.findIndex((o) => o.proyecto === obj.proyecto)
-  );
-
-  const listaValoresFiltrados = listaValores.filter((obj, index, self) => 
-    index === self.findIndex((o) => o.valor.trim() === obj.valor.trim())
-  ); 
-
-  // console.log(listaRegistrosValor);
-
-
-  const handleProyectoCliente = (proyecto) => {
-    
-    fetch(`${api}/obtener/proyectos/cliente`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(ListaUsuariosProyectos),
-    }).then((response) => response.json())
-
-    .then((response) => response.json())
-    .then((responseData) => {
-      setListaValores(responseData);
-    })
-    .catch((error) => console.log(error))
-    .finally(() => {
-      setCargando(false); // Desactivar ventana de carga una vez que se complete la carga
-    });
-}
-
-const handleUsuarioChange = (usuario) => {
-  setUsuariosSeleccionados(usuario.target.value);
-
-  if (usuario.target.value.length !== 0) {
-    setCargando(true); // Activar ventana de carga
-    const fetchPromises = usuario.target.value.map((usuario) => {
-      return fetch(`${api}/obtener/registros/asignados/usuario/proyecto/${usuario.idusuario}/${proyectosSeleccionados[0].idproyecto}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => response.json());
-    });
-
-    Promise.all(fetchPromises)
-      .then((responsesData) => {
-        console.log(responsesData)
-        const lista = responsesData.flat();
-        setCargando(false); // Desactivar ventana de carga una vez que se complete la carga
-        console.log(lista);
-        setListaRegistros(lista);
-      })
-      .catch((error) => console.log(error));
-  } else {
-    setListaRegistros(listaRegistrosValor);
-  }
-};
-
-
-
-  const handleProyectoChange = (proyecto) => {
-    
-    setProyectosSeleccionados([proyecto.target.value]);
-    setCargando(true); // Activar ventana de carga
-
-    const ListaUsuariosProyectos = {
-      usuarios: usuariosSeleccionados,
-      proyectos: [proyecto.target.value],
-    };
-
-    Promise.all([
-      fetch(`${api}/obtener/registros/proyecto`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(proyecto.target.value),
-      }).then((response) => response.json()),
-      
-      fetch(`${api}/obtener/campos/proyectos`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify([proyecto.target.value]),
-      }).then((response) => response.json()),
-    ])
-      .then(([registrosData, camposData]) => {
-        setListaRegistros(registrosData);
-        setListaRegistrosValor(registrosData);
-        setListaCampos(camposData);
-      })
-      .catch((error) => console.log(error))
-      .finally(() => {
-        setCargando(false); // Desactivar ventana de carga una vez que se complete la carga
-      });
-  };
-
-  const handleCampoChange = (campo) => {
-    setCampoSeleccionado(campo.target.value);
-    setCargando(true); // Activar ventana de carga
-
-    fetch(`${api}/obtener/valores/busqueda`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        usuarios: usuariosSeleccionados,
-        proyecto: proyectosSeleccionados,
-        campo: campo.target.value,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        setListaValores(responseData);
-      })
-      .catch((error) => console.log(error))
-      .finally(() => {
-        setCargando(false); // Desactivar ventana de carga una vez que se complete la carga
-      });
+  const onSubmit = (values) => {
+    console.log(values);
   };
 
   return (
@@ -201,7 +62,7 @@ const handleUsuarioChange = (usuario) => {
                               onChange={(e) => setSedeSeleccionada(e.target.value)}
                             />
                             <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                              <i className="pi pi-file text-[#245A95] font-bold text-2xl"></i>
+                              <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                             </span>
                             <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
                               Selecciona la sede
@@ -243,7 +104,7 @@ const handleUsuarioChange = (usuario) => {
                               className="w-full appearance-none focus:outline-none bg-transparent"
                             />
                             <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                              <i className="pi pi-users text-[#245A95] font-bold text-2xl"></i>
+                            <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                             </span>
                             <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
                               Selecciona la alberca
@@ -270,7 +131,7 @@ const handleUsuarioChange = (usuario) => {
                                 className="w-full appearance-none focus:outline-none bg-transparent"
                               />
                               <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
+                                <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                               </span>
                               <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
                                 Selecciona el tipo de reporte
@@ -290,7 +151,7 @@ const handleUsuarioChange = (usuario) => {
                           setModalNuevoReporteMensual(true);
                         }}
                       >
-                        <ion-icon name="eye" className="mr-2 text-2xl"></ion-icon> Nuevo reporte mensual
+                        <ion-icon name="newspaper"></ion-icon> Nuevo reporte mensual
                       </button>
                     </div>
                     }

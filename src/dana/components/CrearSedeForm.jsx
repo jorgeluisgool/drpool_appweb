@@ -11,6 +11,15 @@ const opcionesStatus = [
   { label: 'INACTIVO', value: 'INACTIVO' }
 ];
 
+const opcionesEstados = [
+  { label: 'CDMX', value: 'CDMX' },
+  { label: 'QUERÉTARO', value: 'QUERÉTARO' },
+  { label: 'PUEBLA', value: 'PUEBLA' },
+  { label: 'GUERRERO', value: 'GUERRERO' },
+  { label: 'VERACRUZ', value: 'VERACRUZ' },
+  { label: 'TABASCO', value: 'TABASCO' },
+];
+
 export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setVentanaCarga, setModalRegistroGuardado, setSedeSeleccionada, sedeSeleccionada, clientes, listaUsuarios}) => {
 
   const [nombreSede, setNombreSede] = useState('NUEVA SEDE')
@@ -217,9 +226,12 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                       <span className='p-float-label relative'>
                           <Field
                               className="w-full appearance-none focus:outline-none bg-transparent"
-                              as={InputText}
+                              as={Dropdown}
                               name="direccion.estado"
                               value={values.direccion.estado.toUpperCase()}
+                              options={opcionesEstados} 
+                              optionLabel="label"
+                              filter
                               disabled ={
                                 sedeSeleccionada != undefined &&
                                 editFields}

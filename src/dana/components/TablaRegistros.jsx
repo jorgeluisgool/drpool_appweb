@@ -3,8 +3,6 @@ import { api } from '../helpers/variablesGlobales';
 
 const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelected, onSelectedRow, setModalAbrirCerrar, listaRegistros, setProyectoSeleccionado, setDataProyectoSeleccionado, usuariosSeleccionados, registrosDrPool, tipoReporSeleccionado, toLowerCase, searchSede}) => {
 
-  
-console.log(searchSede)
   //  useEffect(() => {
   //    const fetchData = async () => {
   //      try {
@@ -48,7 +46,8 @@ console.log(searchSede)
   // Obtener los registros para la página actual
   const currentRows = registrosDrPoolFilterTipo?.slice(indexOfFirstRow, indexOfLastRow) || [];
 
-  const currentRows2 = currentRows?.filter((registroRows) => ( registroRows.folio.toLowerCase().includes(searchSede.toLowerCase()) ));
+  const currentRows2 = currentRows?.filter((registroRows) => (registroRows.folio.toLowerCase().includes(searchSede.toLowerCase()) || registroRows.fechacreacion.toLowerCase().includes(searchSede.toLowerCase())));
+  
   // Función para cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 

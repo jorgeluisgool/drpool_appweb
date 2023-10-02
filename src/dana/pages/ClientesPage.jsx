@@ -126,7 +126,15 @@ export const ClientesPage = () => {
 
   const clientesActivos = filterClientes.filter(cliente => cliente.estatus === "ACTIVO");
 
-  console.log(sedeSeleccionada);
+  // funcion que hace que al hacer refesh se mantenga el usuario activo
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setUserAuth(foundUser);
+    }
+  }, []);
   
   return (
     <>

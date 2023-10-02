@@ -18,6 +18,9 @@ import { ReporteMensualForm } from '../components/ReporteMensualForm';
 
 export const RegistrosPage = () => {
 
+  // Aqui obtengo el context del cliente seleccionado y usuario logiado
+  const { clienteSeleccionado, userAuth, setUserAuth } = useAuth();
+
   const navigate = useNavigate();
 
   const [editIndex, setEditIndex] = useState(null);
@@ -44,6 +47,7 @@ export const RegistrosPage = () => {
   const [registrosDrPool, setRegistrosDrPool] = useState();
   const [tipoReporSeleccionado, setTipoReporSeleccionado] = useState('');
   const [searchSede, setSearchSede] = useState('');
+  const [albercaSeleccionada, setAlbercaSeleccionada] = useState({});
 
   const toggleShow = (index) => {
     if (index === showAcordion) {
@@ -80,10 +84,6 @@ export const RegistrosPage = () => {
 
     fetchData();
   }, []);
-
-
-  // Aqui obtengo el context del cliente seleccionado
-  const { clienteSeleccionado, userAuth } = useAuth();
 
   const { data: usuarios, loading } = useFetchUsers();
   const { data: proyectosClientes, loadingProyectosClientes } = useFetchProjetsClientes(clienteSeleccionado);
@@ -219,6 +219,16 @@ export const RegistrosPage = () => {
       setDataProyectoSeleccionado(newData);
   }
 
+  // funcion que hace que al hacer refesh se mantenga el usuario activo
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setUserAuth(foundUser);
+    }
+  }, []);
+
   return (
     <>
     {ventanaCarga && (
@@ -256,6 +266,8 @@ export const RegistrosPage = () => {
           tipoReporSeleccionado={tipoReporSeleccionado}
           setTipoReporSeleccionado={setTipoReporSeleccionado}
           setSearchSede={setSearchSede}
+          albercaSeleccionada={albercaSeleccionada}
+          setAlbercaSeleccionada={setAlbercaSeleccionada}
         />
     </div>
     <div className="overflow-x-auto">
@@ -385,6 +397,9 @@ export const RegistrosPage = () => {
       setSedeSeleccionada={setSedeSeleccionada}
       albercas={albercas}
       setAlbercas={setAlbercas}
+      clienteSeleccionado={clienteSeleccionado}
+      albercaSeleccionada={albercaSeleccionada}
+      setAlbercaSeleccionada={setAlbercaSeleccionada}
     />
 
     <BotonFlotanteRegresar  onClick={handleClickRegresar} />
