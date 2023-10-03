@@ -756,7 +756,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                         </div> */}
                     </div>
                     <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-                    <button
+                        <button
                             type="button"
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                             onClick={() => setModaAceptarlAbrirCerrar(true)}

@@ -3,8 +3,11 @@ import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
-import React from 'react'
+import React, { useState } from 'react'
 import { api } from '../../helpers/variablesGlobales';
+import { DialogConfirmacion } from '../../../ui/components/DialogConfirmacion';
+import { addLocale } from 'primereact/api';
+import { format, parse } from 'date-fns';
 
 const opcionesCombustibleCaldera = [
     { label: 'GAS L.P.', value: 'GAS L.P.' },
@@ -17,31 +20,46 @@ const opcionesEstatus = [
     { label: 'NO FUNCIONANDO', value: 'NO FUNCIONANDO' }
 ];
 
-export const CalentamientoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado, equipoSelected}) => {
+addLocale('es', {
+    firstDayOfWeek: 1,
+    dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+    dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+    dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+    monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+    monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+    today: 'Hoy',
+    clear: 'Limpiar'
+  });
+
+export const CalentamientoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado, equipoSelected, equipoSeleccionado = {}, idcalentamiento = 0}) => {
+
+    const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
+    const [editFields, setEditFields] = useState(true);
 
     const initialValues = {
-        alberca: albercaSelected,
-        tipoequipo: equipoSelected,
-        numero: '',
-        estatus: '',
-        fecha_ultimo_mantenimiento: '',
-        marcabomba: '',
-        modelobomba: '',
-        capacidadbomba: '',
-        voltajebomba: '',
-        numerofasesbomba: '',
-        marcacaldera: '',
-        modelocaldera: '',
-        capacidadcaldera: '',
-        combustiblecaldera: '',
-        marcacolector: '',
-        modelocolector: '',
-        numeropaneles: '',
-        numerointercambiador: '',
-        modelointercambiador: '',
-        capacidadintercambiador: '',
-        informacionintercambiador: '',
-        observaciones: ''
+        alberca: albercaSelected || '',
+        tipoequipo: equipoSelected || '',
+        idcalentamiento: idcalentamiento || '',
+        numero: equipoSeleccionado.numero || '',
+        estatus: equipoSeleccionado.estatus || '',
+        fecha_ultimo_mantenimiento: equipoSeleccionado.fecha_ultimo_mantenimiento ? new Date(equipoSeleccionado.fecha_ultimo_mantenimiento) : '',
+        marcabomba: equipoSeleccionado.marcabomba || '',
+        modelobomba: equipoSeleccionado.modelobomba || '',
+        capacidadbomba: equipoSeleccionado.capacidadbomba || '',
+        voltajebomba: equipoSeleccionado.voltajebomba || '',
+        numerofasesbomba: equipoSeleccionado.numerofasesbomba || '',
+        marcacaldera: equipoSeleccionado.marcacaldera || '',
+        modelocaldera: equipoSeleccionado.modelocaldera || '',
+        capacidadcaldera: equipoSeleccionado.capacidadcaldera || '',
+        combustiblecaldera: equipoSeleccionado.combustiblecaldera || '',
+        marcacolector: equipoSeleccionado.marcacolector || '',
+        modelocolector: equipoSeleccionado.modelocolector || '',
+        numeropaneles: equipoSeleccionado.numeropaneles || '',
+        numerointercambiador: equipoSeleccionado.numerointercambiador || '',
+        modelointercambiador: equipoSeleccionado.modelointercambiador || '',
+        capacidadintercambiador: equipoSeleccionado.capacidadintercambiador || '',
+        informacionintercambiador: equipoSeleccionado.informacionintercambiador || '',
+        observaciones: equipoSeleccionado.observaciones || ''
     }
 
     const onSubmit = (values, { resetForm }) => {
@@ -68,6 +86,17 @@ export const CalentamientoForm = ({albercaSelected, setVentanaCarga, setModalReg
                 console.log(error);
               });
     }
+
+    const parseDate = (dateString) => {
+        if (typeof dateString === "string") {
+            const parsedDate = parse(dateString, 'dd/MM/yy', new Date());
+            return parsedDate;
+        } else {
+            return dateString
+        }  
+      };
+
+    console.log("Calentamiento equipo seleccionado:  " + equipoSeleccionado);
 
   return (
     <>
@@ -118,7 +147,9 @@ export const CalentamientoForm = ({albercaSelected, setVentanaCarga, setModalReg
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Calendar}
                                     name="fecha_ultimo_mantenimiento"
-                                    value={values.fecha_ultimo_mantenimiento}
+                                    value={parseDate(values.fecha_ultimo_mantenimiento)}
+                                    dateFormat="dd/MM/yy"
+                                    locale='es'
                                     
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -440,11 +471,16 @@ export const CalentamientoForm = ({albercaSelected, setVentanaCarga, setModalReg
                     </div>
                     <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
                         <button
-                            type="submit"
+                            type="button"
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => setModaAceptarlAbrirCerrar(true)}
                         >
-                            Guardar
+                          <ion-icon name="save"></ion-icon> Guardar
                         </button>
+                        
+                        {modaAceptarlAbrirCerrar ?
+                         <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields={setEditFields}/> : <></>}
+
                         {/* <button
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                             onClick={() => {

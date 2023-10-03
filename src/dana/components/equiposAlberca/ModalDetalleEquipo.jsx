@@ -2,8 +2,11 @@ import { Dialog } from 'primereact/dialog'
 import React, { useState } from 'react'
 import { BombeoForm } from './BombeoForm';
 import {FiltradoForm} from './FiltradoForm'
+import {DosificadorForm} from './DosificadorForm'
 import { addLocale } from 'primereact/api';
 import { CalentamientoForm } from './CalentamientoForm';
+import { ControladorForm } from './ControladorForm';
+import { format, parse } from 'date-fns';
 
 addLocale('es', {
     firstDayOfWeek: 1,
@@ -24,7 +27,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
     const parseDate = (dateString) => {
         if (typeof dateString === "string") {
             const parsedDate = parse(dateString, 'dd/MM/yy', new Date());
-            return parsedDate;
+            return parsedDate.toLocaleDateString('es');
         } else {
             return dateString
         }  
@@ -33,7 +36,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
       console.log(equipoSeleccionado)
 
   return (
-    <Dialog header={equipoSeleccionado.numero} visible={modalDetalleEquipo} baseZIndex={-1} style={{ width: '85vw', height: '40vw' }} onHide={() => {setModalDetalleEquipo(false); setEditForm(false)}} className='pt-20'>
+    <Dialog header={equipoSeleccionado.numero} visible={modalDetalleEquipo} baseZIndex={-1} style={{ width: '85vw', height: '45vw' }} onHide={() => {setModalDetalleEquipo(false); setEditForm(false)}} className='pt-20'>
         {
         equipoSeleccionado.tipoequipo === 'BOMBEO' &&  
         <div className="max-w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-full hover:shadow-2xl">
@@ -45,7 +48,8 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                   <p className='text-black text-lg font-bold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus}</span></p>
               </div>
               <div className="px-4">
-                  <p className='text-black text-lg font-bold'>Fecha de último mantenimiento: <span className='text-slate-600'>{(equipoSeleccionado.fecha_ultimo_mantenimiento)}</span></p>
+              <p className='text-black text-lg font-bold'>Fecha de último mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento ? parseDate(new Date(equipoSeleccionado.fecha_ultimo_mantenimiento)).toLocaleDateString() : '' }</span></p>
+
               </div>
             </div>
           <div className='border'>
@@ -132,7 +136,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                   <p className='text-black font-semibold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus_arena}</span></p>
               </div>
               <div className="px-4">
-                  <p className='text-black font-semibold'>Fecha de ultimo mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento_arena}</span></p>
+                  <p className='text-black font-semibold'>Fecha de ultimo mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento_arena ? parseDate(new Date(equipoSeleccionado.fecha_ultimo_mantenimiento_arena)).toLocaleDateString() : '' }</span></p>
               </div>
               <div className="px-4">
                   <p className='text-black font-semibold'>Observaciones: <span className='text-slate-600'>{equipoSeleccionado.observaciones_arena}</span></p>
@@ -159,7 +163,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                   <p className='text-black font-semibold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus_zeolita}</span></p>
               </div>
               <div className="px-4">
-                  <p className='text-black font-semibold'>Fecha de ultimo mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento_zeolita}</span></p>
+                  <p className='text-black font-semibold'>Fecha de ultimo mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento_zeolita ? parseDate(new Date(equipoSeleccionado.fecha_ultimo_mantenimiento_zeolita)).toLocaleDateString() : '' }</span></p>
               </div>
               <div className="px-4">
                   <p className='text-black font-semibold'>Observaciones: <span className='text-slate-600'>{equipoSeleccionado.observaciones_zeolita}</span></p>
@@ -186,7 +190,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                   <p className='text-black font-semibold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus_cartucho}</span></p>
               </div>
               <div className="px-4">
-                  <p className='text-black font-semibold'>Fecha de ultimo mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento_cartucho}</span></p>
+                  <p className='text-black font-semibold'>Fecha de ultimo mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento_cartucho ? parseDate(new Date(equipoSeleccionado.fecha_ultimo_mantenimiento_cartucho)).toLocaleDateString() : '' }</span></p>
               </div>
               <div className="px-4">
                   <p className='text-black font-semibold'>Observaciones: <span className='text-slate-600'>{equipoSeleccionado.observaciones_cartucho}</span></p>
@@ -213,7 +217,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                   <p className='text-black font-semibold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus_esponja}</span></p>
               </div>
               <div className="px-4">
-                  <p className='text-black font-semibold'>Fecha de ultimo mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento_esponja}</span></p>
+                  <p className='text-black font-semibold'>Fecha de ultimo mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento_esponja ? parseDate(new Date(equipoSeleccionado.fecha_ultimo_mantenimiento_esponja)).toLocaleDateString() : '' }</span></p>
               </div>
               <div className="px-4">
                   <p className='text-black font-semibold'>Observaciones: <span className='text-slate-600'>{equipoSeleccionado.observaciones_esponja}</span></p>
@@ -252,7 +256,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                 <p className='text-black text-lg font-bold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus}</span></p>
             </div>
             <div className="px-4">
-                <p className='text-black text-lg font-bold'>Fecha de último mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento}</span></p>
+                <p className='text-black text-lg font-bold'>Fecha de último mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento ? parseDate(new Date(equipoSeleccionado.fecha_ultimo_mantenimiento)).toLocaleDateString() : '' }</span></p>
             </div>
           </div>
           <div className='border'>
@@ -325,7 +329,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
              </div>)}
             
 
-           {editForm && (<CalentamientoForm equipoSeleccionado = {equipoSeleccionado} idbomba = {equipoSeleccionado.idbomba} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></CalentamientoForm>)}
+           {editForm && (<CalentamientoForm equipoSeleccionado = {equipoSeleccionado} idcalentamiento = {equipoSeleccionado.idcalentamiento} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></CalentamientoForm>)}
           <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
                 <button
                     type="submit"
@@ -343,12 +347,13 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
 {
         equipoSeleccionado.tipoequipo === 'DOSIFICADOR' &&  
         <div className="max-w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-full hover:shadow-2xl">
-          <div className="md:flex pt-3">
+            {!editForm && <div>
+                <div className="md:flex pt-3">
             <div className="px-4">
                 <p className='text-black text-lg font-bold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus}</span></p>
             </div>
             <div className="px-4">
-                <p className='text-black text-lg font-bold'>Fecha de último mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento}</span></p>
+                <p className='text-black text-lg font-bold'>Fecha de último mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento ? parseDate(new Date(equipoSeleccionado.fecha_ultimo_mantenimiento)).toLocaleDateString() : '' }</span></p>
             </div>
           </div>
           <div className='border'>
@@ -394,12 +399,16 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
               </div>
             </div>
           </div>
+                </div>}
+          
+          {editForm && (<DosificadorForm equipoSeleccionado = {equipoSeleccionado} iddosificador = {equipoSeleccionado.iddosificador} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></DosificadorForm>)}
           <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
                 <button
                     type="submit"
                     className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                    onClick={()=> setEditForm(!editForm)}
                 >
-                    <ion-icon name="create-outline"></ion-icon> Editar
+                    <ion-icon name="create-outline"></ion-icon> {!editForm ? <span>Editar</span> : <span>No editar</span>}
                 </button>
             </div>
         </div>
@@ -408,12 +417,13 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
 {
         equipoSeleccionado.tipoequipo === 'CONTROLADOR' &&  
         <div className="max-w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-full hover:shadow-2xl">
-            <div className="md:flex pt-3">
+            {!editForm && <div>
+                <div className="md:flex pt-3">
               <div className="px-4">
                   <p className='text-black text-lg font-bold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus}</span></p>
               </div>
               <div className="px-4">
-                  <p className='text-black text-lg font-bold'>Fecha de último mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento}</span></p>
+                  <p className='text-black text-lg font-bold'>Fecha de último mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento ? parseDate(new Date(equipoSeleccionado.fecha_ultimo_mantenimiento)).toLocaleDateString() : '' }</span></p>
               </div>
             </div>
           <div className='border'>
@@ -434,12 +444,16 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                   </div>
                 </div>
           </div>
+                </div>}
+            
+          {editForm && (<ControladorForm equipoSeleccionado = {equipoSeleccionado} idcontrolador = {equipoSeleccionado.idcontrolador} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></ControladorForm>)}
           <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
                 <button
                     type="submit"
                     className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                    onClick={()=> setEditForm(!editForm)}
                 >
-                    <ion-icon name="create-outline"></ion-icon> {editForm ? <p>Editar</p> : <p>No editar</p>}
+                    <ion-icon name="create-outline"></ion-icon> {!editForm ? <span>Editar</span> : <span>No editar</span>}
                 </button>
             </div>
         </div>
