@@ -3,55 +3,72 @@ import { Calendar } from 'primereact/calendar'
 import { Dropdown } from 'primereact/dropdown'
 import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
-import React from 'react'
+import React, { useState } from 'react'
 import { api } from '../../helpers/variablesGlobales'
+import { addLocale } from 'primereact/api'
+import { DialogConfirmacion } from '../../../ui/components/DialogConfirmacion'
 
 const opcionesEstatusBombeo = [
     { label: 'FUNCIONANDO', value: 'FUNCIONANDO' },
     { label: 'NO FUNCIONANDO', value: 'NO FUNCIONANDO' }
 ];
 
-export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado, equipoSelected}) => {
+addLocale('es', {
+    firstDayOfWeek: 1,
+    dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+    dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+    dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+    monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+    monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+    today: 'Hoy',
+    clear: 'Limpiar'
+  });
+
+export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado, equipoSelected, equipoSeleccionado = {}, idfiltro = 0}, ) => {
+
+    const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
+    const [editFields, setEditFields] = useState(true);
 
     const initialValues = {
         tipoequipo: equipoSelected,
         alberca: albercaSelected,
-        numero: '',
+        numero: equipoSeleccionado.numero,
+        idfiltro: idfiltro,
         estatus: '',
         fecha_ultimo_mantenimiento: '',
-        marcaarena: '',
-        modeloarena: '',
-        cantidadarena: '',
-        cantidadgravaarena: '',
-        cantidadmaxarena: '',
-        marcazeolita: '',
-        modelozeolita: '',
-        cantidadzeolita: '',
-        cantidadgravazeolita: '',
-        cantidadmaxzeolita: '',
-        marcacartucho: '',
-        modelocartucho: '',
-        cantidadcartucho: '',
-        cantidadgravacartucho: '',
-        cantidadmaxcartucho: '',
-        marcaesponja: '',
-        modeloesponja: '',
-        cantidadesponja: '',
-        cantidadgravaesponja: '',
-        cantidadmaxesponja: '',
+        marcaarena: equipoSeleccionado.marcaarena,
+        modeloarena: equipoSeleccionado.modeloarena,
+        cantidadarena: equipoSeleccionado.cantidadarena,
+        cantidadgravaarena: equipoSeleccionado.cantidadgravaarena,
+        cantidadmaxarena: equipoSeleccionado.cantidadmaxarena,
+        marcazeolita: equipoSeleccionado.marcazeolita,
+        modelozeolita: equipoSeleccionado.modelozeolita,
+        cantidadzeolita: equipoSeleccionado.cantidadzeolita,
+        cantidadgravazeolita: equipoSeleccionado.cantidadgravazeolita,
+        cantidadmaxzeolita: equipoSeleccionado.cantidadmaxzeolita,
+        marcacartucho: equipoSeleccionado.marcacartucho,
+        modelocartucho: equipoSeleccionado.modelocartucho,
+        cantidadcartucho: equipoSeleccionado.cantidadcartucho,
+        cantidadgravacartucho: equipoSeleccionado.cantidadgravacartucho,
+        cantidadmaxcartucho: equipoSeleccionado.cantidadmaxcartucho,
+        marcaesponja: equipoSeleccionado.marcaesponja,
+        modeloesponja: equipoSeleccionado.modeloesponja,
+        cantidadesponja: equipoSeleccionado.cantidadesponja,
+        cantidadgravaesponja: equipoSeleccionado.cantidadgravaesponja,
+        cantidadmaxesponja: equipoSeleccionado.cantidadmaxesponja,
         observaciones: '',
-        estatus_arena: '',
-        estatus_zeolita: '',
-        estatus_cartucho: '',
-        estatus_esponja: '',
-        fecha_ultimo_mantenimiento_arena: '',
-        fecha_ultimo_mantenimiento_zeolita: '',
-        fecha_ultimo_mantenimiento_cartucho: '',
-        fecha_ultimo_mantenimiento_esponja: '',
-        observaciones_arena: '',
-        observaciones_zeolita: '',
-        observaciones_cartucho: '',
-        observaciones_esponja: ''
+        estatus_arena: equipoSeleccionado.estatus_arena,
+        estatus_zeolita: equipoSeleccionado.estatus_zeolita,
+        estatus_cartucho: equipoSeleccionado.estatus_cartucho,
+        estatus_esponja: equipoSeleccionado.estatus_esponja,
+        fecha_ultimo_mantenimiento_arena: new Date(equipoSeleccionado.fecha_ultimo_mantenimiento_arena),
+        fecha_ultimo_mantenimiento_zeolita: new Date(equipoSeleccionado.fecha_ultimo_mantenimiento_zeolita),
+        fecha_ultimo_mantenimiento_cartucho: new Date(equipoSeleccionado.fecha_ultimo_mantenimiento_cartucho),
+        fecha_ultimo_mantenimiento_esponja: new Date(equipoSeleccionado.fecha_ultimo_mantenimiento_esponja),
+        observaciones_arena: equipoSeleccionado.observaciones_arena,
+        observaciones_zeolita: equipoSeleccionado.observaciones_zeolita,
+        observaciones_cartucho: equipoSeleccionado.observaciones_cartucho,
+        observaciones_esponja: equipoSeleccionado.observaciones_esponja
     }
 
     const onSubmit = (values, { resetForm }) => {
@@ -78,6 +95,15 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                 console.log(error);
               });
     }
+
+    const parseDate = (dateString) => {
+        if (typeof dateString === "string") {
+            const parsedDate = parse(dateString, 'dd/MM/yy', new Date());
+            return parsedDate;
+        } else {
+            return dateString
+        }  
+      };
 
     console.log(equipoSelected)
 
@@ -254,8 +280,9 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Calendar}
                                     name="fecha_ultimo_mantenimiento_arena"
-                                    value={values.fecha_ultimo_mantenimiento_arena}
-                                    
+                                    value={parseDate(values.fecha_ultimo_mantenimiento_arena)}
+                                    dateFormat="dd/MM/yy"
+                                    locale='es'
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -394,7 +421,9 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Calendar}
                                     name="fecha_ultimo_mantenimiento_zeolita"
-                                    value={values.fecha_ultimo_mantenimiento_zeolita}
+                                    value={parseDate(values.fecha_ultimo_mantenimiento_zeolita)}
+                                    dateFormat="dd/MM/yy"
+                                    locale='es'
                                     
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -534,7 +563,9 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Calendar}
                                     name="fecha_ultimo_mantenimiento_cartucho"
-                                    value={values.fecha_ultimo_mantenimiento_cartucho}
+                                    value={parseDate(values.fecha_ultimo_mantenimiento_cartucho)}
+                                    dateFormat="dd/MM/yy"
+                                    locale='es'
                                     
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -674,7 +705,9 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Calendar}
                                     name="fecha_ultimo_mantenimiento_esponja"
-                                    value={values.fecha_ultimo_mantenimiento_esponja}
+                                    value={parseDate(values.fecha_ultimo_mantenimiento_esponja)}
+                                    dateFormat="dd/MM/yy"
+                                    locale='es'
                                     
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -722,12 +755,17 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                         </div> */}
                     </div>
                     <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-                        <button
-                            type="submit"
+                    <button
+                            type="button"
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => setModaAceptarlAbrirCerrar(true)}
                         >
-                            Guardar
+                          <ion-icon name="save"></ion-icon> Guardar
                         </button>
+                        
+                        {modaAceptarlAbrirCerrar ?
+                         <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields={setEditFields}/> : <></>}
+
                         {/* <button
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                             onClick={() => {

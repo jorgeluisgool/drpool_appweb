@@ -142,6 +142,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
                 }
             </div>
             <div className="p-4">
+              {console.log(equiposCalentamientoFiltradas)}
               <div className="uppercase tracking-wide text-lg text-[#245A95] font-semibold">Calentamiento</div>
                 {
                   equiposCalentamientoFiltradas?.map((equipoCalentamiento) => 
