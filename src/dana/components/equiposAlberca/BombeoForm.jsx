@@ -7,6 +7,8 @@ import React, { useState } from 'react'
 import { api } from '../../helpers/variablesGlobales'
 import { DialogConfirmacion } from '../../../ui/components/DialogConfirmacion'
 import { addLocale } from 'primereact/api'
+import { format, parse } from 'date-fns';
+
 
 
 
@@ -31,20 +33,23 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
     const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
     const [editFields, setEditFields] = useState(true);
 
+    console.log("capacidad en nuevo registro: " + equipoSeleccionado.capacidad)
+    
+
     const initialValues = {
-        alberca: albercaSelected,
-        idbomba: idbomba,
-        tipoequipo: equipoSelected,
-        numero: equipoSeleccionado.numero,
-        potencia: equipoSeleccionado.potencia,
-        marca: equipoSeleccionado.marca,
-        modelo: equipoSeleccionado.modelo,
-        capacidad: equipoSeleccionado.capacidad,
-        voltaje: equipoSeleccionado.voltaje,
-        estatus: equipoSeleccionado.estatus,
-        numerofases: equipoSeleccionado.numerofases,
-        observaciones: equipoSeleccionado.observaciones,
-        fecha_ultimo_mantenimiento: new Date(equipoSeleccionado.fecha_ultimo_mantenimiento)
+        alberca: albercaSelected || '', 
+        idbomba: idbomba || '',
+        tipoequipo: equipoSelected || '',
+        numero: equipoSeleccionado.numero || '',
+        potencia: equipoSeleccionado.potencia || '',
+        marca: equipoSeleccionado.marca || '',
+        modelo: equipoSeleccionado.modelo || '',
+        capacidad: equipoSeleccionado.capacidad || '',
+        voltaje: equipoSeleccionado.voltaje || '',
+        estatus: equipoSeleccionado.estatus || '',
+        numerofases: equipoSeleccionado.numerofases || '',
+        observaciones: equipoSeleccionado.observaciones || '',
+        fecha_ultimo_mantenimiento: equipoSeleccionado.fecha_ultimo_mantenimiento ? new Date(equipoSeleccionado.fecha_ultimo_mantenimiento) : ''
     }
 
 

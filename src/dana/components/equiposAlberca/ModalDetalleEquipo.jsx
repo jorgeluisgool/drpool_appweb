@@ -77,7 +77,8 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                   </div>
                 </div>
           </div>
-          </div>)}
+          </div>
+          )}
 
           {editForm && (<BombeoForm equipoSeleccionado = {equipoSeleccionado} idbomba = {equipoSeleccionado.idbomba} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></BombeoForm>)}
           <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
@@ -245,8 +246,8 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
             
         equipoSeleccionado.tipoequipo === 'CALENTAMIENTO' &&  
         <div className="max-w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-full hover:shadow-2xl">
-            {console.log(equipoSeleccionado)}
-          <div className="md:flex pt-3">
+             {!editForm && (<div>
+                <div className="md:flex pt-3">
             <div className="px-4">
                 <p className='text-black text-lg font-bold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus}</span></p>
             </div>
@@ -321,6 +322,8 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
               </div>
             </div>
           </div>
+             </div>)}
+            
 
            {editForm && (<CalentamientoForm equipoSeleccionado = {equipoSeleccionado} idbomba = {equipoSeleccionado.idbomba} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></CalentamientoForm>)}
           <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
