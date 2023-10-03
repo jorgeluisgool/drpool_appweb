@@ -1,7 +1,9 @@
 import { Dialog } from 'primereact/dialog'
 import React, { useState } from 'react'
 import { BombeoForm } from './BombeoForm';
+import {FiltradoForm} from './FiltradoForm'
 import { addLocale } from 'primereact/api';
+import { CalentamientoForm } from './CalentamientoForm';
 
 addLocale('es', {
     firstDayOfWeek: 1,
@@ -17,7 +19,6 @@ addLocale('es', {
 
 export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, equipoSeleccionado, albercaSelected, setVentanaCarga}) => {
 
-    console.log(equipoSeleccionado.idbomba);
     const [editForm, setEditForm] = useState(false);
 
     const parseDate = (dateString) => {
@@ -93,9 +94,12 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
         </div>
         }
 
+{console.log(equipoSeleccionado)}
         {
+            
         equipoSeleccionado.tipoequipo === 'FILTRADO' &&  
         <div className="max-w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-full hover:shadow-2xl">
+            
           {/* <div className="md:flex pt-3">
             <div className="px-4">
                 <p className='text-black text-lg font-bold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus}</span></p>
@@ -104,7 +108,8 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                 <p className='text-black text-lg font-bold'>Fecha de último mantenimiento: <span className='text-slate-600'>{equipoSeleccionado.fecha_ultimo_mantenimiento}</span></p>
             </div>
           </div> */}
-          <div className='border'>
+          {!editForm &&
+          (<div className='border'>
             <h1 className="pl-4 pt-4 uppercase tracking-wide text-lg text-[#245A95] font-semibold">Arena</h1>
             <div className="md:flex">
               <div className="px-4">
@@ -214,25 +219,33 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
               </div>
             </div>
             <div className="md:flex pt-5">
-              <div className="px-4">
+              {/* <div className="px-4">
                   <p className='text-black font-semibold'>Observaciones: <span className='text-slate-600'>{equipoSeleccionado.observaciones}</span></p>
-              </div>
+              </div> */}
             </div>
-          </div>
+          </div>)
+          }
+          { editForm && <FiltradoForm equipoSeleccionado = {equipoSeleccionado} idfiltro={equipoSeleccionado.idfiltro} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></FiltradoForm>}
+
+          
+          
           <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
                 <button
                     type="submit"
                     className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                    onClick={()=> setEditForm(!editForm)}
                 >
-                    <ion-icon name="create-outline"></ion-icon> Editar
+                    <ion-icon name="create-outline"></ion-icon> {!editForm ? <span>Editar</span> : <span>No editar</span>}
                 </button>
             </div>
         </div>
         }
 
         {
+            
         equipoSeleccionado.tipoequipo === 'CALENTAMIENTO' &&  
         <div className="max-w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-full hover:shadow-2xl">
+            {console.log(equipoSeleccionado)}
           <div className="md:flex pt-3">
             <div className="px-4">
                 <p className='text-black text-lg font-bold'>Estatus: <span className='text-slate-600'>{equipoSeleccionado.estatus}</span></p>
@@ -308,15 +321,15 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
               </div>
             </div>
           </div>
-          
 
+           {editForm && (<CalentamientoForm equipoSeleccionado = {equipoSeleccionado} idbomba = {equipoSeleccionado.idbomba} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></CalentamientoForm>)}
           <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
                 <button
                     type="submit"
                     className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                    onClick={setEditForm(!editForm)}
+                    onClick={()=> setEditForm(!editForm)}
                 >
-                    <ion-icon name="create-outline"></ion-icon> Editar
+                    <ion-icon name="create-outline"></ion-icon> {!editForm ? <span>Editar</span> : <span>No editar</span>}
                 </button>
             </div>
         </div>
