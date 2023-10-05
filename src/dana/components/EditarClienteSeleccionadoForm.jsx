@@ -62,7 +62,7 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                 setVentanaConfirmacion(true);
                 setDialogEditatarClienteForm(false);
                 setRespuestaApiCliente(responseData);
-                console.log(responseData);
+                console.log(responseData);  
             })
             .catch((error) => {
               console.log(error);

@@ -85,7 +85,7 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
           .then((responseData) => {
             setVentanaCarga(false);
             setModalRegistroGuardado(true);
-            setDialogNuevoClienteForm(false);
+            setDialogNuevoClienteForm(false);    
           })
           .catch((error) => {
             console.log(error);

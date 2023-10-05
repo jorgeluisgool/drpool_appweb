@@ -17,6 +17,8 @@ export const ClientesPage = () => {
 
     const { userAuth, setUserAuth, setClienteSeleccionado } = useAuth();
 
+
+    const[urlImage, setUrlImage] = useState("")
     const [clientes, setClientes] = useState([]);
     const [sedes, setSedes] = useState([]);
     const [dialogNuevoClienteForm, setDialogNuevoClienteForm ] = useState(false);
@@ -74,7 +76,7 @@ export const ClientesPage = () => {
         }
       };
       fetchData();
-    }, [dialogEditatarClienteForm, setModalRegistroGuardado, setVentanaCarga, uploadedImage]);
+    }, [dialogEditatarClienteForm, uploadedImage]);
 
    useEffect(() => {
     const fetchData = async () => {
@@ -165,7 +167,7 @@ export const ClientesPage = () => {
         <h1 className="text-2xl font-bold text-[#245A95] pb-4">ALTA DE CLIENTE</h1>
           <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8'>
             {
-              userAuth[0].perfile.perfil === 'SUBDIRECTOR' ? 
+              userAuth[0]?.perfile.perfil === 'SUBDIRECTOR' ? 
               <div 
                 className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
                 onClick={() => setDialogNuevoClienteForm(true)}
