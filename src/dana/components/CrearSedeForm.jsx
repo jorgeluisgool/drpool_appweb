@@ -21,7 +21,7 @@ const opcionesEstados = [
   { label: 'TABASCO', value: 'TABASCO' },
 ];
 
-export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setVentanaCarga, setModalRegistroGuardado, setSedeSeleccionada, sedeSeleccionada, clientes, listaUsuarios}) => {
+export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setVentanaCarga, setModalRegistroGuardado, setSedeSeleccionada, sedeSeleccionada, clientes, listaUsuarios, sedes}) => {
 
   const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
 
@@ -32,6 +32,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
   const [coordinadorValue, setCoordinadorValue] = useState(sedeSeleccionada);
 
   console.log(listaUsuarios)
+  console.log(sedes)
 
   const initialValues = {
     nombre: '', 
@@ -93,6 +94,11 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
 
   console.log(sedeSeleccionada)
 
+  function usuarioEstaAsignado(usuario, sedes) {
+    // Verificar si el usuario está asignado a alguna sede
+    return sedes.some((sede) => sede.operador.idusuario === usuario.idusuario);
+  }
+  
   return (
     <Dialog header='Sede' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => {setDialogNuevaSedeForm(false); setEditFields(true)}} className='pt-16'>
         <Formik initialValues={sedeSeleccionada === undefined?  initialValues : sedeSeleccionada} onSubmit={onSubmit}>
@@ -380,14 +386,14 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               as={Dropdown}
                               name="operador"
                               value={values.operador}
-                              options={listaUsuarios.filter((usuario) => usuario.perfile.perfil === "OPERADOR")} 
+                              options={listaUsuarios
+                                .filter((usuario) => usuario.perfile.perfil === "OPERADOR" && !usuarioEstaAsignado(usuario, sedes))}
                               optionLabel="nombre"
                               filter
                               required
                               disabled ={
                                 sedeSeleccionada != undefined &&
                                 editFields}
-                              // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -424,14 +430,14 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
               </div> 
               <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
                 {
-                  usuarioLogiado[0].perfile.perfil === 'SUBDIRECTOR' ? 
+                  usuarioLogiado[0]?.perfile.perfil === 'SUBDIRECTOR' ? 
                   <>
                     <button
                         type="button"
                         className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                         onClick={() => setModaAceptarlAbrirCerrar(true)}
                     >
-                      <ion-icon name="save"></ion-icon> Guardar
+                      <ion-icon name="save"></ion-icon> Guardar-
                     </button>
                     {sedeSeleccionada != undefined ? (
                         <button
@@ -468,5 +474,326 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
 }
 
 
-// ENCARGADO SEDE
-// DATOS DE CONTACTO
+[
+  {
+      "idsede": 13,
+      "nombre": "DURANGO",
+      "direccion": {
+          "iddireccion": 14,
+          "calle": "CALPULLI,",
+          "callenumero": "",
+          "estado": "CIUDAD DE MÉXICO",
+          "alcaldia": "COYOACÁN",
+          "colonia": "ADOLFO RUÍZ CORTÍNEZ",
+          "codigopostal": "04630"
+      },
+      "encargadosede": "DAN GUTIERREZ",
+      "telefono": "5565326541",
+      "correo": "dan_gut@gmail.com",
+      "estatus": "ACTIVO",
+      "coordinador": {
+          "idusuario": 388,
+          "correo": "correo@prueba.com",
+          "jefeinmediato": "drpool",
+          "nombre": "USUARIO3",
+          "pass": "12345",
+          "passtemp": 0,
+          "telefono": "123456",
+          "ubicacion": "CIUDAD DE MEXICO",
+          "usuario": "DRPCOORD01",
+          "status": "ACTIVO",
+          "token": "",
+          "fechanacimiento": "12/12/12",
+          "fechaingreso": "12/12/12",
+          "perfile": {
+              "idperfil": 12,
+              "perfil": "COORDINADOR"
+          },
+          "clienteAplicacion": {
+              "idcliente": 2,
+              "cliente": "DrPool",
+              "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+          },
+          "vistaCliente": {
+              "idcliente": 1,
+              "cliente": "Cliente",
+              "telefono": "12345",
+              "direccion": "DIreccion",
+              "rfc": "RCF",
+              "urllogo": " ",
+              "estatus": "INACTIVO",
+              "clienteAplicacion": {
+                  "idcliente": 2,
+                  "cliente": "DrPool",
+                  "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+              }
+          }
+      },
+      "operador": {
+          "idusuario": 390,
+          "correo": "correo@prueba.com",
+          "jefeinmediato": "drpool",
+          "nombre": "usuario5",
+          "pass": "12345",
+          "passtemp": 0,
+          "telefono": "12345",
+          "ubicacion": "CIUDAD DE MEXICO",
+          "usuario": "drpopd01",
+          "status": "ACTIVO",
+          "token": "",
+          "fechanacimiento": "12/12/12",
+          "fechaingreso": "12/12/12",
+          "perfile": {
+              "idperfil": 14,
+              "perfil": "OPERADOR"
+          },
+          "clienteAplicacion": {
+              "idcliente": 2,
+              "cliente": "DrPool",
+              "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+          },
+          "vistaCliente": {
+              "idcliente": 1,
+              "cliente": "Cliente",
+              "telefono": "12345",
+              "direccion": "DIreccion",
+              "rfc": "RCF",
+              "urllogo": " ",
+              "estatus": "INACTIVO",
+              "clienteAplicacion": {
+                  "idcliente": 2,
+                  "cliente": "DrPool",
+                  "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+              }
+          }
+      },
+      "cliente": {
+          "idcliente": 28,
+          "cliente": "ALCALDÍA COYOACÁ",
+          "telefono": "5565326540",
+          "direccion": "AV. FRAY SERVANDO TERESA DE MIER 77, COLONIA CENTRO (ÁREA 1), ALCALDÍA CUAUHTÉMOC, CÓDIGO POSTAL 06000",
+          "rfc": "GDF9712054NA",
+          "urllogo": "https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/Clientes%2FALCALD%C3%8DA%20COYOAC%C3%81%2FALCALD%C3%8DA%20COYOAC%C3%81.png?alt=media&token=ALCALDÍACOYOACÁ.png",
+          "estatus": "ACTIVO",
+          "clienteAplicacion": {
+              "idcliente": 2,
+              "cliente": "DrPool",
+              "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+          }
+      }
+  },
+  {
+      "idsede": 14,
+      "nombre": "NUEVO LEÓN",
+      "direccion": {
+          "iddireccion": 15,
+          "calle": "NUEVO LEON",
+          "callenumero": "345",
+          "estado": "CIUDAD DE MEXICO",
+          "alcaldia": "CUAUHTÉMOC",
+          "colonia": "COLONIA",
+          "codigopostal": "13456"
+      },
+      "encargadosede": "JONATHAN RIVAS",
+      "telefono": "5452745284",
+      "correo": "jonathan.r.drpool@gmail.com",
+      "estatus": "ACTIVO",
+      "coordinador": {
+          "idusuario": 388,
+          "correo": "correo@prueba.com",
+          "jefeinmediato": "drpool",
+          "nombre": "USUARIO3",
+          "pass": "12345",
+          "passtemp": 0,
+          "telefono": "123456",
+          "ubicacion": "CIUDAD DE MEXICO",
+          "usuario": "DRPCOORD01",
+          "status": "ACTIVO",
+          "token": "",
+          "fechanacimiento": "12/12/12",
+          "fechaingreso": "12/12/12",
+          "perfile": {
+              "idperfil": 12,
+              "perfil": "COORDINADOR"
+          },
+          "clienteAplicacion": {
+              "idcliente": 2,
+              "cliente": "DrPool",
+              "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+          },
+          "vistaCliente": {
+              "idcliente": 1,
+              "cliente": "Cliente",
+              "telefono": "12345",
+              "direccion": "DIreccion",
+              "rfc": "RCF",
+              "urllogo": " ",
+              "estatus": "INACTIVO",
+              "clienteAplicacion": {
+                  "idcliente": 2,
+                  "cliente": "DrPool",
+                  "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+              }
+          }
+      },
+      "operador": {
+          "idusuario": 390,
+          "correo": "correo@prueba.com",
+          "jefeinmediato": "drpool",
+          "nombre": "usuario5",
+          "pass": "12345",
+          "passtemp": 0,
+          "telefono": "12345",
+          "ubicacion": "CIUDAD DE MEXICO",
+          "usuario": "drpopd01",
+          "status": "ACTIVO",
+          "token": "",
+          "fechanacimiento": "12/12/12",
+          "fechaingreso": "12/12/12",
+          "perfile": {
+              "idperfil": 14,
+              "perfil": "OPERADOR"
+          },
+          "clienteAplicacion": {
+              "idcliente": 2,
+              "cliente": "DrPool",
+              "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+          },
+          "vistaCliente": {
+              "idcliente": 1,
+              "cliente": "Cliente",
+              "telefono": "12345",
+              "direccion": "DIreccion",
+              "rfc": "RCF",
+              "urllogo": " ",
+              "estatus": "INACTIVO",
+              "clienteAplicacion": {
+                  "idcliente": 2,
+                  "cliente": "DrPool",
+                  "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+              }
+          }
+      },
+      "cliente": {
+          "idcliente": 29,
+          "cliente": "CUAUHTÉMOC",
+          "telefono": "5523456890",
+          "direccion": "CUAUHTÉMOC-0CDF",
+          "rfc": "CU-HVSBFH",
+          "urllogo": "https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/Clientes%2FCUAUHT%C3%89MOC%2FCUAUHT%C3%89MOC.png?alt=media&token=CUAUHTÉMOC.png",
+          "estatus": "ACTIVO",
+          "clienteAplicacion": {
+              "idcliente": 2,
+              "cliente": "DrPool",
+              "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+          }
+      }
+  },
+  {
+      "idsede": 15,
+      "nombre": "DEPORTIVO PLATEROS",
+      "direccion": {
+          "iddireccion": 16,
+          "calle": "AVENIDA DE LAS ROSAS",
+          "callenumero": "24",
+          "estado": "CDMX",
+          "alcaldia": "ÁLVARO OBREGÓN",
+          "colonia": "LA PURÍSIMA",
+          "codigopostal": "65321"
+      },
+      "encargadosede": "MARÍA GONZÁLEZ",
+      "telefono": "5563524189",
+      "correo": "mary_5678@gmail.com",
+      "estatus": "ACTIVO",
+      "coordinador": {
+          "idusuario": 395,
+          "correo": "asiel.manuel@gmail.com",
+          "jefeinmediato": "ASIEL MANUEL",
+          "nombre": "ASIEL MANUEL",
+          "pass": "12345",
+          "passtemp": 0,
+          "telefono": "5543782210",
+          "ubicacion": "CDMX",
+          "usuario": "DRPC.ASIEL",
+          "status": "ACTIVO",
+          "token": "",
+          "fechanacimiento": "12/09/23",
+          "fechaingreso": "12/09/23",
+          "perfile": {
+              "idperfil": 12,
+              "perfil": "COORDINADOR"
+          },
+          "clienteAplicacion": {
+              "idcliente": 2,
+              "cliente": "DrPool",
+              "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+          },
+          "vistaCliente": {
+              "idcliente": 1,
+              "cliente": "Cliente",
+              "telefono": "12345",
+              "direccion": "DIreccion",
+              "rfc": "RCF",
+              "urllogo": " ",
+              "estatus": "INACTIVO",
+              "clienteAplicacion": {
+                  "idcliente": 2,
+                  "cliente": "DrPool",
+                  "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+              }
+          }
+      },
+      "operador": {
+          "idusuario": 390,
+          "correo": "correo@prueba.com",
+          "jefeinmediato": "drpool",
+          "nombre": "usuario5",
+          "pass": "12345",
+          "passtemp": 0,
+          "telefono": "12345",
+          "ubicacion": "CIUDAD DE MEXICO",
+          "usuario": "drpopd01",
+          "status": "ACTIVO",
+          "token": "",
+          "fechanacimiento": "12/12/12",
+          "fechaingreso": "12/12/12",
+          "perfile": {
+              "idperfil": 14,
+              "perfil": "OPERADOR"
+          },
+          "clienteAplicacion": {
+              "idcliente": 2,
+              "cliente": "DrPool",
+              "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+          },
+          "vistaCliente": {
+              "idcliente": 1,
+              "cliente": "Cliente",
+              "telefono": "12345",
+              "direccion": "DIreccion",
+              "rfc": "RCF",
+              "urllogo": " ",
+              "estatus": "INACTIVO",
+              "clienteAplicacion": {
+                  "idcliente": 2,
+                  "cliente": "DrPool",
+                  "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+              }
+          }
+      },
+      "cliente": {
+          "idcliente": 30,
+          "cliente": "ALCALDÍA ÁLVARO OBREGÓN",
+          "telefono": "5565356524",
+          "direccion": "AV. FRAY SERVANDO TERESA DE MIER 77, COLONIA CENTRO (ÁREA 1), ALCALDÍA CUAUHTÉMOC, CÓDIGO POSTAL 06000",
+          "rfc": "GDF97120",
+          "urllogo": "https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/Clientes%2FALCALD%C3%8DA%20%C3%81LVARO%20OBREG%C3%93N%2FALCALD%C3%8DA%20%C3%81LVARO%20OBREG%C3%93N.png?alt=media&token=ALCALDÍAÁLVAROOBREGÓN.png",
+          "estatus": "ACTIVO",
+          "clienteAplicacion": {
+              "idcliente": 2,
+              "cliente": "DrPool",
+              "urllogo": "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool.png?alt=media&token=83bed173-b243-4bf8-8ad8-3086ad3950d5"
+          }
+      }
+  },
+]
