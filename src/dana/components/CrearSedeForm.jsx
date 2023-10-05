@@ -25,6 +25,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
   const [nombreSede, setNombreSede] = useState('NUEVA SEDE')
   const [editFields, setEditFields] = useState(true);
   const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
+  
 
   const initialValues = {
     nombre: '', 
@@ -331,7 +332,8 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                       </span>
                   </div>
                   <div className="p-inputgroup mb-5 mt-8">
-                      <span className='p-float-label relative'> 
+                      <span className='p-float-label relative'>
+                        {console.log(listaUsuarios)}
                           <Field
                               className="w-full appearance-none focus:outline-none bg-transparent"
                               as={Dropdown}
