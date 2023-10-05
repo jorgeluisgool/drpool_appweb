@@ -103,7 +103,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
         {
             
         equipoSeleccionado.tipoequipo === 'FILTRADO' &&  
-        <div className="max-w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-full hover:shadow-2xl">
+        <div className="max-w-full mx-auto bg-white rounded-xl overflow-hidden md:max-w-full">
             
           {/* <div className="md:flex pt-3">
             <div className="px-4">
@@ -230,11 +230,8 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
             </div>
           </div>)
           }
-          { editForm && <FiltradoForm equipoSeleccionado = {equipoSeleccionado} idfiltro={equipoSeleccionado.idfiltro} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></FiltradoForm>}
-
-          
-          
-          <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
+          { editForm && <FiltradoForm equipoSeleccionado = {equipoSeleccionado} idfiltro={equipoSeleccionado.idfiltro} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></FiltradoForm>} 
+          <div className="cursor-pointer absolute inset-x-0 bottom-4 left-6 flex gap-3 justify-start">
                 <button
                     type="submit"
                     className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
@@ -249,7 +246,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
         {
             
         equipoSeleccionado.tipoequipo === 'CALENTAMIENTO' &&  
-        <div className="max-w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-full hover:shadow-2xl">
+        <div className="max-w-full mx-auto bg-white rounded-xl overflow-hidden md:max-w-full">
              {!editForm && (<div>
                 <div className="md:flex pt-3">
             <div className="px-4">
@@ -330,7 +327,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
             
 
            {editForm && (<CalentamientoForm equipoSeleccionado = {equipoSeleccionado} idcalentamiento = {equipoSeleccionado.idcalentamiento} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></CalentamientoForm>)}
-          <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
+          <div className="cursor-pointer absolute inset-x-0 bottom-4 left-6 flex gap-3 justify-start">
                 <button
                     type="submit"
                     className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
@@ -346,7 +343,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
 
 {
         equipoSeleccionado.tipoequipo === 'DOSIFICADOR' &&  
-        <div className="max-w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-full hover:shadow-2xl">
+        <div className="max-w-full mx-auto bg-white rounded-xl overflow-hidden md:max-w-full">
             {!editForm && <div>
                 <div className="md:flex pt-3">
             <div className="px-4">
@@ -402,7 +399,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                 </div>}
           
           {editForm && (<DosificadorForm equipoSeleccionado = {equipoSeleccionado} iddosificador = {equipoSeleccionado.iddosificador} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></DosificadorForm>)}
-          <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
+          <div className="cursor-pointer absolute inset-x-0 bottom-4 left-6 flex gap-3 justify-start">
                 <button
                     type="submit"
                     className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
@@ -414,9 +411,9 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
         </div>
         }
 
-{
+        {
         equipoSeleccionado.tipoequipo === 'CONTROLADOR' &&  
-        <div className="max-w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-full hover:shadow-2xl">
+        <div className="max-w-full mx-auto bg-white rounded-xl overflow-hidden md:max-w-full">
             {!editForm && <div>
                 <div className="md:flex pt-3">
               <div className="px-4">
@@ -447,7 +444,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
                 </div>}
             
           {editForm && (<ControladorForm equipoSeleccionado = {equipoSeleccionado} idcontrolador = {equipoSeleccionado.idcontrolador} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></ControladorForm>)}
-          <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
+          <div className="cursor-pointer absolute inset-x-0 bottom-4 left-6 flex gap-3 justify-start">
                 <button
                     type="submit"
                     className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"

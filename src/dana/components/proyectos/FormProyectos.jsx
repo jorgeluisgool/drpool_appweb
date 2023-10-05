@@ -11,6 +11,7 @@ import { addLocale } from 'primereact/api';
 
 import { format, parse } from 'date-fns';
 import { DialogConfirmacion } from '../../../ui/components/DialogConfirmacion';
+import useAuth from '../../hooks/useAuth';
 
 addLocale('es', {
   firstDayOfWeek: 1,
@@ -55,6 +56,8 @@ const initialValues = {
 
 export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarProyectos, proyectoAlbercaSeleccionado, setVentanaCarga, setModalRegistroGuardado, clienteSelect, setClienteSelect, clientesActivos, sedeSelect, setSedeSelect, sedes, setMensajeNoAlbercasEnSedes, setModalWarning}) => {
 
+  const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
+  
     const [albercas, setAlbercas] = useState();
     const [fielValue, setFieldValue] = useState();
     const [editFields, setEditFields] = useState(true);
@@ -392,40 +395,43 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
                         </div>         
                     </div>                     
                     <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-                    
-                        <button
-                            type="button"
-                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                            onClick={() => setModaAceptarlAbrirCerrar(true)}
-                        >
-                          <ion-icon name="save"></ion-icon> Guardar
-                        </button>
-                        
-                        {modaAceptarlAbrirCerrar ?
-                         <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}
+                        {
+                          usuarioLogiado[0]?.perfile.perfil === 'SUBDIRECTOR' ? 
+                          <>
+                            <button
+                                type="button"
+                                className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                                onClick={() => setModaAceptarlAbrirCerrar(true)}
+                            >
+                              <ion-icon name="save"></ion-icon> Guardar
+                            </button>
+                            {modaAceptarlAbrirCerrar ?
+                            <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}
+                            {proyectoAlbercaSeleccionado != undefined ? (
+                            <button
+                                className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                                onClick={() => {
 
-                        
-                        {proyectoAlbercaSeleccionado != undefined ? (<button
-                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                            onClick={() => {
-                              
-                                setEditFields(!editFields);
-                            }}
-                            type='button'
-                        >
-                            {editFields ? <p> <ion-icon name="create"></ion-icon> Editar</p> :  <p> <ion-icon name="alert-circle"></ion-icon> No editar</p>}
-                        </button>
-): <></>}
-                          
-                        <button
-                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                            onClick={() => {
-                                setModalCrearEditarProyectos(false);
-                            }}
-                            type='button'
-                        >
-                           <ion-icon name="close-circle"></ion-icon> Cancelar
-                        </button>
+                                    setEditFields(!editFields);
+                                }}
+                                type='button'
+                            >
+                                {editFields ? <p> <ion-icon name="create"></ion-icon> Editar</p> :  <p> <ion-icon name="alert-circle"></ion-icon> No editar</p>}
+                            </button>
+                            ): <></>
+                            }
+                            <button
+                                className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                                onClick={() => {
+                                    setModalCrearEditarProyectos(false);
+                                }}
+                                type='button'
+                            >
+                               <ion-icon name="close-circle"></ion-icon> Cancelar
+                            </button>
+                          </>
+                          :<></>
+                        }
                     </div>
                 </Form>
             )}
