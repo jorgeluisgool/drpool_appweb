@@ -314,8 +314,6 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
                   <div className="p-inputgroup mb-5 mt-8">
                       <span className='p-float-label relative'>
-                        {console.log("List cliente + ",values.cliente)}
-                        {console.log("List coordinador + ", values.coordinador)}
                           <Field
                               className="w-full appearance-none focus:outline-none bg-transparent"
                               as={Dropdown}
