@@ -113,7 +113,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form>
-                <div className='mt-4 mb-8 p-4 transition duration-500 ease-in-out hover:shadow-2xl relative w-full max-w-full rounded overflow-hidden shadow-lg group'>
+                <div className='mt-4 mb-8 p-4 transition duration-500 ease-in-out relative w-full max-w-full rounded overflow-hidden group'>
                 <h1 className='font-bold text-sm xl:text-2xl mb-2 text-[#245A95]'><ion-icon name="caret-forward-outline"></ion-icon>Filtrado</h1>
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6'>
                         <div className="p-inputgroup mb-5 mt-5">
@@ -219,7 +219,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad de Arena
+                                    Cantidad de Arena (KG)
                                 </label>
                             </span>
                         </div>
@@ -236,7 +236,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad de Grava 
+                                    Cantidad de Grava (KG)
                                 </label>
                             </span>
                         </div>
@@ -253,7 +253,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad Max
+                                    Cantidad Max (KG)
                                 </label>
                             </span>
                         </div>
@@ -360,7 +360,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad de Arena
+                                    Cantidad de Arena (KG)
                                 </label>
                             </span>
                         </div>
@@ -377,7 +377,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad de Grava 
+                                    Cantidad de Grava (KG)
                                 </label>
                             </span>
                         </div>
@@ -394,7 +394,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad Max
+                                    Cantidad Max (KG)
                                 </label>
                             </span>
                         </div>
@@ -536,7 +536,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad Max
+                                    Cantidad Max (KG)
                                 </label>
                             </span>
                         </div>
@@ -644,7 +644,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Tipo de material filtrante
+                                    Tipo de material filtrante 
                                 </label>
                             </span>
                         </div>
@@ -661,7 +661,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad de Grava 
+                                    Cantidad de Grava (KG)
                                 </label>
                             </span>
                         </div>
@@ -678,7 +678,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad Max
+                                    Cantidad Max (KG)
                                 </label>
                             </span>
                         </div>
@@ -755,7 +755,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                             </span>
                         </div> */}
                     </div>
-                    <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+                    <div className="cursor-pointer inset-x-0 bottom-4 right-6 flex gap-3 justify-end">
                         <button
                             type="button"
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"

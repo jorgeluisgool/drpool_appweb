@@ -39,7 +39,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
     <Dialog header={equipoSeleccionado.numero} visible={modalDetalleEquipo} baseZIndex={-1} style={{ width: '85vw', height: '45vw' }} onHide={() => {setModalDetalleEquipo(false); setEditForm(false)}} className='pt-20'>
         {
         equipoSeleccionado.tipoequipo === 'BOMBEO' &&  
-        <div className="max-w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-full hover:shadow-2xl">
+        <div className="max-w-full mx-auto bg-white rounded-xl overflow-hidden md:max-w-full">
             {/* <div className="pl-2 uppercase tracking-wide text-lg text-[#245A95] font-semibold">Card subtitle</div> */}
             {!editForm &&
             (<div>
@@ -85,7 +85,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
           )}
 
           {editForm && (<BombeoForm equipoSeleccionado = {equipoSeleccionado} idbomba = {equipoSeleccionado.idbomba} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></BombeoForm>)}
-          <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end px-2 py-2">
+          <div className="cursor-pointer absolute inset-x-0 bottom-4 left-6 flex gap-3 justify-start">
                 <button
                     type="submit"
                     className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"

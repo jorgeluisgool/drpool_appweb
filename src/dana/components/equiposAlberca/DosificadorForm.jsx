@@ -254,7 +254,7 @@ export const DosificadorForm = ({albercaSelected, setVentanaCarga, setModalRegis
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Flujo Max
+                                    Flujo Max (L/min)
                                 </label>
                             </span>
                         </div>
@@ -308,7 +308,7 @@ export const DosificadorForm = ({albercaSelected, setVentanaCarga, setModalRegis
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Capacidad Max
+                                    Capacidad Max (Kg)
                                 </label>
                             </span>
                         </div>
@@ -324,7 +324,7 @@ export const DosificadorForm = ({albercaSelected, setVentanaCarga, setModalRegis
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Voltaje
+                                    Voltaje (V)
                                 </label>
                             </span>
                         </div>

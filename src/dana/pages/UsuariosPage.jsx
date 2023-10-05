@@ -9,7 +9,7 @@ import useAuth from '../hooks/useAuth'
 
 export const UsuariosPage = () => {
 
-  const { userAuth, setUserAuth } = useAuth();
+  const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
 
   const [modalCrearEditarUsuario, setModalCrearEditarUsuario] = useState(false);
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState();
@@ -42,18 +42,23 @@ export const UsuariosPage = () => {
     <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">Usuarios</h1>
       <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
       <h1 className="text-2xl font-bold text-[#245A95] pb-4">ALTA DE USUARIO</h1>
+      
+        
         <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4 pb-4'>
-          <div 
+         
+            <div 
               className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer"
               onClick={() => {setModalCrearEditarUsuario(true), setUsuarioSeleccionado(undefined)}}
-          >
+            >
             <div className="px-2 py-1 bg-[#E2E2E2]">
               <div className="font-bold text-sm xl:text-sm mb-2 text-[#245A95]">NUEVO USUARIO</div>
             </div>
             <div className="grid place-items-center" style={{ height: '100px' }}>
               <i className="pi pi-plus-circle text-[#245A95] inset-0 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-75" style={{ fontSize: '2.5rem' }}></i>
             </div>
-          </div>
+            </div>
+            
+          
           <div className="p-inputgroup mb-5 mt-8 col-span-3 xl:col-start-3">
             <div className="flex flex-col">
               <span className='p-float-label relative py-4 '>
@@ -75,6 +80,9 @@ export const UsuariosPage = () => {
             </div>
           </div> 
         </div>
+
+      
+        
         <TabaUsuarios 
           modalCrearEditarUsuario={modalCrearEditarUsuario}
           setModalCrearEditarUsuario={setModalCrearEditarUsuario}

@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { api } from '../helpers/variablesGlobales'
 import { Dropdown } from 'primereact/dropdown'
 import { DialogConfirmacion } from '../../ui/components/DialogConfirmacion'
+import useAuth from '../hooks/useAuth'
 
 const opcionesStatus = [
   { label: 'ACTIVO', value: 'ACTIVO' },
@@ -21,6 +22,8 @@ const opcionesEstados = [
 ];
 
 export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setVentanaCarga, setModalRegistroGuardado, setSedeSeleccionada, sedeSeleccionada, clientes, listaUsuarios}) => {
+
+  const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
 
   const [nombreSede, setNombreSede] = useState('NUEVA SEDE')
   const [editFields, setEditFields] = useState(true);
@@ -411,36 +414,42 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                 </div>
               </div> 
               <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-              <button
-                            type="button"
+                {
+                  usuarioLogiado[0].perfile.perfil === 'SUBDIRECTOR' ? 
+                  <>
+                    <button
+                        type="button"
+                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                        onClick={() => setModaAceptarlAbrirCerrar(true)}
+                    >
+                      <ion-icon name="save"></ion-icon> Guardar
+                    </button>
+                    {sedeSeleccionada != undefined ? (
+                        <button
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                            onClick={() => setModaAceptarlAbrirCerrar(true)}
-                        >
-                          <ion-icon name="save"></ion-icon> Guardar
-                        </button>
-                        
-                        {modaAceptarlAbrirCerrar ?
-                         <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}
-                  {sedeSeleccionada != undefined ? (<button
-                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                            onClick={() => {
-                              
+                            onClick={() => {                           
                                 setEditFields(!editFields);
                             }}
                             type='button'
                         >
                             {editFields ? <p> <ion-icon name="create"></ion-icon> Editar</p> :  <p> <ion-icon name="alert-circle"></ion-icon> No editar</p>}
                         </button>
-                    ): <></>}
-                  <button
-                      className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                      onClick={() => {
-                        setDialogNuevaSedeForm(false);
-                      }}
-                      type='button'
-                  >
-                      Cancelar
-                  </button>
+                      ): <></>
+                    }
+                    <button
+                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                        onClick={() => {
+                          setDialogNuevaSedeForm(false);
+                        }}
+                        type='button'
+                    >
+                        Cancelar
+                    </button>
+                  </>
+                  : <></>
+                }        
+                {modaAceptarlAbrirCerrar ?
+                <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}    
               </div> 
             </Form>
         )}

@@ -92,7 +92,7 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
     {({ values, handleChange }) => (
         <Form>
-            <div className='mt-4 mb-8 p-4 transition duration-500 ease-in-out hover:shadow-2xl relative w-full max-w-full rounded overflow-hidden shadow-lg group'>
+            <div className='mt-4 mb-8 p-4 transition duration-500 ease-in-out relative w-full max-w-full rounded overflow-hidden group'>
                 <h1 className='font-bold text-sm xl:text-2xl mb-2 text-[#245A95]'><ion-icon name="caret-forward-outline"></ion-icon>Bombeo</h1>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6'>
                     <div className="p-inputgroup mb-5 mt-5">
@@ -128,7 +128,7 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                               <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                             </span>
                             <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                Potencia de la bomba
+                                Potencia de la bomba (HP)
                             </label>
                         </span>
                     </div>
@@ -196,7 +196,7 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                               <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                             </span>
                             <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                Voltaje 
+                                Voltaje (V)
                             </label>
                         </span>
                     </div>
@@ -271,7 +271,7 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                         </span>
                     </div>
                 </div>
-                <div className="cursor-pointer inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+                <div className="cursor-pointer inset-x-0 bottom-4 right-4 flex gap-3 justify-end">
                    
 
                     <button

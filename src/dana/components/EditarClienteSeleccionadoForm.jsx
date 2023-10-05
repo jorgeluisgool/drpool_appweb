@@ -209,24 +209,31 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                         </div>
                         {/* <Toast ref={toast}></Toast> */}
                         {/* <FileUpload mode="basic" name="demo[]" url="/api/upload" accept="image/*" maxFileSize={1000000} onUpload={onUpload} /> */}
-                        <div {...getRootProps()} style={{ border: '2px dashed gray', padding: '20px', textAlign: 'center'}}>
-                          <input {...getInputProps()} />
-                          <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar una.</p>
-                        </div>
+                        {
+                          usuarioLogiado[0].perfile.perfil === 'SUBDIRECTOR' ?
+                          <div {...getRootProps()} style={{ border: '2px dashed gray', padding: '20px', textAlign: 'center'}}>
+                            <input {...getInputProps()} />
+                            <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar una.</p>
+                          </div>
+                          : <></>
+                        }
+                        
                     </div>
                 </div>
                 <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-                <button
+                  {
+                    usuarioLogiado[0].perfile.perfil === 'SUBDIRECTOR' ?(
+                      <>
+                        <button
                             type="button"
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                             onClick={() => setModaAceptarlAbrirCerrar(true)}
                         >
                           <ion-icon name="save"></ion-icon> Guardar
-                        </button>
-                        
+                        </button>    
                         {modaAceptarlAbrirCerrar ?
-                         <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}
-                    <button
+                          <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}
+                        <button
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                             onClick={() => {
                                 setEditFields(!editFields);
@@ -235,15 +242,18 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                         >
                             {editFields ? <p> <ion-icon name="create"></ion-icon> Editar</p> :  <p> <ion-icon name="alert-circle"></ion-icon> No editar</p>}
                         </button>
-                    <button
-                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                        onClick={() => {
-                          setDialogEditatarClienteForm(false);
-                        }}
-                        type='button'
-                    >
-                        <ion-icon name="close-circle"></ion-icon> Cancelar
-                    </button>
+                        <button
+                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                            onClick={() => {
+                              setDialogEditatarClienteForm(false);
+                            }}
+                            type='button'
+                        >
+                            <ion-icon name="close-circle"></ion-icon> Cancelar
+                        </button>
+                      </>
+                    ) : <></>
+                  }  
                 </div>
             </Form>
         )}
