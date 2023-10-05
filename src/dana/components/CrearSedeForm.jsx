@@ -48,7 +48,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
     telefono: '',
     correo: '',
     coordinador: {
-      nombre: coordinadorValue
+      //nombre: coordinadorValue
     },
     cliente: {
 
@@ -337,16 +337,22 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                             Cliente al que pertenece *
                           </label>
                       </span>
-                      <p>{values.cliente.cliente}</p>
+                      
                   </div>
                   <div className="p-inputgroup mb-5 mt-8">
+                    {console.log(values.coordinador)}
+                    {console.log(sedeSeleccionada)}
+
                       <span className='p-float-label relative'> 
+                        <div className="absolute left-100 top-100 pl-3 pt-3">
+                      <p >{values.coordinador.nombre}</p>
+                        </div>
                           <Field
                               className="w-full appearance-none focus:outline-none bg-transparent"
                               as={Dropdown}
                               name="coordinador"
                               value={values.coordinador}
-                              options={listaUsuarios.filter(usuario => usuario.perfile.perfil === "COORDINADOR" && usuario.status === 'ACTIVO')} 
+                              options={listaUsuarios.filter(coordinador => (coordinador.perfile.perfil === "COORDINADOR" && coordinador.status === 'ACTIVO'))} 
                               optionLabel="nombre"
                               filter
                               required
@@ -358,14 +364,17 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                           </span>
                           <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                            Coordinador de la sede *
+                            Coordinador de la sede * 
                           </label>
                       </span>
-                      <p>{values.coordinador.nombre}</p>
+                      
                   </div>
                   
                   <div className="p-inputgroup mb-5 mt-8">
                       <span className='p-float-label relative'>
+                      <div className="absolute left-100 top-100 pl-3 pt-3">
+                          <p >{values.operador.nombre}</p>
+                        </div>
                           <Field
                               className="w-full appearance-none focus:outline-none bg-transparent"
                               as={Dropdown}
@@ -387,7 +396,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                             Operador de la sede *
                           </label>
                       </span>
-                      <p>{values.operador.nombre}</p>
+                      
                   </div>
                   <div className="p-inputgroup mb-5 mt-8">
                       <span className='p-float-label relative'>
