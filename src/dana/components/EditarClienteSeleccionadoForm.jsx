@@ -118,12 +118,13 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                                     //     handleChange(e);
                                     //     setNombreCliente(e.target.value.toUpperCase());
                                     //   }}
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Nombre cliente
+                                  Nombre cliente *
                                 </label>
                             </span>
                         </div>
@@ -196,12 +197,13 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
                                     //   handleChange(e);
                                     //   setNombreSede(e.target.value.toUpperCase());
                                     // }}
+                                    required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Estatus
+                                  Estatus *
                                 </label>
                             </span>
                         </div>

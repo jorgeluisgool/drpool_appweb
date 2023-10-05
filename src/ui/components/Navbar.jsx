@@ -132,7 +132,7 @@ export const Navbar = () => {
             }
 
             {
-              usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
+              usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
                   <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/proyectos">
                     <div className="xl:hidden">
@@ -147,7 +147,7 @@ export const Navbar = () => {
                 </li> : <></>
             }
             {
-              usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR"?
+              usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR"?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
                   <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/clientes">
                     <div className="xl:hidden">
@@ -162,7 +162,7 @@ export const Navbar = () => {
                 </li> : <></>
             }
             {
-              usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR"?
+              usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR"?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
                   <Link 
                     className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" 
@@ -180,7 +180,7 @@ export const Navbar = () => {
                 </li> : <></>
             }
             {
-              usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
+              usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
                   <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/usuarios">
                     <div className="xl:hidden">
@@ -196,7 +196,7 @@ export const Navbar = () => {
             }
             
             {/* {
-              usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
+              usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
                   <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/catalogos">
                     <div className="xl:hidden">
@@ -211,7 +211,7 @@ export const Navbar = () => {
                 </li> : <></>
             } */}
             {/* {
-              usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
+              usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
                   <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/asignaciones">
                     <div className="xl:hidden">
@@ -226,7 +226,7 @@ export const Navbar = () => {
                 </li> : <></>
             } */}
             {
-              usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
+              usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
                   <Link 
                     className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" 
@@ -244,7 +244,7 @@ export const Navbar = () => {
                 </li> : <></>
             }
             {
-              usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
+              usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
                 <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
                   <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/asistencia">
                     <div className="xl:hidden">
