@@ -61,19 +61,19 @@ export const ClientesPage = () => {
       sede.encargadosede.toLowerCase().includes(searchSede.toLowerCase())
     );
 
-   useEffect(() => {
-     const fetchData = async () => {
-       try {
-         const response = await fetch(`${api}/obtener/clientes/usuario/${userAuth[0].clienteAplicacion.idcliente}`);
-         const jsonData = await response.json();
-         setClientes(jsonData);
-       } catch (error) {
-         console.log('Error:', error);
-       }
-     };
-
-     fetchData();
-   }, [dialogEditatarClienteForm]);
+    
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(`${api}/obtener/clientes/usuario/${userAuth[0].clienteAplicacion.idcliente}`);
+          const jsonData = await response.json();
+          setClientes(jsonData);
+        } catch (error) {
+          console.log('Error:', error);
+        }
+      };
+      fetchData();
+    }, [dialogEditatarClienteForm, setModalRegistroGuardado, setVentanaCarga, uploadedImage]);
 
    useEffect(() => {
     const fetchData = async () => {
@@ -87,7 +87,21 @@ export const ClientesPage = () => {
     };
 
     fetchData();
-  }, [dialogNuevaSedeForm, uploadedImage]);
+  }, [dialogNuevaSedeForm, uploadedImage, setVentanaCarga]);
+  
+  //  useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(`${api}/obtener/sedes`);
+  //       const jsonData = await response.json();
+  //       setSedes(jsonData);
+  //     } catch (error) {
+  //       console.log('Error:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [dialogNuevaSedeForm, uploadedImage, setVentanaCarga]);
 
   // Estados y logica para que funcione el paginator
   const [currentPage, setCurrentPage] = useState(1);
@@ -193,6 +207,7 @@ export const ClientesPage = () => {
               <ion-icon name="eye" className="mr-2 text-2xl"></ion-icon> Clientes inactivos
             </button>
           </div>
+          {/* SECCION DE TARJETAS DE CLIENTES */}
           <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4'> 
             {
               clientesActivos.map((cliente, index) => (

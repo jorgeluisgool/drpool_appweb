@@ -26,6 +26,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
   const [editFields, setEditFields] = useState(true);
   const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
   
+  const [coordinadorValue, setCoordinadorValue] = useState(sedeSeleccionada);
+
+  console.log(listaUsuarios)
 
   const initialValues = {
     nombre: '', 
@@ -41,11 +44,11 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
     },
     telefono: '',
     correo: '',
+    coordinador: {
+      nombre: coordinadorValue
+    },
     cliente: {
 
-    },
-    coordinador: {
-      
     },
     operador: {
 
@@ -65,24 +68,24 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
       
 
       console.log(values);
-       setVentanaCarga(true);
+      //  setVentanaCarga(true);
   
-        fetch(`${api}/nueva/sede`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(values),
-        })
-          .then((response) => response.text())
-          .then((responseData) => {
-            setVentanaCarga(false);
-            setModalRegistroGuardado(true);
-            setDialogNuevaSedeForm(false);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      //   fetch(`${api}/nueva/sede`, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify(values),
+      //   })
+      //     .then((response) => response.text())
+      //     .then((responseData) => {
+      //       setVentanaCarga(false);
+      //       setModalRegistroGuardado(true);
+      //       setDialogNuevaSedeForm(false);
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
   };
 
   console.log(sedeSeleccionada)
@@ -92,6 +95,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
         <Formik initialValues={sedeSeleccionada === undefined?  initialValues : sedeSeleccionada} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form> 
+              {console.log(values)}
               <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2'>
                 <h1 className='text-2xl font-semibold'>Datos generales</h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
@@ -330,23 +334,23 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                             Cliente al que pertenece *
                           </label>
                       </span>
+                      <p>{values.cliente.cliente}</p>
                   </div>
                   <div className="p-inputgroup mb-5 mt-8">
-                      <span className='p-float-label relative'>
-                        {console.log(listaUsuarios)}
+                      <span className='p-float-label relative'> 
                           <Field
                               className="w-full appearance-none focus:outline-none bg-transparent"
                               as={Dropdown}
                               name="coordinador"
                               value={values.coordinador}
-                              options={listaUsuarios.filter((usuario) => usuario.perfile.perfil === "COORDINADOR")} 
+                              options={listaUsuarios.filter((usuario) => usuario.perfile.perfil === "COORDINADOR" && usuario.status === 'ACTIVO')} 
                               optionLabel="nombre"
                               filter
                               required
                               disabled ={
                                 sedeSeleccionada != undefined &&
                                 editFields}
-                          /> 
+                          />
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                           </span>

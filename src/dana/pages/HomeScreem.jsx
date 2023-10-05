@@ -23,7 +23,7 @@ export const HomeScreem = ({titulo}) => {
     <>
     <div className="bg-[#E2E2E2] h-full grid grid-cols-2 sm:grid-cols-3 gap-14 pt-20">
       {
-        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
+        usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="flex flex-col items-center justify-center">
           <Link to='/Proyectos'>
             <BotonMenu titulo='PROYECTOS' icono='library-outline'/>
@@ -34,7 +34,7 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       }
       {
-        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ? 
+        usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ? 
         <div className="flex flex-col items-center justify-center">
           <Link to='/clientes'>
             <BotonMenu titulo='CATALOGO' icono='business-outline'/>
@@ -45,7 +45,7 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       }
       {
-        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ? 
+        usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ? 
         <div className="flex flex-col items-center justify-center">
           <Link 
             to='/equipos'
@@ -58,7 +58,7 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       }
       {
-        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ? 
+        usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ? 
         <div className="flex flex-col items-center justify-center">
           <Link to='/usuarios'>
             <BotonMenu titulo='USUARIOS' icono='person-add-outline'/>
@@ -70,7 +70,7 @@ export const HomeScreem = ({titulo}) => {
       }
       
       {/* {
-        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
+        usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="flex flex-col items-center justify-center">
           <Link to='/catalogos'>
             <BotonMenu titulo='CATALOGO' icono='clipboard-outline'/>
@@ -81,7 +81,7 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       } */}
       {/* {
-        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
+        usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="flex flex-col items-center justify-center">
           <Link to='/asignaciones'>
             <BotonMenu titulo='ASIGNACIONES' icono='accessibility-outline'/>
@@ -92,7 +92,7 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       } */}
       {
-        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
+        usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="flex flex-col items-center justify-center">
           <Link to={clienteSeleccionado.length === 0 ? `/cliente` : `/registros`}>
             <BotonMenu titulo='REGISTROS' icono='create-outline'/>
@@ -103,7 +103,7 @@ export const HomeScreem = ({titulo}) => {
         </div> : <></>
       }
       {
-        usuarioLogiado[0]?.perfile.perfil === "ADMINISTRADOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
+        usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="flex flex-col items-center justify-center">
           <Link to='/asistencia'>
             <BotonMenu titulo='ASISTENCIA' icono='id-card-outline'/>

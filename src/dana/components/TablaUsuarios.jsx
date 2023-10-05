@@ -353,15 +353,11 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                         as={Dropdown}
                                                         name="perfile"
                                                         value={values.perfile}
-                                                        options={perfil} 
+                                                        options={perfil.filter((perfil) => (perfil.perfil != 'SUPERADMIN' && perfil.perfil !='ADMINISTRADOR' ))} 
                                                         optionLabel="perfil"
                                                         disabled = {
                                                             usuarioSeleccionado != undefined &&
                                                             editFields}
-                                                        // onChange={(e) => {
-                                                        //   handleChange(e);
-                                                        //   setNombreSede(e.target.value.toUpperCase());
-                                                        // }}
                                                         required
                                                     /> 
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
