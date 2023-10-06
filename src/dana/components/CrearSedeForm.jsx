@@ -72,24 +72,24 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
       
 
       console.log(values);
-      //  setVentanaCarga(true);
+        setVentanaCarga(true);
   
-      //   fetch(`${api}/nueva/sede`, {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify(values),
-      //   })
-      //     .then((response) => response.text())
-      //     .then((responseData) => {
-      //       setVentanaCarga(false);
-      //       setModalRegistroGuardado(true);
-      //       setDialogNuevaSedeForm(false);
-      //     })
-      //     .catch((error) => {
-      //       console.log(error);
-      //     });
+         fetch(`${api}/nueva/sede`, {
+           method: 'POST',
+           headers: {
+             'Content-Type': 'application/json',
+           },
+           body: JSON.stringify(values),
+         })
+           .then((response) => response.text())
+           .then((responseData) => {
+             setVentanaCarga(false);
+             setModalRegistroGuardado(true);
+             setDialogNuevaSedeForm(false);
+           })
+           .catch((error) => {
+             console.log(error);
+           });
   };
 
   console.log(sedeSeleccionada)
