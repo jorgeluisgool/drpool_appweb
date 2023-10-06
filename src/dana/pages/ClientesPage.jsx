@@ -490,6 +490,7 @@ export const ClientesPage = () => {
           sedeSeleccionada={sedeSeleccionada}
           clientes={clientes}
           listaUsuarios={listaUsuarios}
+          sedes={sedes}
         />
         <ModalClientesInactivos
           dialogClientesInactivos={dialogClientesInactivos}

@@ -592,34 +592,29 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                         </div>
                                             
                                         <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-                                        
-                        
-                                        {modaAceptarlAbrirCerrar ?
-                                        <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}
-
-                                            {usuarioSeleccionado !== undefined ? (
-                                              usuarioLogiado[0].perfile.perfil === 'SUBDIRECTOR' ? (
+                                            {
+                                                usuarioLogiado[0]?.perfile.perfil === 'SUBDIRECTOR' ?
                                                 <>
                                                     <button
                                                         type="button"
                                                         className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                                                         onClick={() => setModaAceptarlAbrirCerrar(true)}
                                                     >
-                                                        <ion-icon name="save"></ion-icon> Guardar
+                                                      <ion-icon name="save"></ion-icon> Guardar
                                                     </button>
-                                                    <button
-                                                      className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                                                      onClick={() => {
-                                                        setEditFields(!editFields);
-                                                      }}
-                                                      type='button'
-                                                    >
-                                                      {editFields ? (
-                                                        <p> <ion-icon name="create"></ion-icon> Editar</p>
-                                                      ) : (
-                                                        <p> <ion-icon name="alert-circle"></ion-icon> No editar</p>
-                                                      )}
-                                                    </button>
+                                                    {usuarioSeleccionado != undefined ? (
+                                                        <button
+                                                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                                                            onClick={() => {
+                                                            
+                                                                setEditFields(!editFields);
+                                                            }}
+                                                            type='button'
+                                                        >
+                                                            {editFields ? <p> <ion-icon name="create"></ion-icon> Editar</p> :  <p> <ion-icon name="alert-circle"></ion-icon> No editar</p>}
+                                                        </button>
+                                                        ): <></>
+                                                    }
                                                     <button
                                                         className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                                                         onClick={() => {
@@ -631,10 +626,10 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                        <ion-icon name="close-circle"></ion-icon> Cancelar
                                                     </button>
                                                 </>
-                                                
-                                              ) : null // Renderiza null si el perfil no es SUBDIRECTOR
-                                            ) : null // Renderiza null si usuarioSeleccionado es undefined
+                                                :<></>
                                             }
+                                                {modaAceptarlAbrirCerrar ?
+                                                <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}      
                                         </div>
                                     </Form>
                                 )}
