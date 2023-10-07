@@ -382,12 +382,13 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                           <p >{values.operador.nombre}</p>
                         </div>
                           <Field
-                              className="w-full appearance-none focus:outline-none bg-transparent"
+                              className="w-full appearance-none focus:outline-none"
                               as={Dropdown}
                               name="operador"
                               value={values.operador}
                               options={listaUsuarios
-                                .filter((usuario) => usuario.perfile.perfil === "OPERADOR" && !usuarioEstaAsignado(usuario, sedes))}
+                                // .filter((usuario) => usuario.perfile.perfil === "OPERADOR" && !usuarioEstaAsignado(usuario, sedes))
+                              }
                               optionLabel="nombre"
                               filter
                               required
@@ -402,7 +403,6 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                             Operador de la sede *
                           </label>
                       </span>
-                      
                   </div>
                   <div className="p-inputgroup mb-5 mt-8">
                       <span className='p-float-label relative'>
@@ -429,8 +429,8 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                 </div>
               </div> 
               <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-                {
-                  usuarioLogiado[0]?.perfile.perfil === 'SUBDIRECTOR' ? 
+                {/* {
+                  usuarioLogiado[0]?.perfile.perfil === 'SUBDIRECTOR' ?  */}
                   <>
                     <button
                         type="button"
@@ -439,7 +439,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                     >
                       <ion-icon name="save"></ion-icon> Guardar-
                     </button>
-                    {sedeSeleccionada != undefined ? (
+                    {sedeSeleccionada != undefined && usuarioLogiado[0].perfile.perfil != 'COORDINADOR'? (
                         <button
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                             onClick={() => {                           
@@ -461,8 +461,8 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                         Cancelar
                     </button>
                   </>
-                  : <></>
-                }        
+                  {/* : <></> */}
+                {/* }         */}
                 {modaAceptarlAbrirCerrar ?
                 <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields ={setEditFields}/> : <></>}    
               </div> 

@@ -162,7 +162,7 @@ const TableRegistros = ({data, headers, onDelete, onEdit, selectedRows, isSelect
         {currentRows2.map((registro, index) => (
           <tr 
             key={index} 
-            onClick={(event) => handleTableRowClick(event, registro)}
+            // onClick={(event) => handleTableRowClick(event, registro)}
             
             className='cursor-pointer hover:bg-[#E2E2E2]'
           >
