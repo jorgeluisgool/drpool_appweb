@@ -36,7 +36,6 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
     const [editFields, setEditFields] = useState(true);
     const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
 
-    console.log(selectedDateIngreso)
     const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
     const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers(modalCrearEditarUsuario);
 

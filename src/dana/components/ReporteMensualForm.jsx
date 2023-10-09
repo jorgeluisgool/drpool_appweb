@@ -142,7 +142,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         console.log(initialValues2);
     } 
 
-    console.log(sedes);
+    // console.log(sedes);
 
   return (
         <>

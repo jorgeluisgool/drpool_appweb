@@ -29,8 +29,13 @@ export const ClientesRegistrosPage = () => {
      fetchData();
    }, []);
 
+    //  FILTRAR LOS CLIENTES ACTIVOS
+    const clientesActivos = clientes.filter((cliente) => 
+     cliente.estatus === 'ACTIVO'
+    );
+
      //Clientes filtrados para Search 
-    const filterClientes = clientes.filter((cliente) =>
+    const filterClientes = clientesActivos.filter((cliente) =>
     cliente.cliente.toLowerCase().includes(searchCliente.toLowerCase())
     );
 
@@ -48,7 +53,7 @@ export const ClientesRegistrosPage = () => {
     <>
       <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">Clientes</h1>
       <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden'>
-      <h1 className="text-2xl font-bold text-[#245A95] pb-2">Selecciona un cliente para poder ver sus registros de las bitacoras diarias, reportes semanales, y mensuales</h1>
+      <h1 className="text-2xl font-bold text-[#245A95] pb-2">Selecciona un cliente para poder ver sus registros como bitacoras diarias, reportes semanales, y mensuales</h1>
       <div className="p-inputgroup mb-5 mt-8 col-span-3 xl:col-start-3">
           <div className="flex flex-col">
             <span className='p-float-label relative'>
