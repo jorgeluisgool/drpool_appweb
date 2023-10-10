@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { api } from '../../helpers/variablesGlobales';
+import { SkeletonTable } from '../SkeletonTable';
 
 export const TableProyectos = ({ proyectoAlbercaSeleccionado, proyectoAlbercaData, setProyectoAlbercaSeleccionado, setModalCrearEditarProyectos, modalRegistroGuardado, filterProyectos, setSedeSelect, setClienteSelect }) => {
 
@@ -22,6 +23,10 @@ export const TableProyectos = ({ proyectoAlbercaSeleccionado, proyectoAlbercaDat
 
     return (
         <>
+        {
+            !currentRows || currentRows.length === 0 ?
+            <SkeletonTable/>
+            :
             <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
                 <thead className="bg-[#245A95] text-white uppercase">
                     <tr className='text-left'>
@@ -116,7 +121,9 @@ export const TableProyectos = ({ proyectoAlbercaSeleccionado, proyectoAlbercaDat
                         </tr>
                     ))}
                 </tbody>
-            </table>
+            </table> 
+        }
+            
 
             <div className="flex items-center justify-between mt-4 mb-6">
                 <div className="flex items-center">

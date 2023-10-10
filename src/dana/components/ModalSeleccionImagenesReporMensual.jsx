@@ -7,7 +7,7 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
 
   return (
     <Dialog header='Imagenes' visible={modalSeleccionImagenes} style={{ width: '90vw'}} onHide={() => setModalSeleccionImagenes(false)}>
-
+        
     </Dialog>
   )
 }

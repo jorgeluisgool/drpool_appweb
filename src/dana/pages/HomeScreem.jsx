@@ -121,7 +121,7 @@ export const HomeScreem = ({titulo}) => {
           <p className='text-center text-[#245A95] font-bold'>DASHBORAD</p>
         </div>
       </div> */}
-    </div>    
+    </div>  
     </>
   
   )

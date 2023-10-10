@@ -80,9 +80,6 @@ export const UsuariosPage = () => {
             </div>
           </div> 
         </div>
-
-      
-        
         <TabaUsuarios 
           modalCrearEditarUsuario={modalCrearEditarUsuario}
           setModalCrearEditarUsuario={setModalCrearEditarUsuario}

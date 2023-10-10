@@ -2,7 +2,7 @@ import React from 'react'
 
 export const SkeletonTable = () => {
     return (
-        <div role="status" className="max-w-sm animate-pulse">
+        <div role="status" className="animate-pulse">
             <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
                 <thead className="bg-[#245A95] text-white uppercase">
                     <tr className='text-left'>

@@ -2,6 +2,7 @@ import { InputText } from 'primereact/inputtext'
 import React, { useEffect, useState } from 'react'
 import { CrearAlbercaForm } from './CrearAlbercaForm';
 import { api } from '../helpers/variablesGlobales';
+import { SkeletonTable } from './SkeletonTable';
 
 export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegistroGuardado, setModalRegistroGuardado, clientesActivos, searchAlberca, setSearchAlberca, handleSearchAlberca}) => {
 
@@ -80,7 +81,12 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
             </div>
         </div>
         {/* TABLA ALBERCAS */}
-        <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
+        {
+          !currentRows || currentRows.length === 0 ?  
+          <SkeletonTable/>
+          : 
+          <>
+          <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
           <thead className="bg-[#245A95] text-white uppercase">
             <tr className='text-left'>
               <th scope="col" className="relative px-6 py-3">
@@ -205,7 +211,10 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
                 </button>
               </nav>
             </div>
-        </div>
+        </div> 
+          </>        
+        }
+        
 
         {/* MODAL DEL FORMULARIO DE CREACIO DE ALBERCA */}
         <CrearAlbercaForm 

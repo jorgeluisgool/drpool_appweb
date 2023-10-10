@@ -12,6 +12,9 @@ import { AlbercasSeccion } from '../components/AlbercasSeccion';
 import ModalClientesInactivos from '../components/ModalClientesInactivos';
 import { VentanaCarga } from '../../ui/components/VentanaCarga';
 import { useFetchUsers } from '../hooks/useFetchUsers';
+import { Skeleton } from 'primereact/skeleton';
+import { SkeletonTabla } from '../components/SkeletonTabla';
+import { SkeletonTable } from '../components/SkeletonTable';
 
 export const ClientesPage = () => {
 
@@ -214,7 +217,24 @@ export const ClientesPage = () => {
             </button>
           </div>
           {/* SECCION DE TARJETAS DE CLIENTES */}
-          <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4'> 
+          {
+            !clientesActivos || clientesActivos.length === 0 ?  
+            <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4 animate-pulse'> 
+                <div className="max-w-xs overflow-hidden rounded-lg shadow-lg w-full bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer">
+                    <div className="px-2 py-3 bg-[#E2E2E2] text-center">
+                      <div className="font-bold text-sm xl:text-sm mb-2 text-[#245A95]"></div>
+                    </div>
+                    <div className="relative" style={{ height: '100px' }}>
+                      
+                        <div className="flex items-center justify-center absolute inset-0 w-full h-full text-[#245A95] font-bold text-3xl">
+                          
+                        </div>
+                      
+                    </div>
+                  </div>  
+            </div>
+            :
+            <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4'> 
             {
               clientesActivos.map((cliente, index) => (
                 <Link 
@@ -246,6 +266,7 @@ export const ClientesPage = () => {
               ))
             }
           </div>
+          }
         </div>
 
         {/* SEDES */}
@@ -283,8 +304,11 @@ export const ClientesPage = () => {
                 </div>
               </div>
             </div>
-
-            <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
+            {
+              !currentRows || currentRows.length === 0 ?  
+              <SkeletonTable/>
+              :
+              <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
               <thead className="bg-[#245A95] text-white uppercase">
                 <tr className='text-left'>
                   <th scope="col" className="relative px-6 py-3">
@@ -376,23 +400,14 @@ export const ClientesPage = () => {
                         }
                       </div>
                     </td>
-                    
-                    {/* <td className="px-6">
-                      <div className="flex space-x-4">        
-                      <button
-                        type="submit"
-                        // onClick={() => { setModalAbrirCerrar(true)}}
-                        className="w-14 h-14 object-cover active:scale-[.98] py-3 bg-transparent hover:bg-[#245A95] hover:text-white text-[#245A95] text-2xl font-bold inline-block rounded-full bg-primary p-2 uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] my-1">
-                        <ion-icon name="document-attach"></ion-icon>
-                      </button>
-                      </div>
-                    </td> */}
                   </tr>
                 )):
                 <></>
                 } 
               </tbody>
             </table>
+            }
+            
               <div className="flex items-center justify-between mt-4 mb-6">
                 <div className="flex items-center">
                   <span className="mr-2 text-[#245A95] font-bold text-lg">Filas por página:</span>

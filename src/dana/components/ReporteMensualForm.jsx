@@ -62,7 +62,7 @@ const opcionesTipoAlberca = [
 export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, albercaSeleccionada, setAlbercaSeleccionada}) => {
 
     const [modalSeleccionImagenes, setModalSeleccionImagenes] = useState(false);
-    //console.log(sedeSeleccionada)
+    const [imagenesActivdades, setImagenesActivdades] = useState([])
 
     const initialValues = {
         FECHA: "",
@@ -83,6 +83,23 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         }]
     };
     
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(`${api}/obtener/imagenes/actividades/`);
+            const jsonData = await response.json();
+            console.log(jsonData)
+            setImagenesActivdades(jsonData);
+          } catch (error) {
+            console.log('Error:', error);
+          }
+        };
+   
+        fetchData();
+      }, []);
+
+      console.log(imagenesActivdades);
+
     // Función para convertir la fecha en formato válido de la fecha
     const parseDate = (dateString) => {
         if (typeof dateString === "string") {
@@ -141,8 +158,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         
         console.log(initialValues2);
     } 
-
-    // console.log(sedes);
 
   return (
         <>

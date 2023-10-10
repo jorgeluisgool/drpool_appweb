@@ -202,7 +202,7 @@ export const RegistrosPage = () => {
 
   const handleClickRegresar = () => {
     // Acciones a realizar cuando se hace clic en el botón flotante izquierdo
-    navigate('/clientes');
+    navigate('/cliente');
   };
 
   const handleReset = (historialCambio) => {
