@@ -1,9 +1,7 @@
 import { Dialog } from 'primereact/dialog';
 import React, { useState } from 'react'
 
-const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSeleccionImagenes, imagenesActivdades, selectedActivity}) => {   
-
-  const [selectedImages, setSelectedImages] = useState([]);
+const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSeleccionImagenes, imagenesActivdades, selectedActivity, selectedImages, setSelectedImages}) => {   
 
   const toggleImageSelection = (imageUrl) => {
     setSelectedImages((prevSelectedImages) => {

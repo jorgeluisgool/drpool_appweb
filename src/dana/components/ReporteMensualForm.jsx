@@ -52,7 +52,8 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
 
     const [modalSeleccionImagenes, setModalSeleccionImagenes] = useState(false);
     const [imagenesActivdades, setImagenesActivdades] = useState([])
-    const [selectedActivity, setSelectedActivity] = useState([]);
+    const [selectedActivity, setSelectedActivity] = useState(null);
+    const [selectedImages, setSelectedImages] = useState([]);
 
     const initialValues = {
         FECHA: "",
@@ -117,6 +118,8 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
 
     const onSubmit = (values, { resetForm }) => {
 
+        setSelectedImages([]); 
+        
         if(typeof values.FECHA !== "string"){
             const formattedDate = format(values.FECHA, "dd/MM/yy");
             values.FECHA = formattedDate;
@@ -131,6 +134,12 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
             const formattedDate = format(values.LASTDATE, "dd/MM/yy");
             values.LASTDATE = formattedDate;
         }
+
+        // AQUI SE LE ASIGNA LA ACTIVIDAD AL INITIAL VALUES DEL STATE 
+        values.REPORT_LIST_IMAGES[0].ACTIVITY = selectedActivity;
+
+        // AQUI SE ESTAN ASIGNADO EL ARREGLO DE IMAGENES SELECIONADAS
+        values.REPORT_LIST_IMAGES[0].IMAGES = selectedImages;
   
         const initialValues2 = {
             FECHA: values.FECHA,
@@ -162,7 +171,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         };
         
         console.log(initialValues2);
-    } 
+    }  
 
   return (
         <>
@@ -171,6 +180,8 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
             setModalSeleccionImagenes={setModalSeleccionImagenes}
             imagenesActivdades={imagenesActivdades}
             selectedActivity={selectedActivity}
+            selectedImages={selectedImages}
+            setSelectedImages={setSelectedImages}
         />
 
         <Dialog header='Reporte Fotográfico Mensual' visible={modalNuevoReporteMensual} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalNuevoReporteMensual(false)} className='pt-20'>
@@ -409,7 +420,9 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                         </label>
                                                     </span>
                                                 </div>
-                                                <div className="p-inputgroup mb-5 mt-5 cursor-pointer flex gap-3 justify-center">
+                                                {
+                                                    selectedActivity != null &&
+                                                    <div className="p-inputgroup mb-5 mt-5 cursor-pointer flex gap-3 justify-center">
                                                         <button
                                                             type="button"
                                                             onClick={() => (setModalSeleccionImagenes(true))}
@@ -417,7 +430,9 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                         >
                                                             Imagenes
                                                         </button>
-                                                </div>
+                                                    </div>
+                                                }
+                                                
                                                 <div className="p-inputgroup mb-5 mt-5 col-span-2">
                                                     <span className='p-float-label relative'>
                                                         <Field

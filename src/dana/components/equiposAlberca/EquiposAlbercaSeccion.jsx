@@ -14,10 +14,10 @@ import { ReporteMensualForm } from '../ReporteMensualForm'
 
 const tiposEquipos = [
   { label: 'BOMBEO', value: 'BOMBEO' },
-  { label: 'CALENTAMIENTO', value: 'CALENTAMIENTO' },
-  { label: 'CONTROLADOR', value: 'CONTROLADOR' },
-  { label: 'DOSIFICADOR', value: 'DOSIFICADOR' },
   { label: 'FILTRADO', value: 'FILTRADO' },
+  { label: 'CALENTAMIENTO', value: 'CALENTAMIENTO' },
+  { label: 'DOSIFICADOR', value: 'DOSIFICADOR' },
+  { label: 'CONTROLADOR', value: 'CONTROLADOR' }
 ]
 export const EquiposAlbercaSeccion = () => {
 
