@@ -28,7 +28,7 @@ export const ModalSeeleccionarCliente = ({modalSeleccionCliente, setModalSelecci
     };
 
     fetchData();
-  }, []);
+  }, [modalSeleccionCliente]);
 
    //Clientes filtrados para Search 
    const filterClientes = clientes.filter((cliente) =>

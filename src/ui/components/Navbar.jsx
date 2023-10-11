@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import useAuth from '../../dana/hooks/useAuth';
-import { api } from '../../dana/helpers/variablesGlobales';
-import { Avatar } from 'primereact/avatar';
 import { ModalSeeleccionarCliente } from '../../dana/components/ModalSeeleccionarCliente';
 
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
-import { Toast } from 'primereact/toast';
 
 import { Button } from 'primereact/button';
 import { TieredMenu } from 'primereact/tieredmenu';

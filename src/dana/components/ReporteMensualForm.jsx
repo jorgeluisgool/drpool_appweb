@@ -119,7 +119,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     const onSubmit = (values, { resetForm }) => {
 
         setSelectedImages([]); 
-        
+
         if(typeof values.FECHA !== "string"){
             const formattedDate = format(values.FECHA, "dd/MM/yy");
             values.FECHA = formattedDate;
@@ -155,10 +155,10 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
             REPORT_LIST_IMAGES: values.REPORT_LIST_IMAGES.map((item, index) => ( 
                 [
                     {
-                        ACTIVITY: values.REPORT_LIST_IMAGES[index].ACTIVITY
+                        ACTIVITY: values.REPORT_LIST_IMAGES[index].ACTIVITY = selectedActivity
                     },
                     {
-                        IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES
+                        IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES = selectedImages
                     },
                     {
                         TEXT_IMAGES: values.REPORT_LIST_IMAGES[index].TEXT_IMAGES
@@ -289,28 +289,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                     </label>
                                 </span>
                             </div>
-                            {/* <div className="p-inputgroup mb-5 mt-5">
-                                <span className='p-float-label relative'>
-                                    <Field
-                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                        as={Dropdown}
-                                        name="clientes"
-                                        value={sedeSeleccionada}
-                                        optionLabel="nombre"
-                                        // itemTemplate={renderClienteOption}
-                                        onChange={(e) => {setSedeSeleccionada(e.target.value)}}
-                                        filter
-                                        options={sedes} 
-                                        
-                                    /> 
-                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                    </span>
-                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                      Sede
-                                    </label>
-                                </span>
-                            </div> */}
                             <div className="p-inputgroup mb-5 mt-5">
                                 <span className='p-float-label relative'>
                                     <Field
@@ -327,24 +305,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                     </label>
                                 </span>
                             </div>
-                            {/* <div className="p-inputgroup mb-5 mt-5">
-                                <span className='p-float-label relative'>
-                                    <Field
-                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                        as={Dropdown}
-                                        name="ALBERCA"
-                                        options={albercas}
-                                        optionLabel="nombrealberca" 
-                                        getOptionValue={(option) => option.nombrealberca}
-                                    /> 
-                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                    </span>
-                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                        Alberca
-                                    </label>
-                                </span>
-                            </div> */}
                             <div className="p-inputgroup mb-5 mt-5">
                                 <span className='p-float-label relative'>
                                     <Field
@@ -476,7 +436,14 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                       <button
                                         className='hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 text-left ml-auto flex items-center'
                                         type="button"
-                                        onClick={() => push()}
+                                        onClick={() => {
+                                            push({
+                                              ACTIVITY: "",
+                                              IMAGES: [],
+                                              TEXT_IMAGES: "",
+                                              OBSERVACIONES: "",
+                                            });
+                                          }}
                                       >
                                         <ion-icon name="add-circle"></ion-icon> Actividad
                                       </button>

@@ -73,8 +73,7 @@ export const EquiposAlbercaSeccion = () => {
         <DialogRegistroGuardado setModalRegistroGuardado={setModalRegistroGuardado} modalRegistroGuardado={modalRegistroGuardado}/>
         <div className='mx-4 xl:mx-20 my-4 px-4 py-2 shadow-md bg-white rounded-lg overflow-hidden mb-4'>
         <h1 className="text-2xl font-bold text-[#245A95] pb-4">ALTA DE EQUIPOS DE ALBERCAS</h1>
-            <div className='grid grid-cols-4 gap-8 m-4 pb-4'>
-                 
+            <div className='grid grid-cols-4 gap-8 m-4 pb-4'>  
                   <div className="max-w-full p-inputgroup mb-5 mt-8 col-span-2">
                     <div className="flex flex-col">
                       <span className='p-float-label relative'>
@@ -97,7 +96,6 @@ export const EquiposAlbercaSeccion = () => {
                       <p className="text-sm text-[#245A95] font-semibold">1.- Selecciona la sede para filtrar sus albercas</p>
                     </div>
                 </div>
-
                 {
                   selectAlberca != null && 
                   <div className="p-inputgroup mb-5 mt-8 col-span-2">
@@ -123,10 +121,7 @@ export const EquiposAlbercaSeccion = () => {
                       <p className="text-sm text-[#245A95] font-semibold">2.- Selecciona la alberca a la que deseas ver sus equipos</p>
                     </div>
                   </div>
-                }
-                
-                  
-                
+                }      
             </div>
             {
               selectEquipo !== null &&

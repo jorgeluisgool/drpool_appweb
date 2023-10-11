@@ -37,7 +37,7 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
                 alt="Random image"
               />
               <div className="absolute bottom-0 w-full bg-black bg-opacity-40 py-3 px-6 opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out flex flex-col items-center">
-                <div className="text-base font-medium mb-2 text-white">{imagen.nombrefoto}</div>
+                <div className="text-xsa font-medium mb-2 text-white">{imagen.nombrefoto}</div>
               </div>
             </div>
           </div>
