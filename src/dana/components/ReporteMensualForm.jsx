@@ -55,6 +55,11 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [selectedImages, setSelectedImages] = useState([]);
 
+    const [selectedActivities, setSelectedActivities] = useState([]);
+    const [selectedActivityIndex, setSelectedActivityIndex] = useState(null);
+
+    // console.log('actividad', selectedActivities[selectedActivityIndex])
+
     const initialValues = {
         FECHA: "",
         FIRSTDATE: "",
@@ -66,12 +71,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         CARACTERISTICA: "",
         REALIZO: "",
         REVISO: "",
-        REPORT_LIST_IMAGES: [{
-            ACTIVITY: "",
-            IMAGES: [],
-            TEXT_IMAGES: "",
-            OBSERVACIONES: ""
-        }]
+        REPORT_LIST_IMAGES: []
     };
     
     useEffect(() => {
@@ -79,7 +79,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
           try {
             const parametros = {
               ALBERCA: albercaSeleccionada.idalberca,
-              ACTIVIDAD: selectedActivity
+              ACTIVIDAD: selectedActivities[selectedActivityIndex]
             };
       
             const response = await fetch(`${api}/obtener/imagenes/actividades/`, {
@@ -103,7 +103,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         };
       
         fetchData();
-      }, [selectedActivity]);
+      }, [selectedActivities, albercaSeleccionada]);
       
 
     // Función para convertir la fecha en formato válido de la fecha
@@ -119,7 +119,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     const onSubmit = (values, { resetForm }) => {
 
         setSelectedImages([]); 
-
+        
         if(typeof values.FECHA !== "string"){
             const formattedDate = format(values.FECHA, "dd/MM/yy");
             values.FECHA = formattedDate;
@@ -135,11 +135,20 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
             values.LASTDATE = formattedDate;
         }
 
-        // AQUI SE LE ASIGNA LA ACTIVIDAD AL INITIAL VALUES DEL STATE 
-        values.REPORT_LIST_IMAGES[0].ACTIVITY = selectedActivity;
+        // Actualiza el valor de ACTIVITY para todas las actividades
+        values.REPORT_LIST_IMAGES.forEach((report, index) => {
+          report.ACTIVITY = selectedActivities[index];
+        });
+        // // AQUI SE LE ASIGNA LA ACTIVIDAD AL INITIAL VALUES DEL STATE 
+        // values.REPORT_LIST_IMAGES[selectedActivityIndex].ACTIVITY = selectedActivities[selectedActivityIndex];
 
+
+        // Actualiza el valor de IMAGES para cada actividad
+        // values.REPORT_LIST_IMAGES.forEach((report, index) => {
+        //   report.IMAGES = selectedImages[index] || []; // Usar el arreglo de imágenes seleccionadas correspondiente
+        // });
         // AQUI SE ESTAN ASIGNADO EL ARREGLO DE IMAGENES SELECIONADAS
-        values.REPORT_LIST_IMAGES[0].IMAGES = selectedImages;
+        values.REPORT_LIST_IMAGES[1].IMAGES = selectedImages;
   
         const initialValues2 = {
             FECHA: values.FECHA,
@@ -155,10 +164,10 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
             REPORT_LIST_IMAGES: values.REPORT_LIST_IMAGES.map((item, index) => ( 
                 [
                     {
-                        ACTIVITY: values.REPORT_LIST_IMAGES[index].ACTIVITY = selectedActivity
+                        ACTIVITY: values.REPORT_LIST_IMAGES[index].ACTIVITY
                     },
                     {
-                        IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES = selectedImages
+                        IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES
                     },
                     {
                         TEXT_IMAGES: values.REPORT_LIST_IMAGES[index].TEXT_IMAGES
@@ -182,6 +191,8 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
             selectedActivity={selectedActivity}
             selectedImages={selectedImages}
             setSelectedImages={setSelectedImages}
+            selectedActivities={selectedActivities}
+            selectedActivityIndex={selectedActivityIndex}
         />
 
         <Dialog header='Reporte Fotográfico Mensual' visible={modalNuevoReporteMensual} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalNuevoReporteMensual(false)} className='pt-20'>
@@ -289,6 +300,28 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                     </label>
                                 </span>
                             </div>
+                            {/* <div className="p-inputgroup mb-5 mt-5">
+                                <span className='p-float-label relative'>
+                                    <Field
+                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                        as={Dropdown}
+                                        name="clientes"
+                                        value={sedeSeleccionada}
+                                        optionLabel="nombre"
+                                        // itemTemplate={renderClienteOption}
+                                        onChange={(e) => {setSedeSeleccionada(e.target.value)}}
+                                        filter
+                                        options={sedes} 
+                                        
+                                    /> 
+                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                    </span>
+                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                      Sede
+                                    </label>
+                                </span>
+                            </div> */}
                             <div className="p-inputgroup mb-5 mt-5">
                                 <span className='p-float-label relative'>
                                     <Field
@@ -305,6 +338,24 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                     </label>
                                 </span>
                             </div>
+                            {/* <div className="p-inputgroup mb-5 mt-5">
+                                <span className='p-float-label relative'>
+                                    <Field
+                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                        as={Dropdown}
+                                        name="ALBERCA"
+                                        options={albercas}
+                                        optionLabel="nombrealberca" 
+                                        getOptionValue={(option) => option.nombrealberca}
+                                    /> 
+                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                    </span>
+                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                        Alberca
+                                    </label>
+                                </span>
+                            </div> */}
                             <div className="p-inputgroup mb-5 mt-5">
                                 <span className='p-float-label relative'>
                                     <Field
@@ -351,7 +402,8 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                     <div>
                                       {values.REPORT_LIST_IMAGES.length > 0 &&
                                         values.REPORT_LIST_IMAGES.map((report, index) => (
-                                          <div key={index}>
+                                            <>
+                                            <div key={index}>
                                             <button
                                                 className='hover:shadow-slate-600 border h-10 px-4 bg-[#BE1622] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-[#d52935] text-left ml-auto flex items-center'
                                                 type="button"
@@ -369,8 +421,17 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                             name={`REPORT_LIST_IMAGES.${index}.ACTIVITY`}
                                                             options={opcionesActividades}
                                                             optionLabel="label"
-                                                            onChange={(e) => setSelectedActivity(e.value)}
-                                                            value={selectedActivity}
+                                                            onChange={(e) => {
+                                                                setSelectedActivityIndex(index);
+                                                                setSelectedActivities((prevActivities) => {
+                                                                  const newActivities = [...prevActivities];
+                                                                  newActivities[index] = e.value;
+                                                                  return newActivities;
+                                                                });
+                                                              }}
+                                                            // onChange={(e) => setSelectedActivity(e.value)}
+                                                            value={selectedActivities[index]}
+                                                            // value={selectedActivity}
                                                         /> 
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -381,7 +442,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                     </span>
                                                 </div>
                                                 {
-                                                    selectedActivity != null &&
+                                                    setSelectedActivities != [] &&
                                                     <div className="p-inputgroup mb-5 mt-5 cursor-pointer flex gap-3 justify-center">
                                                         <button
                                                             type="button"
@@ -432,18 +493,18 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                 </div>
                                             </div>
                                           </div>
+                                          <hr className="divider" />
+                                            </>  
                                         ))}
                                       <button
                                         className='hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 text-left ml-auto flex items-center'
                                         type="button"
-                                        onClick={() => {
-                                            push({
-                                              ACTIVITY: "",
-                                              IMAGES: [],
-                                              TEXT_IMAGES: "",
-                                              OBSERVACIONES: "",
-                                            });
-                                          }}
+                                        onClick={() => push({
+                                            ACTIVITY: "",
+                                            IMAGES: [],
+                                            TEXT_IMAGES: "",
+                                            OBSERVACIONES: "",
+                                          })}
                                       >
                                         <ion-icon name="add-circle"></ion-icon> Actividad
                                       </button>

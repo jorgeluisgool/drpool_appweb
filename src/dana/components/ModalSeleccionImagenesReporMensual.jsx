@@ -1,7 +1,7 @@
 import { Dialog } from 'primereact/dialog';
 import React, { useState } from 'react'
 
-const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSeleccionImagenes, imagenesActivdades, selectedActivity, selectedImages, setSelectedImages}) => {   
+const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSeleccionImagenes, imagenesActivdades, selectedActivity, selectedImages, setSelectedImages, selectedActivities, selectedActivityIndex}) => {   
 
   const toggleImageSelection = (imageUrl) => {
     setSelectedImages((prevSelectedImages) => {
@@ -20,8 +20,10 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
     console.log('Imágenes seleccionadas:', selectedImages);
   };
 
+  
+
   return (
-    <Dialog header={`IMAGENES: ${selectedActivity}`} visible={modalSeleccionImagenes}  baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalSeleccionImagenes(false)} className='pt-20'>
+    <Dialog header={`IMAGENES: ${selectedActivities[selectedActivityIndex]}`} visible={modalSeleccionImagenes}  baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalSeleccionImagenes(false)} className='pt-20'>
       <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4'>
       {
         imagenesActivdades.map((imagen) => (
@@ -37,16 +39,18 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
                 alt="Random image"
               />
               <div className="absolute bottom-0 w-full bg-black bg-opacity-40 py-3 px-6 opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out flex flex-col items-center">
-                <div className="text-xsa font-medium mb-2 text-white">{imagen.nombrefoto}</div>
+                <div className="text-xs font-light mb-2 text-white">{imagen.nombrefoto}</div>
               </div>
             </div>
           </div>
         ))
       }
       </div>
-      <button onClick={handleSaveImages} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transform transition duration-500 ease-in-out hover:scale-110">
-    Guardar Imágenes Seleccionadas
-  </button>
+      <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+        <button onClick={() => (handleSaveImages(), setModalSeleccionImagenes(false))} className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600">
+          Aceptar imágenes seleccionadas
+        </button>
+      </div> 
     </Dialog>
   )
 }
