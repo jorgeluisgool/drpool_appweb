@@ -10,9 +10,6 @@ import { addLocale } from 'primereact/api'
 import { format, parse } from 'date-fns';
 import { ModalDetalleEquipo } from './ModalDetalleEquipo'
 
-
-
-
 addLocale('es', {
     firstDayOfWeek: 1,
     dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
@@ -22,7 +19,7 @@ addLocale('es', {
     monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
     today: 'Hoy',
     clear: 'Limpiar'
-  });
+});
 
 const opcionesEstatusBombeo = [
     { label: 'FUNCIONANDO', value: 'FUNCIONANDO' },
@@ -81,6 +78,7 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
               });
     }
 
+    // Función para convertir la fecha en formato válido de la fecha
     const parseDate = (dateString) => {
         if (typeof dateString === "string") {
             const parsedDate = parse(dateString, 'dd/MM/yy', new Date());
@@ -139,16 +137,15 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                                 className="w-full appearance-none focus:outline-none bg-transparent"
                                 as={Calendar}
                                 name="fecha_ultimo_mantenimiento"
-                                value={parseDate(values.fecha_ultimo_mantenimiento)}
+                                value={(values.fecha_ultimo_mantenimiento)}
                                 dateFormat="dd/MM/yy"
                                 locale='es'
-
                             /> 
                             <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                               <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                             </span>
                             <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                Fecha de último mantenimiento  
+                                Fecha de último mantenimiento - 
                             </label>
                         </span>
                     </div>

@@ -137,7 +137,7 @@ export const DosificadorForm = ({albercaSelected, setVentanaCarga, setModalRegis
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Calendar}
                                     name="fecha_ultimo_mantenimiento"
-                                    value={parseDate(values.fecha_ultimo_mantenimiento)}
+                                    value={(values.fecha_ultimo_mantenimiento)}
                                     dateFormat="dd/MM/yy"
                                     locale='es'
                                     

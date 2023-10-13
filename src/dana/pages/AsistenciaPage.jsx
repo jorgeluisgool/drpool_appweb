@@ -48,6 +48,7 @@ export const AsistenciaPage = () => {
         clear: 'Limpiar'
     });
 
+    
     console.log(sedeSeleccionada)
     useEffect(() => {
         const fetchData = async () => {

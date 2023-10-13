@@ -219,7 +219,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad de Arena (KG)
+                                    Cantidad de Arena (Kg)
                                 </label>
                             </span>
                         </div>
@@ -236,7 +236,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad de Grava (KG)
+                                    Cantidad de Grava (Kg)
                                 </label>
                             </span>
                         </div>
@@ -253,7 +253,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad Max (KG)
+                                    Cantidad Max (Kg)
                                 </label>
                             </span>
                         </div>
@@ -271,7 +271,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Estatus arena
+                                    Estatus del filtro
                                 </label>
                             </span>
                         </div>
@@ -281,7 +281,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Calendar}
                                     name="fecha_ultimo_mantenimiento_arena"
-                                    value={parseDate(values.fecha_ultimo_mantenimiento_arena)}
+                                    value={(values.fecha_ultimo_mantenimiento_arena)}
                                     dateFormat="dd/MM/yy"
                                     locale='es'
                                 /> 
@@ -360,7 +360,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad de Arena (KG)
+                                    Cantidad de Arena (Kg)
                                 </label>
                             </span>
                         </div>
@@ -377,7 +377,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad de Grava (KG)
+                                    Cantidad de Grava (Kg)
                                 </label>
                             </span>
                         </div>
@@ -394,7 +394,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad Max (KG)
+                                    Cantidad Max (Kg)
                                 </label>
                             </span>
                         </div>
@@ -422,7 +422,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Calendar}
                                     name="fecha_ultimo_mantenimiento_zeolita"
-                                    value={parseDate(values.fecha_ultimo_mantenimiento_zeolita)}
+                                    value={(values.fecha_ultimo_mantenimiento_zeolita)}
                                     dateFormat="dd/MM/yy"
                                     locale='es'
                                     
@@ -536,7 +536,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad Max (KG)
+                                    Cantidad Max (Kg)
                                 </label>
                             </span>
                         </div>
@@ -564,10 +564,9 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Calendar}
                                     name="fecha_ultimo_mantenimiento_cartucho"
-                                    value={parseDate(values.fecha_ultimo_mantenimiento_cartucho)}
+                                    value={(values.fecha_ultimo_mantenimiento_cartucho)}
                                     dateFormat="dd/MM/yy"
-                                    locale='es'
-                                    
+                                    locale='es' 
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -661,7 +660,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad de Grava (KG)
+                                    Cantidad de Grava (Kg)
                                 </label>
                             </span>
                         </div>
@@ -678,7 +677,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                 </span>
                                 <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                    Cantidad Max (KG)
+                                    Cantidad Max (Kg)
                                 </label>
                             </span>
                         </div>
@@ -706,7 +705,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={Calendar}
                                     name="fecha_ultimo_mantenimiento_esponja"
-                                    value={parseDate(values.fecha_ultimo_mantenimiento_esponja)}
+                                    value={(values.fecha_ultimo_mantenimiento_esponja)}
                                     dateFormat="dd/MM/yy"
                                     locale='es'
                                     
