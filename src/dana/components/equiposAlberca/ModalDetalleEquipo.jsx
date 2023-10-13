@@ -20,9 +20,10 @@ addLocale('es', {
   });
 
 
-export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, equipoSeleccionado, albercaSelected, setVentanaCarga}) => {
+export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, equipoSeleccionado, albercaSelected, setVentanaCarga, editFields, setEditFields}) => {
 
     const [editForm, setEditForm] = useState(false);
+    
 
     const parseDate = (dateString) => {
         if (typeof dateString === "string") {
@@ -84,7 +85,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
           </div>
           )}
 
-          {editForm && (<BombeoForm equipoSeleccionado = {equipoSeleccionado} idbomba = {equipoSeleccionado.idbomba} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo}></BombeoForm>)}
+          {editForm && (<BombeoForm equipoSeleccionado = {equipoSeleccionado} idbomba = {equipoSeleccionado.idbomba} albercaSelected={albercaSelected} setVentanaCarga={setVentanaCarga} equipoSelected={equipoSeleccionado.tipoequipo} setModalDetalleEquipo={setModalDetalleEquipo} editFields={editFields} setEditFields={setEditFields}></BombeoForm>)}
           <div className="cursor-pointer absolute inset-x-0 bottom-4 left-6 flex gap-3 justify-start">
                 <button
                     type="submit"

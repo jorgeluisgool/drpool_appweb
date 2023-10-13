@@ -179,6 +179,10 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     value={values.caracteristica}
                                     options={opcionesCaracteristicaAlberca}
                                     optionLabel="label"
+                                    disabled={
+                                      albercaSeleccionada != undefined &&
+                                      editFields
+                                    }
                                     required
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -322,7 +326,13 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     as={InputText}
                                     name="capacidad"
                                     value={values.capacidad}
-                                    keyfilter="pint"
+                                    onKeyPress={(e) => {
+                                      const charCode = e.which || e.keyCode;
+                                      // Permitir solo números (0-9) y el punto (.)
+                                      if ((charCode < 48 || charCode > 57) && charCode !== 46) {
+                                        e.preventDefault();
+                                      }
+                                    }}
                                     disabled={
                                       albercaSeleccionada != undefined &&
                                       editFields
@@ -345,7 +355,13 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     as={InputText}
                                     name="medidalargo"
                                     value={values.medidalargo}
-                                    keyfilter="pint"
+                                    onKeyPress={(e) => {
+                                      const charCode = e.which || e.keyCode;
+                                      // Permitir solo números (0-9) y el punto (.)
+                                      if ((charCode < 48 || charCode > 57) && charCode !== 46) {
+                                        e.preventDefault();
+                                      }
+                                    }}
                                     disabled={
                                       albercaSeleccionada != undefined &&
                                       editFields
@@ -366,7 +382,13 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     as={InputText}
                                     name="medidaancho"
                                     value={values.medidaancho}
-                                    keyfilter="pint"
+                                    onKeyPress={(e) => {
+                                      const charCode = e.which || e.keyCode;
+                                      // Permitir solo números (0-9) y el punto (.)
+                                      if ((charCode < 48 || charCode > 57) && charCode !== 46) {
+                                        e.preventDefault();
+                                      }
+                                    }}
                                     disabled={
                                       albercaSeleccionada != undefined &&
                                       editFields
@@ -387,7 +409,13 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                     as={InputText}
                                     name="profundidadminima"
                                     value={values.profundidadminima}
-                                    keyfilter={/^\d+(\.\d{0,2})?$/}
+                                    onKeyPress={(e) => {
+                                      const charCode = e.which || e.keyCode;
+                                      // Permitir solo números (0-9) y el punto (.)
+                                      if ((charCode < 48 || charCode > 57) && charCode !== 46) {
+                                        e.preventDefault();
+                                      }
+                                    }}
                                     disabled={
                                       albercaSeleccionada != undefined &&
                                       editFields
@@ -405,16 +433,23 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
                                 <Field
+                                    type="text"
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     as={InputText}
                                     name="profundidadmaxima"
                                     value={values.profundidadmaxima}
-                                    keyfilter={/^\d+(\.\d{0,2})?$/}
+                                    // keyfilter={/^\d+(\.\d{0,2})?$/}
                                     disabled={
                                       albercaSeleccionada != undefined &&
                                       editFields
                                     }
-                                    // onChange={(e) => setFieldValue("proyecto", e.target.value.toUpperCase())}
+                                    onKeyPress={(e) => {
+                                      const charCode = e.which || e.keyCode;
+                                      // Permitir solo números (0-9) y el punto (.)
+                                      if ((charCode < 48 || charCode > 57) && charCode !== 46) {
+                                        e.preventDefault();
+                                      }
+                                    }}
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                   <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>

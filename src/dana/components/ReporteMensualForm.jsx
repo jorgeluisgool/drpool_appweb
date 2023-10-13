@@ -57,6 +57,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
 
     const [selectedActivities, setSelectedActivities] = useState([]);
     const [selectedActivityIndex, setSelectedActivityIndex] = useState(null);
+    const [selectedImagesIndex, setSelectedImagesIndex] = useState(null);
 
     // console.log('actividad', selectedActivities[selectedActivityIndex])
 
@@ -79,7 +80,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
           try {
             const parametros = {
               ALBERCA: albercaSeleccionada.idalberca,
-              ACTIVIDAD: selectedActivities[selectedActivityIndex]
+              ACTIVIDAD: selectedActivities[selectedImagesIndex]
             };
       
             const response = await fetch(`${api}/obtener/imagenes/actividades/`, {
@@ -103,7 +104,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         };
       
         fetchData();
-      }, [selectedActivities, albercaSeleccionada]);
+      }, [selectedActivities, albercaSeleccionada, selectedImagesIndex]);
       
 
     // Función para convertir la fecha en formato válido de la fecha
@@ -193,6 +194,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
             setSelectedImages={setSelectedImages}
             selectedActivities={selectedActivities}
             selectedActivityIndex={selectedActivityIndex}
+            setSelectedImagesIndex
         />
 
         <Dialog header='Reporte Fotográfico Mensual' visible={modalNuevoReporteMensual} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalNuevoReporteMensual(false)} className='pt-20'>
@@ -446,10 +448,13 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                     <div className="p-inputgroup mb-5 mt-5 cursor-pointer flex gap-3 justify-center">
                                                         <button
                                                             type="button"
-                                                            onClick={() => (setModalSeleccionImagenes(true))}
+                                                            onClick={() => {
+                                                                setSelectedImagesIndex(index);
+                                                                setModalSeleccionImagenes(true)
+                                                            }}
                                                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                                                         >
-                                                            Imagenes
+                                                            <ion-icon name="images-outline"></ion-icon> Imagenes
                                                         </button>
                                                     </div>
                                                 }

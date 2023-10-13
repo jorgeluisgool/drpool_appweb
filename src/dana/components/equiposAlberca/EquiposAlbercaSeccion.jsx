@@ -32,6 +32,10 @@ export const EquiposAlbercaSeccion = () => {
   const [selectAlberca, setSelectAlberca] = useState(null);
   const [selectEquipo, setSelectEquipo ] = useState(null); 
 
+  const [modalDetalleEquipo, setModalDetalleEquipo] = useState(false);
+
+  const [editFields, setEditFields] = useState(false);
+
    
 
   useEffect(() => {
@@ -133,6 +137,10 @@ export const EquiposAlbercaSeccion = () => {
                 modalRegistroGuardado={modalRegistroGuardado}
                 setVentanaCarga={setVentanaCarga}
                 ventanaCarga={ventanaCarga}
+                modalDetalleEquipo={modalDetalleEquipo}
+                setModalDetalleEquipo={setModalDetalleEquipo}
+                editFields={editFields}
+                setEditFields={setEditFields}
               />
             }
             {
@@ -142,6 +150,7 @@ export const EquiposAlbercaSeccion = () => {
                   setVentanaCarga={setVentanaCarga}
                   setModalRegistroGuardado={setModalRegistroGuardado}
                   equipoSelected={equipoSelected}
+                  setModalDetalleEquipo={setModalDetalleEquipo}
                 />
               )
             }

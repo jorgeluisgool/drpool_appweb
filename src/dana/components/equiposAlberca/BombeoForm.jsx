@@ -8,6 +8,7 @@ import { api } from '../../helpers/variablesGlobales'
 import { DialogConfirmacion } from '../../../ui/components/DialogConfirmacion'
 import { addLocale } from 'primereact/api'
 import { format, parse } from 'date-fns';
+import { ModalDetalleEquipo } from './ModalDetalleEquipo'
 
 
 
@@ -28,7 +29,7 @@ const opcionesEstatusBombeo = [
     { label: 'NO FUNCIONANDO', value: 'NO FUNCIONANDO' }
 ];
 
-export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado, equipoSelected, equipoSeleccionado = {}, idbomba = 0}) => {
+export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGuardado, equipoSelected, equipoSeleccionado = {}, idbomba = 0}, setModalDetalleEquipo) => {
 
     const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
     const [editFields, setEditFields] = useState(true);
@@ -71,7 +72,9 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                     console.log(responseData);
                     setVentanaCarga(false);
                     setModalRegistroGuardado(true);
+                    setModalDetalleEquipo(false);
                     resetForm();
+                    
               })
               .catch((error) => {
                 console.log(error);
@@ -112,6 +115,43 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                             </label>
                         </span>
                     </div>
+                    <div className="p-inputgroup mb-5 mt-5">
+                        <span className='p-float-label relative'>
+                            <Field
+                                className="w-full appearance-none focus:outline-none bg-transparent"
+                                as={Dropdown}
+                                name="estatus"
+                                value={values.estatus}
+                                options={opcionesEstatusBombeo}
+                                optionLabel="label" 
+                            /> 
+                            <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                              <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                            </span>
+                            <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                Estatus 
+                            </label>
+                        </span>
+                    </div>
+                    <div className="p-inputgroup mb-5 mt-5">
+                        <span className='p-float-label relative'>
+                            <Field
+                                className="w-full appearance-none focus:outline-none bg-transparent"
+                                as={Calendar}
+                                name="fecha_ultimo_mantenimiento"
+                                value={parseDate(values.fecha_ultimo_mantenimiento)}
+                                dateFormat="dd/MM/yy"
+                                locale='es'
+
+                            /> 
+                            <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                              <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                            </span>
+                            <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                Fecha de último mantenimiento  
+                            </label>
+                        </span>
+                    </div>
                 </div>
                 <hr className="divider" />
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6'>
@@ -122,7 +162,13 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                                 as={InputText}
                                 name="potencia"
                                 value={values.potencia}
-                                keyfilter="pint"
+                                onKeyPress={(e) => {
+                                    const charCode = e.which || e.keyCode;
+                                    // Permitir solo números (0-9) y el punto (.)
+                                    if ((charCode < 48 || charCode > 57) && charCode !== 46) {
+                                      e.preventDefault();
+                                    }
+                                  }}
                             /> 
                             <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                               <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -179,7 +225,7 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                               <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                             </span>
                             <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                            Corriente nominal 
+                            Corriente nominal (A)
                             </label>
                         </span>
                     </div>
@@ -190,50 +236,19 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                                 as={InputText}
                                 name="voltaje"
                                 value={values.voltaje}
-                                keyfilter="pint"
+                                onKeyPress={(e) => {
+                                    const charCode = e.which || e.keyCode;
+                                    // Permitir solo números (0-9), el punto (.) y el guion medio (-)
+                                    if ((charCode < 48 || charCode > 57) && charCode !== 46 && charCode !== 45) {
+                                      e.preventDefault();
+                                    }
+                                  }}                                  
                             /> 
                             <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                               <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                             </span>
                             <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
                                 Voltaje (V)
-                            </label>
-                        </span>
-                    </div>
-                    <div className="p-inputgroup mb-5 mt-5">
-                        <span className='p-float-label relative'>
-                            <Field
-                                className="w-full appearance-none focus:outline-none bg-transparent"
-                                as={Dropdown}
-                                name="estatus"
-                                value={values.estatus}
-                                options={opcionesEstatusBombeo}
-                                optionLabel="label" 
-                            /> 
-                            <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                              <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                            </span>
-                            <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                Estatus 
-                            </label>
-                        </span>
-                    </div>
-                    <div className="p-inputgroup mb-5 mt-5">
-                        <span className='p-float-label relative'>
-                            <Field
-                                className="w-full appearance-none focus:outline-none bg-transparent"
-                                as={Calendar}
-                                name="fecha_ultimo_mantenimiento"
-                                value={parseDate(values.fecha_ultimo_mantenimiento)}
-                                dateFormat="dd/MM/yy"
-                                locale='es'
-
-                            /> 
-                            <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                              <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                            </span>
-                            <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                Fecha de último mantenimiento  
                             </label>
                         </span>
                     </div>
@@ -277,13 +292,14 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
                     <button
                             type="button"
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                            onClick={() => setModaAceptarlAbrirCerrar(true)}
+                            onClick={() => {
+                                setModaAceptarlAbrirCerrar(true)}                            }
                         >
                           <ion-icon name="save"></ion-icon> Guardar
                         </button>
                         
                         {modaAceptarlAbrirCerrar ?
-                         <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields={setEditFields}/> : <></>}
+                         <DialogConfirmacion modaAceptarlAbrirCerrar = {modaAceptarlAbrirCerrar} setModaAceptarlAbrirCerrar={setModaAceptarlAbrirCerrar} setEditFields={setEditFields} setModalDetalleEquipo={setModalDetalleEquipo}/> : <></>}
                 </div>
             </div> 
               

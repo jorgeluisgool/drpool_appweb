@@ -3,7 +3,7 @@ import { api } from '../../helpers/variablesGlobales';
 import { Dropdown } from 'primereact/dropdown';
 import { ModalDetalleEquipo } from './ModalDetalleEquipo';
 
-export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEquipos, setEquipoSelected, modalRegistroGuardado, setVentanaCarga, ventanaCarga}) => {
+export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEquipos, setEquipoSelected, modalRegistroGuardado, setVentanaCarga, ventanaCarga, modalDetalleEquipo, setModalDetalleEquipo, editFields, setEditFields}) => {
 
   const [equiposBomba, setEquiposBomba] = useState();
   const [equiposFiltrado, setEquiposFiltrado] = useState();
@@ -11,7 +11,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
   const [equiposDosificador, setEquiposDosificador] = useState();
   const [equiposControlador, setEquiposControlador] = useState();
   const [botonNuevaSede, setBotonNuevaSede ] = useState(null);
-  const [modalDetalleEquipo, setModalDetalleEquipo] = useState(false);
+  
   const [equipoSeleccionado, setEquipoSeleccionado] = useState({});
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
     };
 
     fetchData();
-  }, [modalRegistroGuardado, ventanaCarga]);
+  }, [modalRegistroGuardado, ventanaCarga, editFields]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +46,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
     };
 
     fetchData();
-  }, [modalRegistroGuardado, ventanaCarga]);
+  }, [modalRegistroGuardado, ventanaCarga, editFields]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,7 +60,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
     };
 
     fetchData();
-  }, [modalRegistroGuardado, ventanaCarga]);
+  }, [modalRegistroGuardado, ventanaCarga, editFields]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,7 +74,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
     };
 
     fetchData();
-  }, [modalRegistroGuardado, ventanaCarga]);
+  }, [modalRegistroGuardado, ventanaCarga, editFields]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,7 +88,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
     };
 
     fetchData();
-  }, [modalRegistroGuardado, ventanaCarga]);
+  }, [modalRegistroGuardado, ventanaCarga, editFields]);
 
   const equiposbombasfiltradas = equiposBomba?.filter((equiBomba) => (equiBomba.alberca?.nombrealberca === albercaSelected?.nombrealberca));
   const equiposFiltroFiltradas = equiposFiltrado?.filter((equiFiltro) => (equiFiltro.alberca?.nombrealberca === albercaSelected?.nombrealberca));
@@ -103,6 +103,8 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
         equipoSeleccionado={equipoSeleccionado}
         albercaSelected={albercaSelected}
         setVentanaCarga={setVentanaCarga}
+        editFields={editFields}
+        setEditFields={setEditFields}
       />
 
         <div className="mb-6 transition duration-500 ease-in-out hover:shadow-2xl relative w-full max-w-full rounded overflow-hidden shadow-lg group">
