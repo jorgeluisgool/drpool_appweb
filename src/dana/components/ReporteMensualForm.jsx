@@ -51,10 +51,10 @@ const opcionesTipoAlberca = [
 export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, albercaSeleccionada, setAlbercaSeleccionada}) => {
 
     const [modalSeleccionImagenes, setModalSeleccionImagenes] = useState(false);
-    const [imagenesActivdades, setImagenesActivdades] = useState([])
+    const [imagenesActivdades, setImagenesActivdades] = useState([]);
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [selectedImages, setSelectedImages] = useState([]);
-    const [arregloSelectedImages, setArregloSelectedImages] = useState([])
+    const [coleccionArregloSelectedImages, setColeccionArregloSelectedImages] = useState([]);
 
     const [selectedActivities, setSelectedActivities] = useState([]);
     const [selectedActivityIndex, setSelectedActivityIndex] = useState(null);
