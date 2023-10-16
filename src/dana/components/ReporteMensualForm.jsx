@@ -54,6 +54,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     const [imagenesActivdades, setImagenesActivdades] = useState([])
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [selectedImages, setSelectedImages] = useState([]);
+    const [arregloSelectedImages, setArregloSelectedImages] = useState([])
 
     const [selectedActivities, setSelectedActivities] = useState([]);
     const [selectedActivityIndex, setSelectedActivityIndex] = useState(null);
@@ -104,7 +105,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         };
       
         fetchData();
-      }, [selectedActivities, albercaSeleccionada, selectedImagesIndex]);
+      }, [selectedActivities, albercaSeleccionada, selectedImagesIndex, selectedImages]);
       
 
     // Función para convertir la fecha en formato válido de la fecha
@@ -149,15 +150,15 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         //   report.IMAGES = selectedImages[index] || []; // Usar el arreglo de imágenes seleccionadas correspondiente
         // });
         // AQUI SE ESTAN ASIGNADO EL ARREGLO DE IMAGENES SELECIONADAS
-        values.REPORT_LIST_IMAGES[1].IMAGES = selectedImages;
+        values.REPORT_LIST_IMAGES[0].IMAGES = selectedImages;
   
         const initialValues2 = {
             FECHA: values.FECHA,
             FIRSTDATE: values.FIRSTDATE,
             LASTDATE: values.LASTDATE,
-            SEDE: values.SEDE.nombre,
+            SEDE: values.SEDE,
             ALCALDIA: values.ALCALDIA,
-            ALBERCA: values.ALBERCA.nombrealberca,
+            ALBERCA: values.ALBERCA,
             TIPOALBERCA: values.TIPOALBERCA,
             CARACTERISTICA: values.CARACTERISTICA,
             REALIZO: values.REALIZO,

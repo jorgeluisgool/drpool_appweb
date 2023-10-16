@@ -7,6 +7,7 @@ import { addLocale } from 'primereact/api';
 import { CalentamientoForm } from './CalentamientoForm';
 import { ControladorForm } from './ControladorForm';
 import { format, parse } from 'date-fns';
+import useAuth from '../../hooks/useAuth';
 
 addLocale('es', {
     firstDayOfWeek: 1,
@@ -24,6 +25,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
 
     const [editForm, setEditForm] = useState(false);
     
+    const { actualizarEquipo, setActualizarEquipo} = useAuth();
 
     const parseDate = (dateString) => {
         if (typeof dateString === "string") {
@@ -37,7 +39,7 @@ export const ModalDetalleEquipo = ({modalDetalleEquipo, setModalDetalleEquipo, e
       console.log(equipoSeleccionado)
 
   return (
-    <Dialog header={equipoSeleccionado.numero} visible={modalDetalleEquipo} baseZIndex={-1} style={{ width: '85vw', height: '45vw' }} onHide={() => {setModalDetalleEquipo(false); setEditForm(false)}} className='pt-20'>
+    <Dialog header={equipoSeleccionado.numero} visible={actualizarEquipo} baseZIndex={-1} style={{ width: '85vw', height: '45vw' }} onHide={() => {setActualizarEquipo(false); setEditForm(false)}} className='pt-20'>
         {
         equipoSeleccionado.tipoequipo === 'BOMBEO' &&  
         <div className="max-w-full mx-auto bg-white rounded-xl overflow-hidden md:max-w-full">

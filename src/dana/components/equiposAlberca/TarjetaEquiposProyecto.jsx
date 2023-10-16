@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { api } from '../../helpers/variablesGlobales';
 import { Dropdown } from 'primereact/dropdown';
 import { ModalDetalleEquipo } from './ModalDetalleEquipo';
+import useAuth from '../../hooks/useAuth';
 
 export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEquipos, setEquipoSelected, modalRegistroGuardado, setVentanaCarga, ventanaCarga, modalDetalleEquipo, setModalDetalleEquipo, editFields, setEditFields}) => {
 
@@ -13,6 +14,8 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
   const [botonNuevaSede, setBotonNuevaSede ] = useState(null);
   
   const [equipoSeleccionado, setEquipoSeleccionado] = useState({});
+
+  const { actualizarEquipo, setActualizarEquipo} = useAuth();
 
   useEffect(() => {
     setBotonNuevaSede(null);
@@ -158,7 +161,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
               <div className="uppercase tracking-wide text-lg text-[#245A95] font-semibold">Dosificador</div>
               {
                 equiposDosificadorFiltradas?.map((equipoDosificador) => 
-                  <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setModalDetalleEquipo(true), setEquipoSeleccionado(equipoDosificador)}}>
+                  <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setActualizarEquipo(true), setEquipoSeleccionado(equipoDosificador)}}>
                     <li key={equipoDosificador.iddosificador}>{equipoDosificador.numero}</li>
                   </div>
                 )
@@ -168,7 +171,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
               <div className="uppercase tracking-wide text-lg text-[#245A95] font-semibold">Controlador</div>
               {
                 equiposControladorControlador?.map((equipoControlador) => 
-                  <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setModalDetalleEquipo(true), setEquipoSeleccionado(equipoControlador)}}>
+                  <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setActualizarEquipo(true), setEquipoSeleccionado(equipoControlador)}}>
                     <li key={equipoControlador.idcontrolador}>{equipoControlador.numero}</li>
                   </div>
                 )

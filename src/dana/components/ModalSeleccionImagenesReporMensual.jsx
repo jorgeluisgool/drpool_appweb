@@ -47,7 +47,7 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
       }
       </div>
       <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-        <button onClick={() => (handleSaveImages(), setModalSeleccionImagenes(false))} className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600">
+        <button onClick={handleSaveImages} className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600">
           Aceptar imágenes seleccionadas
         </button>
       </div> 

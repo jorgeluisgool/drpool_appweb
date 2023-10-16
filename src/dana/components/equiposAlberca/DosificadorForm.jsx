@@ -8,6 +8,7 @@ import { api } from '../../helpers/variablesGlobales';
 import { DialogConfirmacion } from '../../../ui/components/DialogConfirmacion';
 import { addLocale } from 'primereact/api';
 import { format, parse } from 'date-fns';
+import useAuth from '../../hooks/useAuth';
 
 
 const opcionesEstatus = [
@@ -31,6 +32,7 @@ export const DosificadorForm = ({albercaSelected, setVentanaCarga, setModalRegis
     const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
     const [editFields, setEditFields] = useState(true);
 
+    const { actualizarEquipo, setActualizarEquipo} = useAuth();
 
     const initialValues = {
         alberca: albercaSelected,
@@ -68,6 +70,7 @@ export const DosificadorForm = ({albercaSelected, setVentanaCarga, setModalRegis
               .then((response) => response.text())
               .then((responseData) => {
                     console.log(responseData);
+                    setActualizarEquipo(false);
                     setVentanaCarga(false);
                     setModalRegistroGuardado(true);
                     resetForm();

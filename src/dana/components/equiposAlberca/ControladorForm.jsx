@@ -8,6 +8,7 @@ import { api } from '../../helpers/variablesGlobales';
 import { addLocale } from 'primereact/api';
 import { format, parse } from 'date-fns';
 import { DialogConfirmacion } from '../../../ui/components/DialogConfirmacion';
+import useAuth from '../../hooks/useAuth';
 
 
 const opcionesEstatus = [
@@ -30,6 +31,8 @@ export const ControladorForm = ({albercaSelected, setVentanaCarga, setModalRegis
 
     const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
     const [editFields, setEditFields] = useState(true);
+
+    const { actualizarEquipo, setActualizarEquipo} = useAuth();
 
     const initialValues = {
         alberca: albercaSelected,
@@ -60,8 +63,9 @@ export const ControladorForm = ({albercaSelected, setVentanaCarga, setModalRegis
                .then((response) => response.text())
                .then((responseData) => {
                      console.log(responseData);
+                     setActualizarEquipo(false);
                      setVentanaCarga(false);
-                     setModalRegistroGuardado(true);
+                    setModalRegistroGuardado(true);
                      resetForm();
                })
                .catch((error) => {
@@ -214,7 +218,9 @@ export const ControladorForm = ({albercaSelected, setVentanaCarga, setModalRegis
                     <button
                             type="button"
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                            onClick={() => setModaAceptarlAbrirCerrar(true)}
+                            onClick={() => {
+                                setModaAceptarlAbrirCerrar(true)
+                            }}
                         >
                           <ion-icon name="save"></ion-icon> Guardar
                         </button>
