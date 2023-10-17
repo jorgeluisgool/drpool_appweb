@@ -17,7 +17,10 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
     // Aquí puedes guardar las imágenes seleccionadas donde lo necesites
     // Por ejemplo, podrías guardarlas en un estado de tu componente principal
     // o realizar una acción específica, como enviarlas a un servidor.
-    console.log('Imágenes seleccionadas:', selectedImages);
+    const arregloNuevo = [
+      
+    ]
+    setColeccionArregloSelectedImages(selectedImages[selectedActivityIndex]);
   };
 
   

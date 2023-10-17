@@ -63,8 +63,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     const [selectedActivityIndex, setSelectedActivityIndex] = useState(null);
     const [selectedImagesIndex, setSelectedImagesIndex] = useState(null);
 
-    console.log('actividad', selectedActivities[selectedActivityIndex])
-
     const initialValues = {
         FECHA: "",
         FIRSTDATE: "",
@@ -421,24 +419,22 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                             <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-4 gap-6">
                                                 <div className="p-inputgroup mb-5 mt-5">
                                                     <span className='p-float-label relative'>
-                                                        
                                                             <Field
-                                                              className="w-full appearance-none focus:outline-none bg-transparent"
-                                                              as={Dropdown}
-                                                              name={`REPORT_LIST_IMAGES.${index}.ACTIVITY`}
-                                                              options={opcionesActividades}
-                                                              optionLabel="label"
-                                                              onChange={(e) => {
-                                                                setSelectedActivityIndex(index);
-                                                                setSelectedActivities((prevActivities) => {
-                                                                  const newActivities = [...prevActivities];
-                                                                  newActivities[index] = e.value;
-                                                                  return newActivities;
+                                                                className="w-full appearance-none focus:outline-none bg-transparent"
+                                                                as={Dropdown}
+                                                                name={`REPORT_LIST_IMAGES.${index}.ACTIVITY`}
+                                                                options={opcionesActividades}
+                                                                optionLabel="label"
+                                                                onChange={(e) => {
+                                                                    setSelectedActivityIndex(index);
+                                                                    setSelectedActivities((prevActivities) => {
+                                                                    const newActivities = [...prevActivities];
+                                                                    newActivities[index] = e.value;
+                                                                    return newActivities;
                                                                 });
                                                               }}
                                                               value={selectedActivities[index]}
                                                             />
-
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                         </span>
