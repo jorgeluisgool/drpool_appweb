@@ -151,6 +151,10 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         // });
         // AQUI SE ESTAN ASIGNADO EL ARREGLO DE IMAGENES SELECIONADAS
         values.REPORT_LIST_IMAGES[0].IMAGES = selectedImages;
+
+
+        /* const initialValues2 = values.ALBERCA;
+ */
   
         const initialValues2 = {
             FECHA: values.FECHA,
@@ -182,6 +186,28 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         };
         
         console.log(initialValues2);
+
+        fetch(`${api}/generar/reporte/mensual`, {
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+            body: JSON.stringify(initialValues2),
+          })
+            .then((response) => response.text())
+            .then((responseData) => {
+                  console.log(responseData);
+                  /* setVentanaCarga(false);
+                  setModalRegistroGuardado(true);
+                  setModalDetalleEquipo(false);
+                  resetForm(); */
+                  console.log("Se subio reporte mensual");
+                  
+            })
+            .catch((error) => {
+              console.log(error);
+            });
     }  
 
   return (
