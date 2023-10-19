@@ -1,5 +1,5 @@
 import { Dialog } from 'primereact/dialog';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSeleccionImagenes, imagenesActivdades, selectedActivity, selectedImages, setSelectedImages, selectedActivities, selectedActivityIndex, selectedImagesIndex, imagesForActivities, setImagesForActivities}) => {   
 
@@ -48,9 +48,7 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
     // Cierra la ventana modal
     // setModalSeleccionImagenes(false);
   };
-
   
-
   return (
     <Dialog header={`IMAGENES: ${selectedActivities[selectedActivityIndex]}`} visible={modalSeleccionImagenes}  baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalSeleccionImagenes(false)} className='pt-20'>
       <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4'>
