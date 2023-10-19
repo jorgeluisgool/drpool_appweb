@@ -196,27 +196,27 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         
         console.log(initialValues2);
 
-        // fetch(`${api}/generar/reporte/mensual`, {
-        //     method: 'POST',
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       "Access-Control-Allow-Origin": "*",
-        //     },
-        //     body: JSON.stringify(initialValues2),
-        //   })
-        //     .then((response) => response.text())
-        //     .then((responseData) => {
-        //           console.log(responseData);
-        //           /* setVentanaCarga(false);
-        //           setModalRegistroGuardado(true);
-        //           setModalDetalleEquipo(false);
-        //           resetForm(); */
-        //           console.log("Se subio reporte mensual");
+         fetch(`${api}/generar/reporte/mensual`, {
+            method: 'POST',
+             headers: {
+               "Content-Type": "application/json",
+               "Access-Control-Allow-Origin": "*",
+             },
+             body: JSON.stringify(initialValues2),
+           })
+             .then((response) => response.text())
+             .then((responseData) => {
+                   console.log(responseData);
+                   /* setVentanaCarga(false);
+                   setModalRegistroGuardado(true);
+                   setModalDetalleEquipo(false);
+                   resetForm(); */
+                   console.log("Se subio reporte mensual");
                   
-        //     })
-        //     .catch((error) => {
-        //       console.log(error);
-        //     });
+             })
+             .catch((error) => {
+               console.log(error);
+             });
     }  
 
   return (
