@@ -11,6 +11,8 @@ import { format, parse } from 'date-fns'
 import { addLocale } from 'primereact/api'
 import ModalSeleccionImagenesReporMensual from './ModalSeleccionImagenesReporMensual'
 
+import textoActividades from '../data/textoActividades'
+
 addLocale('es', {
     firstDayOfWeek: 1,
     dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
@@ -24,7 +26,7 @@ addLocale('es', {
 
 const opcionesActividades = [
     { label: 'Limpieza de trampas de pelo', value: 'LIMPIEZA DE TRAMPAS' },
-    { label: 'Retiro de sólidos suspendidos', value: 'RETIRO DE SOLIDOS' },
+    { label: 'Retiro de sólidos suspendidos', value: '+' },
     { label: 'Retrolavado de filtro', value: 'RETROLAVADO' },
     { label: 'Cepillado de paredes y piso', value: 'CEPILLADO DE PAREDES' },
     { label: 'Aspirado', value: 'ASPIRADO' },
@@ -61,9 +63,11 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     const [selectedActivityIndex, setSelectedActivityIndex] = useState(null);
     const [selectedImagesIndex, setSelectedImagesIndex] = useState(null);
 
-    console.log('ARREGLO DE ARREGLO DE IMAGENES ->', imagesForActivities)
+    const [textoPorActividadState, setTextoPorActividadState] = useState(textoActividades); 
 
-    const initialValues = {
+     console.log(selectedActivities[selectedActivityIndex])
+    // console.log(textoPorActividadState[1])
+    const initialValues = { 
         FECHA: "",
         FIRSTDATE: "",
         LASTDATE: "",
@@ -142,30 +146,19 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         values.REPORT_LIST_IMAGES.forEach((report, index) => {
           report.ACTIVITY = selectedActivities[index];
         });
-        // // AQUI SE LE ASIGNA LA ACTIVIDAD AL INITIAL VALUES DEL STATE 
-        // values.REPORT_LIST_IMAGES[selectedActivityIndex].ACTIVITY = selectedActivities[selectedActivityIndex];
-
-
-        // Actualiza el valor de IMAGES para cada actividad
-        // values.REPORT_LIST_IMAGES.forEach((report, index) => {
-        //   report.IMAGES = selectedImages[index] || []; // Usar el arreglo de imágenes seleccionadas correspondiente
-        // });
-          
         
-          
-          
-          
-          
-          
-          
-         values.REPORT_LIST_IMAGES.forEach((report, index) => {
-             report.IMAGES = imagesForActivities[index];
-         });
-          
-        // AQUI SE ESTAN ASIGNADO EL ARREGLO DE IMAGENES SELECIONADAS
-        // values.REPORT_LIST_IMAGES[selectedImagesIndex].IMAGES = selectedImages;
+        // Actualiza el valor del arreglo de IMAGES para todas las actividades
+        values.REPORT_LIST_IMAGES.forEach((report, index) => {
+            report.IMAGES = imagesForActivities[index];
+        });
+
+        // Actualiza el valor del arreglo de IMAGES para todas las actividades
+        values.REPORT_LIST_IMAGES.forEach((report, index) => {
+            report.TEXT_IMAGES = textoPorActividadState[index];
+        });
   
         const initialValues2 = {
+            idreportemensual: 0,
             FECHA: values.FECHA,
             FIRSTDATE: values.FIRSTDATE,
             LASTDATE: values.LASTDATE,
@@ -340,28 +333,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                     </label>
                                 </span>
                             </div>
-                            {/* <div className="p-inputgroup mb-5 mt-5">
-                                <span className='p-float-label relative'>
-                                    <Field
-                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                        as={Dropdown}
-                                        name="clientes"
-                                        value={sedeSeleccionada}
-                                        optionLabel="nombre"
-                                        // itemTemplate={renderClienteOption}
-                                        onChange={(e) => {setSedeSeleccionada(e.target.value)}}
-                                        filter
-                                        options={sedes} 
-                                        
-                                    /> 
-                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                    </span>
-                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                      Sede
-                                    </label>
-                                </span>
-                            </div> */}
                             <div className="p-inputgroup mb-5 mt-5">
                                 <span className='p-float-label relative'>
                                     <Field
@@ -378,24 +349,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                     </label>
                                 </span>
                             </div>
-                            {/* <div className="p-inputgroup mb-5 mt-5">
-                                <span className='p-float-label relative'>
-                                    <Field
-                                        className="w-full appearance-none focus:outline-none bg-transparent"
-                                        as={Dropdown}
-                                        name="ALBERCA"
-                                        options={albercas}
-                                        optionLabel="nombrealberca" 
-                                        getOptionValue={(option) => option.nombrealberca}
-                                    /> 
-                                    <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                      <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                    </span>
-                                    <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                        Alberca
-                                    </label>
-                                </span>
-                            </div> */}
                             <div className="p-inputgroup mb-5 mt-5">
                                 <span className='p-float-label relative'>
                                     <Field
@@ -493,14 +446,14 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                             <ion-icon name="images-outline"></ion-icon> Imagenes
                                                         </button>
                                                     </div>
-                                                }
-                                                
+                                                }      
                                                 <div className="p-inputgroup mb-5 mt-5 col-span-2">
                                                     <span className='p-float-label relative'>
                                                         <Field
                                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                                             as={InputTextarea}
                                                             name={`REPORT_LIST_IMAGES.${index}.TEXT_IMAGES`}
+                                                            value={textoPorActividadState[2]}
                                                             // value={
                                                             //     selectedActivity === "Limpieza de trampas de pelo" // Reemplaza "Actividad1" con el valor de la actividad que quieras asociar con el texto predeterminado
                                                             //       ? "Texto predeterminado para Actividad1"
