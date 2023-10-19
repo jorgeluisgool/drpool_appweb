@@ -48,20 +48,20 @@ const opcionesTipoAlberca = [
     { label: 'NO TECHADA', value: 'NO TECHADA' }
   ];
 
-
-
 export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, albercaSeleccionada, setAlbercaSeleccionada}) => {
 
     const [modalSeleccionImagenes, setModalSeleccionImagenes] = useState(false);
     const [imagenesActivdades, setImagenesActivdades] = useState([]);
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [selectedImages, setSelectedImages] = useState([]);
-    const [coleccionArregloSelectedImages, setColeccionArregloSelectedImages] = useState([]);
+    const [imagesForActivities, setImagesForActivities] = useState([]);
 
     const [selectedActivities, setSelectedActivities] = useState([]);
     const [selectedActivitiesInputText, setSelectedActivitiesInputText] = useState([]);
     const [selectedActivityIndex, setSelectedActivityIndex] = useState(null);
     const [selectedImagesIndex, setSelectedImagesIndex] = useState(null);
+
+    console.log('ARREGLO DE ARREGLO DE IMAGENES ->', imagesForActivities)
 
     const initialValues = {
         FECHA: "",
@@ -150,8 +150,20 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         // values.REPORT_LIST_IMAGES.forEach((report, index) => {
         //   report.IMAGES = selectedImages[index] || []; // Usar el arreglo de imágenes seleccionadas correspondiente
         // });
+          
+        
+          
+          
+          
+          
+          
+          
+         values.REPORT_LIST_IMAGES.forEach((report, index) => {
+             report.IMAGES = imagesForActivities[index];
+         });
+          
         // AQUI SE ESTAN ASIGNADO EL ARREGLO DE IMAGENES SELECIONADAS
-        values.REPORT_LIST_IMAGES[selectedImagesIndex].IMAGES = selectedImages;
+        // values.REPORT_LIST_IMAGES[selectedImagesIndex].IMAGES = selectedImages;
   
         const initialValues2 = {
             FECHA: values.FECHA,
@@ -184,27 +196,27 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         
         console.log(initialValues2);
 
-        fetch(`${api}/generar/reporte/mensual`, {
-            method: 'POST',
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*",
-            },
-            body: JSON.stringify(initialValues2),
-          })
-            .then((response) => response.text())
-            .then((responseData) => {
-                  console.log(responseData);
-                  /* setVentanaCarga(false);
-                  setModalRegistroGuardado(true);
-                  setModalDetalleEquipo(false);
-                  resetForm(); */
-                  console.log("Se subio reporte mensual");
+        // fetch(`${api}/generar/reporte/mensual`, {
+        //     method: 'POST',
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       "Access-Control-Allow-Origin": "*",
+        //     },
+        //     body: JSON.stringify(initialValues2),
+        //   })
+        //     .then((response) => response.text())
+        //     .then((responseData) => {
+        //           console.log(responseData);
+        //           /* setVentanaCarga(false);
+        //           setModalRegistroGuardado(true);
+        //           setModalDetalleEquipo(false);
+        //           resetForm(); */
+        //           console.log("Se subio reporte mensual");
                   
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+        //     })
+        //     .catch((error) => {
+        //       console.log(error);
+        //     });
     }  
 
   return (
@@ -218,7 +230,9 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
             setSelectedImages={setSelectedImages}
             selectedActivities={selectedActivities}
             selectedActivityIndex={selectedActivityIndex}
-            setSelectedImagesIndex
+            selectedImagesIndex={selectedImagesIndex}
+            imagesForActivities={imagesForActivities}
+            setImagesForActivities={setImagesForActivities}
         />
 
         <Dialog header='Reporte Fotográfico Mensual' visible={modalNuevoReporteMensual} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalNuevoReporteMensual(false)} className='pt-20'>
@@ -524,17 +538,37 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                             </>  
                                         ))}
                                       <button
-                                        className='hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 text-left ml-auto flex items-center'
-                                        type="button"
-                                        onClick={() => push({
-                                            ACTIVITY: "",
-                                            IMAGES: [],
-                                            TEXT_IMAGES: "",
-                                            OBSERVACIONES: "",
-                                          })}
-                                      >
-                                        <ion-icon name="add-circle"></ion-icon> Actividad
-                                      </button>
+                                          className='hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 text-left ml-auto flex items-center'
+                                          type="button"
+                                          onClick={() => {
+                                            // Define la nueva actividad con sus propiedades
+                                            const newActivity = {
+                                              ACTIVITY: "",
+                                              IMAGES: [],
+                                              TEXT_IMAGES: "",
+                                              OBSERVACIONES: "",
+                                            };
+                                        
+                                            // Asegúrate de que imagesForActivities sea un arreglo
+                                            if (!Array.isArray(imagesForActivities)) {
+                                              imagesForActivities = [];
+                                            }
+                                        
+                                            // Añade un nuevo subarreglo vacío para esta actividad
+                                            imagesForActivities.push([]);
+                                        
+                                            // Agrega la nueva actividad al arreglo de actividades
+                                            push(newActivity);
+                                        
+                                            // Actualiza selectedActivityIndex al índice de la nueva actividad
+                                            setSelectedActivityIndex(imagesForActivities.length - 1);
+
+                                            setSelectedImages([]);
+                                          }}
+                                        >
+                                      <ion-icon name="add-circle"></ion-icon> Actividad
+                                    </button>
+                                    
                                     </div>
                                   )}
                                 </FieldArray>

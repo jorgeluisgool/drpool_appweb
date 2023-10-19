@@ -1,7 +1,7 @@
 import { Dialog } from 'primereact/dialog';
 import React, { useState } from 'react'
 
-const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSeleccionImagenes, imagenesActivdades, selectedActivity, selectedImages, setSelectedImages, selectedActivities, selectedActivityIndex}) => {   
+const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSeleccionImagenes, imagenesActivdades, selectedActivity, selectedImages, setSelectedImages, selectedActivities, selectedActivityIndex, selectedImagesIndex, imagesForActivities, setImagesForActivities}) => {   
 
   const toggleImageSelection = (imageUrl) => {
     setSelectedImages((prevSelectedImages) => {
@@ -14,13 +14,39 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
   };
 
   const handleSaveImages = () => {
-    // Aquí puedes guardar las imágenes seleccionadas donde lo necesites
-    // Por ejemplo, podrías guardarlas en un estado de tu componente principal
-    // o realizar una acción específica, como enviarlas a un servidor.
-    const arregloNuevo = [
-      
-    ]
-    setColeccionArregloSelectedImages(selectedImages[selectedActivityIndex]);
+    // Obtén el índice seleccionado para determinar la actividad actual
+    const activityIndex = selectedActivityIndex;
+
+    // Asegúrate de que imagesForActivities sea un arreglo
+    if (!Array.isArray(imagesForActivities)) {
+      imagesForActivities = [];
+    }
+
+    // Asegúrate de que exista una entrada en imagesForActivities para la actividad actual
+  if (!imagesForActivities[activityIndex]) {
+    imagesForActivities[activityIndex] = [];
+  }
+
+    // Copia el arreglo de imágenes para la actividad actual
+    const newImagesForActivity = [...imagesForActivities[activityIndex]];
+
+    // Agrega las imágenes seleccionadas al arreglo
+    selectedImages.forEach((imageUrl) => {
+      if (!newImagesForActivity.includes(imageUrl)) {
+        newImagesForActivity.push(imageUrl);
+      }
+    });
+
+    // Actualiza el estado imagesForActivities con el nuevo arreglo de imágenes
+  setImagesForActivities((prevImages) => {
+    const newImages = [...prevImages];
+    newImages[activityIndex] = newImagesForActivity;
+    return newImages;
+  });
+    
+
+    // Cierra la ventana modal
+    // setModalSeleccionImagenes(false);
   };
 
   
