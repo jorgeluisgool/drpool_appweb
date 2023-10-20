@@ -63,6 +63,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     const [selectedImagesIndex, setSelectedImagesIndex] = useState(null);
 
     const [indexActividadDelSelect, setIndexActividadDelSelect] = useState(null)
+    const [textoActividadesState, setTextoActividadesState] = useState(textoActividades)
 
     const actividadSeleccionada = selectedActivities[0];
 
@@ -466,23 +467,23 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                             as={InputTextarea}
                                                             name={`REPORT_LIST_IMAGES.${index}.TEXT_IMAGES`}
 
-                                                            // onChange={(e) => {
-                                                            //     const newValue = e.target.value;
+                                                             onChange={(e) => {
+                                                                 const newValue = e.target.value;
                                             
-                                                            //     // Actualiza el valor del campo en el formulario
-                                                            //     setFieldValue(`REPORT_LIST_IMAGES[${index}].TEXT_IMAGES`, newValue);
+                                                                 // Actualiza el valor del campo en el formulario
+                                                                 setFieldValue(`REPORT_LIST_IMAGES[${index}].TEXT_IMAGES`, newValue);
                                             
-                                                            //     // Realiza la lógica para actualizar el valor de textoActividades si es necesario
-                                                            //     const updatedTextoActividades = textoActividades.map((obj) => {
-                                                            //       if (obj[actividadSeleccionada]) {
-                                                            //         obj[actividadSeleccionada] = newValue;
-                                                            //       }
-                                                            //       return obj;
-                                                            //     });
+                                                                 // Realiza la lógica para actualizar el valor de textoActividades si es necesario
+                                                                 const updatedTextoActividades = textoActividades.map((obj) => {
+                                                                   if (obj[actividadSeleccionada]) {
+                                                                     obj[actividadSeleccionada] = newValue;
+                                                                   }
+                                                                   return obj;
+                                                                 });
                                             
-                                                            //     // Luego, actualiza textoActividades si es necesario
-                                                            //     setTextoActividades(updatedTextoActividades);
-                                                            // }}
+                                                                 // Luego, actualiza textoActividades si es necesario
+                                                                 setTextoActividadesState(updatedTextoActividades);
+                                                             }}
                                                               
                                                             // onChange={(e) => {
 
