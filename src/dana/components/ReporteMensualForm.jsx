@@ -210,10 +210,10 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
              .then((response) => response.text())
              .then((responseData) => {
                    console.log(responseData);
-                   /* setVentanaCarga(false);
-                   setModalRegistroGuardado(true);
-                   setModalDetalleEquipo(false);
-                   resetForm(); */
+                   //setVentanaCarga(false);
+                   //setModalRegistroGuardado(true);
+                   //setModalDetalleEquipo(false);
+                   //resetForm(); 
                    console.log("Se subio reporte mensual");
                   
              })
