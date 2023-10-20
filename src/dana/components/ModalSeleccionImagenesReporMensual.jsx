@@ -44,9 +44,8 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
     return newImages;
   });
     
-
     // Cierra la ventana modal
-    // setModalSeleccionImagenes(false);
+    setModalSeleccionImagenes(false);
   };
   
   return (
