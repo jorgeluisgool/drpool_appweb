@@ -67,6 +67,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
 
     const actividadSeleccionada = selectedActivities[0];
 
+    console.log(selectedActivities);
 
     const initialValues = { 
         FECHA: "",
@@ -489,8 +490,8 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
 
                                                             // }}
                                                             value={
-                                                                textoActividades.find((obj) => obj[actividadSeleccionada])
-                                                                  ? textoActividades.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
+                                                                textoActividadesState.find((obj) => obj[actividadSeleccionada])
+                                                                  ? textoActividadesState.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
                                                                   : ''
                                                             }
                                                         /> 
