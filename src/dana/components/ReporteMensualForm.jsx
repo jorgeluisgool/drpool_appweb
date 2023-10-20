@@ -25,15 +25,15 @@ addLocale('es', {
   });
 
 const opcionesActividades = [
-    { label: 'Limpieza de trampas de pelo', value: 'LIMPIEZA DE TRAMPAS' },
-    { label: 'Retiro de sólidos suspendidos', value: '+' },
+    { label: 'Limpieza de trampas de pelo', value: 'LIMPIEZA_DE_TRAMPAS' },
+    { label: 'Retiro de sólidos suspendidos', value: 'RETIRO_DE_SOLIDOS' },
     { label: 'Retrolavado de filtro', value: 'RETROLAVADO' },
-    { label: 'Cepillado de paredes y piso', value: 'CEPILLADO DE PAREDES' },
+    { label: 'Cepillado de paredes y piso', value: 'CEPILLADO_DE_PAREDES' },
     { label: 'Aspirado', value: 'ASPIRADO' },
-    { label: 'Limpieza de cenefa', value: 'LIMPIEZA DE CENEFA' },
-    { label: 'Limpieza de la rejilla perimetral', value: 'Limpieza de la rejilla perimetral' },
-    { label: 'Limpieza de área perimetral', value: 'Limpieza de área perimetral' },
-    { label: 'Otro', value: 'otro' },
+    { label: 'Limpieza de cenefa', value: 'LIMPIEZA_DE_CENEFA' },
+    { label: 'Limpieza de la rejilla perimetral', value: 'LIMPIEZA_DE_REJILLA' },
+    { label: 'Limpieza de área perimetral', value: 'LIMPIEZA_DE_AREA_PERIMETRAL' },
+    { label: 'Otro', value: 'OTRO' },
 ];
 
 const opcionesTipoAlberca = [
@@ -59,14 +59,14 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     const [imagesForActivities, setImagesForActivities] = useState([]);
 
     const [selectedActivities, setSelectedActivities] = useState([]);
-    const [selectedActivitiesInputText, setSelectedActivitiesInputText] = useState([]);
     const [selectedActivityIndex, setSelectedActivityIndex] = useState(null);
     const [selectedImagesIndex, setSelectedImagesIndex] = useState(null);
 
-    const [textoPorActividadState, setTextoPorActividadState] = useState(textoActividades); 
+    const [indexActividadDelSelect, setIndexActividadDelSelect] = useState(null)
 
-     console.log(selectedActivities[selectedActivityIndex])
-    // console.log(textoPorActividadState[1])
+    const actividadSeleccionada = selectedActivities[0];
+
+
     const initialValues = { 
         FECHA: "",
         FIRSTDATE: "",
@@ -123,6 +123,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         }  
       };
 
+    // FUNCION PARA ENVIAR EL FORMULARIO  
     const onSubmit = (values, { resetForm }) => {
 
         setSelectedImages([]); 
@@ -153,9 +154,18 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         });
 
         // Actualiza el valor del arreglo de IMAGES para todas las actividades
+        // values.REPORT_LIST_IMAGES.forEach((report, index) => {
+        //     report.TEXT_IMAGES = textoPorActividadState[index];
+        // });
+
+        // Actualiza el valor del arreglo de IMAGES para todas las actividades
         values.REPORT_LIST_IMAGES.forEach((report, index) => {
-            report.TEXT_IMAGES = textoPorActividadState[index];
+            const actividadSeleccionada = selectedActivities[index];
+            report.TEXT_IMAGES = textoActividades.find((obj) => obj[actividadSeleccionada])
+              ? textoActividades.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
+              : '';
         });
+  
   
         const initialValues2 = {
             idreportemensual: 0,
@@ -323,7 +333,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         value={parseDate(values.LASTDATE)}
                                         dateFormat="dd/MM/yy"
                                         locale='es'
-
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -355,7 +364,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                         as={Dropdown}
                                         name="TIPOALBERCA"
-                                        // value={values.TIPOALBERCA}
                                         options={opcionesTipoAlberca}
                                         optionLabel="label" 
                                     /> 
@@ -373,7 +381,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                         as={Dropdown}
                                         name="CARACTERISTICA"
-                                        // value={values.CARACTERISTICA}
                                         options={opcionesCaracteristicaAlberca}
                                         optionLabel="label" 
                                     /> 
@@ -401,7 +408,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                 className='hover:shadow-slate-600 border h-10 px-4 bg-[#BE1622] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-[#d52935] text-left ml-auto flex items-center'
                                                 type="button"
                                                 onClick={() => remove(index)}
-
                                             >
                                                 <ion-icon name="trash"></ion-icon>
                                             </button>
@@ -415,14 +421,20 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                                 options={opcionesActividades}
                                                                 optionLabel="label"
                                                                 onChange={(e) => {
+                                                                    // const selectedIndex = opcionesActividades.findIndex(
+                                                                    //     (opcion) => opcion.value === e.value.value
+                                                                    //   );
+
+                                                                    // setIndexActividadDelSelect(selectedIndex);    
                                                                     setSelectedActivityIndex(index);
-                                                                    setSelectedActivities((prevActivities) => {
-                                                                    const newActivities = [...prevActivities];
-                                                                    newActivities[index] = e.value;
-                                                                    return newActivities;
-                                                                });
-                                                              }}
-                                                              value={selectedActivities[index]}
+                                                                    // setSelectedActivities(report);
+                                                                     setSelectedActivities((prevActivities) => {
+                                                                     const newActivities = [...prevActivities];
+                                                                     newActivities[index] = e.value;
+                                                                     return newActivities;
+                                                                    });
+                                                                }}
+                                                                value={selectedActivities[index]}
                                                             />
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -433,13 +445,13 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                     </span>
                                                 </div>
                                                 {
-                                                    setSelectedActivities != [] &&
+                                                    selectedActivities[0] != undefined &&
                                                     <div className="p-inputgroup mb-5 mt-5 cursor-pointer flex gap-3 justify-center">
                                                         <button
                                                             type="button"
                                                             onClick={() => {
                                                                 setSelectedImagesIndex(index);
-                                                                setModalSeleccionImagenes(true)
+                                                                setModalSeleccionImagenes(true);
                                                             }}
                                                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                                                         >
@@ -453,14 +465,33 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                                             as={InputTextarea}
                                                             name={`REPORT_LIST_IMAGES.${index}.TEXT_IMAGES`}
-                                                            value={textoPorActividadState[2]}
-                                                            // value={
-                                                            //     selectedActivity === "Limpieza de trampas de pelo" // Reemplaza "Actividad1" con el valor de la actividad que quieras asociar con el texto predeterminado
-                                                            //       ? "Texto predeterminado para Actividad1"
-                                                            //       : selectedActivity === "Retiro de sólidos suspendidos" // Reemplaza "Actividad2" con otro valor de actividad
-                                                            //       ? "Texto predeterminado para Actividad2"
-                                                            //       : "" // Puedes agregar más condiciones según sea necesario
-                                                            //   }
+
+                                                            // onChange={(e) => {
+                                                            //     const newValue = e.target.value;
+                                            
+                                                            //     // Actualiza el valor del campo en el formulario
+                                                            //     setFieldValue(`REPORT_LIST_IMAGES[${index}].TEXT_IMAGES`, newValue);
+                                            
+                                                            //     // Realiza la lógica para actualizar el valor de textoActividades si es necesario
+                                                            //     const updatedTextoActividades = textoActividades.map((obj) => {
+                                                            //       if (obj[actividadSeleccionada]) {
+                                                            //         obj[actividadSeleccionada] = newValue;
+                                                            //       }
+                                                            //       return obj;
+                                                            //     });
+                                            
+                                                            //     // Luego, actualiza textoActividades si es necesario
+                                                            //     setTextoActividades(updatedTextoActividades);
+                                                            // }}
+                                                              
+                                                            // onChange={(e) => {
+
+                                                            // }}
+                                                            value={
+                                                                textoActividades.find((obj) => obj[actividadSeleccionada])
+                                                                  ? textoActividades.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
+                                                                  : ''
+                                                            }
                                                         /> 
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
