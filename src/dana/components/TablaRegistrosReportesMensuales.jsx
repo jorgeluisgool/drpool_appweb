@@ -6,6 +6,7 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
         reporte.ALBERCA.nombrealberca === albercaSeleccionada.nombrealberca
     ));
 
+    console.log(reportesFiltradosPorAlberca);
     const handleButtonClick = (event, reporte) => {
         event.preventDefault();
     
@@ -22,12 +23,11 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
           <thead className="bg-[#245A95] text-white uppercase">
             <tr className='text-left'>
               <th scope="col" className="relative px-6 py-3">
-                {/* <input
-                  type="checkbox"
-                  className="absolute h-4 w-4 top-3 left-3"
-                  onChange={() => {}}
-                  // checked={selectedRows.length === data.length}
-                /> */}
+                <div className="items-center pl-12">
+                  <span>Folio</span>
+                </div>
+              </th>
+              <th scope="col" className="relative px-6 py-3">
                 <div className="items-center pl-12">
                   <span>Sede</span>
                 </div>
@@ -35,11 +35,6 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
               <th scope="col" className="relative px-6 py-3">
                 <div className="items-center">
                   <span>Alberca</span>
-                </div>
-              </th>
-              <th scope="col" className="relative px-6 py-3">
-              <div className="items-center">
-                  <span>id reporte</span>
                 </div>
               </th>
               <th scope="col" className="relative px-6 py-3">
@@ -63,6 +58,13 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
                 <td className="px-6">
                   <div className="flex items-center"> 
                     <div className="ml-8">
+                      <div className="text-sm font-medium text-gray-900 cursor-pointer">{reporte.FOLIO}</div>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6">
+                  <div className="flex items-center"> 
+                    <div className="ml-8">
                       <div className="text-sm font-medium text-gray-900 cursor-pointer">{reporte.SEDE.nombre}</div>
                     </div>
                   </div>
@@ -70,11 +72,6 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
                 <td className="px-6">
                   <div className="flex space-x-4">
                   <div className="text-sm font-medium text-gray-900">{reporte.ALBERCA.nombrealberca}</div>
-                  </div>
-                </td>
-                <td className="px-6">
-                  <div className="flex space-x-4">
-                  <div className="text-sm font-medium text-gray-900">{reporte.IDREPORTEMENSUAL}</div>
                   </div>
                 </td>
                 <td className="px-6">
