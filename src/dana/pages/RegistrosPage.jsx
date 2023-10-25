@@ -15,6 +15,7 @@ import { DialogConfirmacion } from '../../ui/components/DialogConfirmacion';
 import { DialogDuplicidad } from '../../ui/components/DialogDuplicidad';
 import { DialogRegistroGuardado } from '../../ui/components/DialogRegistroGuardado';
 import { ReporteMensualForm } from '../components/ReporteMensualForm';
+import { TablaRegistrosReportesMensuales } from '../components/TablaRegistrosReportesMensuales';
 
 export const RegistrosPage = () => {
 
@@ -45,9 +46,10 @@ export const RegistrosPage = () => {
   const [sedeSeleccionada, setSedeSeleccionada] = useState(null);
   const [albercas, setAlbercas] = useState();
   const [registrosDrPool, setRegistrosDrPool] = useState();
-  const [tipoReporSeleccionado, setTipoReporSeleccionado] = useState('');
+  const [tipoReporSeleccionado, setTipoReporSeleccionado] = useState('BITACORA DIARIA');
   const [searchSede, setSearchSede] = useState('');
   const [albercaSeleccionada, setAlbercaSeleccionada] = useState({});
+  const [reportesMensuales, setReportesMensuales] = useState();
 
   const toggleShow = (index) => {
     if (index === showAcordion) {
@@ -84,6 +86,22 @@ export const RegistrosPage = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${api}/obtener/reportesmensuales`);
+        const jsonData = await response.json();
+        setReportesMensuales(jsonData);
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // console.log(reportesMensuales);
 
   const { data: usuarios, loading } = useFetchUsers();
   const { data: proyectosClientes, loadingProyectosClientes } = useFetchProjetsClientes(clienteSeleccionado);
@@ -270,26 +288,44 @@ export const RegistrosPage = () => {
           setAlbercaSeleccionada={setAlbercaSeleccionada}
         />
     </div>
-    <div className="overflow-x-auto">
-        <div className="my-6 mx-4 xl:mx-20">
-          <TableRegistros 
-            onDelete={handleDelete}
-            onEdit={handleEdit}
-            isSelected={isSelected}
-            selectedRows={selectedRows}
-            onSelectedRow={handleSelectedRow}
-            setModalAbrirCerrar={setModalAbrirCerrar}
-            listaRegistros={listaRegistros}
-            setProyectoSeleccionado={setProyectoSeleccionado}
-            setDataProyectoSeleccionado={setDataProyectoSeleccionado}
-            usuariosSeleccionados={usuariosSeleccionados}
-            registrosDrPool={registrosDrPool}
-            setRegistrosDrPool={setRegistrosDrPool}
-            tipoReporSeleccionado={tipoReporSeleccionado}
-            searchSede={searchSede}
-          />
-    </div>
-    </div>
+    {
+      (tipoReporSeleccionado === 'REPORTE SEMANAL' || tipoReporSeleccionado === 'BITACORA DIARIA') && (
+        <div className="overflow-x-auto">
+          <div className="my-6 mx-4 xl:mx-20">
+            <TableRegistros 
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+              isSelected={isSelected}
+              selectedRows={selectedRows}
+              onSelectedRow={handleSelectedRow}
+              setModalAbrirCerrar={setModalAbrirCerrar}
+              listaRegistros={listaRegistros}
+              setProyectoSeleccionado={setProyectoSeleccionado}
+              setDataProyectoSeleccionado={setDataProyectoSeleccionado}
+              usuariosSeleccionados={usuariosSeleccionados}
+              registrosDrPool={registrosDrPool}
+              setRegistrosDrPool={setRegistrosDrPool}
+              tipoReporSeleccionado={tipoReporSeleccionado}
+              searchSede={searchSede}
+            />
+          </div>
+        </div>
+      )
+    }
+
+    {
+      (tipoReporSeleccionado === 'REPORTE FOTOFRÁFICO MENSUAL') && (
+        <div className="overflow-x-auto">
+            <div className="my-6 mx-4 xl:mx-20">
+              <TablaRegistrosReportesMensuales
+                reportesMensuales={reportesMensuales}
+                albercaSeleccionada={albercaSeleccionada}
+              />
+          </div>
+        </div>
+      )
+    }
+    
 
     {/* MODAL DE SELECCION DEL PROYECTO */} 
     <Dialog header={`PROYECTO: ${proyectoSeleccionado?.proyecto?.proyecto}`} visible={modalAbrirCerrar} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setModalAbrirCerrar(false)} className='mt-16'>
