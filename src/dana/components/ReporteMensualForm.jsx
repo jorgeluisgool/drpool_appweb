@@ -67,9 +67,10 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
 
     const actividadSeleccionada = selectedActivities[0];
 
-    console.log(selectedActivities);
+    // console.log(selectedActivities);
 
     const initialValues = { 
+        FOLIO: "",
         FECHA: "",
         FIRSTDATE: "",
         LASTDATE: "",
@@ -163,14 +164,15 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         // Actualiza el valor del arreglo de IMAGES para todas las actividades
         values.REPORT_LIST_IMAGES.forEach((report, index) => {
             const actividadSeleccionada = selectedActivities[index];
-            report.TEXT_IMAGES = textoActividades.find((obj) => obj[actividadSeleccionada])
-              ? textoActividades.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
+            report.TEXT_IMAGES = textoActividadesState.find((obj) => obj[actividadSeleccionada])
+              ? textoActividadesState.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
               : '';
         });
   
   
         const initialValues2 = {
             idreportemensual: 0,
+            FOLIO: values.FOLIO,
             FECHA: values.FECHA,
             FIRSTDATE: values.FIRSTDATE,
             LASTDATE: values.LASTDATE,
@@ -201,27 +203,27 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         
         console.log(initialValues2);
 
-         fetch(`${api}/generar/reporte/mensual`, {
-            method: 'POST',
-             headers: {
-               "Content-Type": "application/json",
-               "Access-Control-Allow-Origin": "*",
-             },
-             body: JSON.stringify(initialValues2),
-           })
-             .then((response) => response.text())
-             .then((responseData) => {
-                   console.log(responseData);
-                   //setVentanaCarga(false);
-                   //setModalRegistroGuardado(true);
-                   //setModalDetalleEquipo(false);
-                   //resetForm(); 
-                   console.log("Se subio reporte mensual");
+          fetch(`${api}/generar/reporte/mensual`, {
+              method: 'POST',
+              headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+              },
+              body: JSON.stringify(initialValues2),
+            })
+              .then((response) => response.text())
+              .then((responseData) => {
+                    console.log(responseData);
+                    /* setVentanaCarga(false);
+                    setModalRegistroGuardado(true);
+                    setModalDetalleEquipo(false);
+                    resetForm(); */
+                    console.log("Se subio reporte mensual");
                   
-             })
-             .catch((error) => {
-               console.log(error);
-             });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
     }  
 
   return (
@@ -287,6 +289,25 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
             {({ values, handleChange, isSubmitting, setFieldValue  }) => (
                 <Form>
+                    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6'> 
+                        <div className="p-inputgroup mb-5 mt-5">
+                            <span className='p-float-label relative'>
+                                <Field
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    as={InputText}
+                                    name="FOLIO"
+                                    required
+                                    // value={values.FOLIO}   
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                    * FOLIO:
+                                </label>
+                            </span>
+                        </div>
+                    </div>
                     <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2'>
                     <h1 className='text-2xl font-semibold'>Datos generales</h1>
                         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6'>

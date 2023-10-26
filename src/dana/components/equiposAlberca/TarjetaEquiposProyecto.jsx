@@ -130,7 +130,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
               <div className="uppercase tracking-wide text-lg text-[#245A95] font-semibold">Bombeo</div>
                 {
                   equiposbombasfiltradas?.map((equipoBomba) => 
-                  <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setModalDetalleEquipo(true), setEquipoSeleccionado(equipoBomba)}}>
+                  <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setActualizarEquipo(true), setEquipoSeleccionado(equipoBomba)}}>
                     <li key={equipoBomba.idbomba}>{equipoBomba.numero}</li>
                   </div>
                   )
@@ -140,7 +140,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
               <div className="uppercase tracking-wide text-lg text-[#245A95] font-semibold">Filtrado</div>
                 {
                   equiposFiltroFiltradas?.map((equipoFiltro) => 
-                    <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setModalDetalleEquipo(true), setEquipoSeleccionado(equipoFiltro)}}>
+                    <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setActualizarEquipo(true), setEquipoSeleccionado(equipoFiltro)}}>
                       <li key={equipoFiltro.idfiltro}>{equipoFiltro.numero}</li>
                     </div>
                   )
@@ -151,7 +151,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
               <div className="uppercase tracking-wide text-lg text-[#245A95] font-semibold">Calentamiento</div>
                 {
                   equiposCalentamientoFiltradas?.map((equipoCalentamiento) => 
-                    <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setModalDetalleEquipo(true), setEquipoSeleccionado(equipoCalentamiento)}}>
+                    <div className='text-xs font-medium hover:text-[#245A95] hover:font-semibold cursor-pointer' onClick={() => {setActualizarEquipo(true), setEquipoSeleccionado(equipoCalentamiento)}}>
                       <li key={equipoCalentamiento.idcalentamiento}>{equipoCalentamiento.numero}</li>
                     </div>
                   )

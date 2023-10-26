@@ -8,6 +8,7 @@ import { api } from '../../helpers/variablesGlobales'
 import { addLocale } from 'primereact/api'
 import { DialogConfirmacion } from '../../../ui/components/DialogConfirmacion'
 import { format, parse } from 'date-fns';
+import useAuth from '../../hooks/useAuth'
 
 const opcionesEstatusBombeo = [
     { label: 'FUNCIONANDO', value: 'FUNCIONANDO' },
@@ -29,6 +30,8 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
 
     const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
     const [editFields, setEditFields] = useState(true);
+
+    const { actualizarEquipo, setActualizarEquipo} = useAuth();
 
     const initialValues = {
         tipoequipo: equipoSelected || '',
@@ -88,6 +91,7 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
               .then((response) => response.text())
               .then((responseData) => {
                     console.log(responseData);
+                    setActualizarEquipo(false);
                     setVentanaCarga(false);
                     setModalRegistroGuardado(true);
                     resetForm();

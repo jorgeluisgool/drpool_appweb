@@ -9,6 +9,7 @@ import { DialogConfirmacion } from '../../../ui/components/DialogConfirmacion'
 import { addLocale } from 'primereact/api'
 import { format, parse } from 'date-fns';
 import { ModalDetalleEquipo } from './ModalDetalleEquipo'
+import useAuth from '../../hooks/useAuth'
 
 addLocale('es', {
     firstDayOfWeek: 1,
@@ -31,7 +32,8 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
     const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
     const [editFields, setEditFields] = useState(true);
 
-    console.log("capacidad en nuevo registro: " + equipoSeleccionado.capacidad)
+    const { actualizarEquipo, setActualizarEquipo} = useAuth();
+    // console.log("capacidad en nuevo registro: " + equipoSeleccionado.capacidad)
     
 
     const initialValues = {
@@ -67,11 +69,11 @@ export const BombeoForm = ({albercaSelected, setVentanaCarga, setModalRegistroGu
               .then((response) => response.text())
               .then((responseData) => {
                     console.log(responseData);
+                    setActualizarEquipo(false);
                     setVentanaCarga(false);
                     setModalRegistroGuardado(true);
                     setModalDetalleEquipo(false);
                     resetForm();
-                    
               })
               .catch((error) => {
                 console.log(error);
