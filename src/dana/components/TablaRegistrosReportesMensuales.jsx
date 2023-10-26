@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { ReporteMensualFormEdit } from './ReporteMensualFormEdit';
 
-export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSeleccionada}) => {
+export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSeleccionada, rfm, setRfm, modalReporteMensualEdit, setModalReporteMensualEdit}) => {
+
+  
 
     const reportesFiltradosPorAlberca = reportesMensuales.filter((reporte) => (
         reporte.ALBERCA.nombrealberca === albercaSeleccionada.nombrealberca
@@ -16,6 +19,12 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
         // Abre una nueva ventana o pestaña del navegador con el PDF.
         window.open(urlPDF, '_blank');
       };
+
+      const handleRowClick = (event, reporte) =>{
+        setRfm(reporte);
+        console.log("Clicked on reporte:", JSON.stringify(reporte, null, 2));
+       
+      }
 
   return (
     <>
@@ -54,6 +63,9 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
               <tr 
                 key={index} 
                 className='cursor-pointer hover:bg-[#E2E2E2]'
+                onClick={(event) =>{ handleRowClick(event, reporte);
+                  setModalReporteMensualEdit(true);
+                }}
               >
                 <td className="px-6">
                   <div className="flex items-center"> 
