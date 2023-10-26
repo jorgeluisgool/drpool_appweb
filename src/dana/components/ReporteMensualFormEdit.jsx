@@ -444,6 +444,11 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                             <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-4 gap-6">
                                                 <div className="p-inputgroup mb-5 mt-5">
                                                     <span className='p-float-label relative'>
+                                                   {/*  {setSelectedActivities((prevActivities) => {
+                                                                     const newActivities = [...prevActivities];
+                                                                     newActivities[index] = values.REPORT_LIST_IMAGES[index][0].ACTIVITY;
+                                                                     return newActivities;
+                                                                    })} */}
                                                             <Field
                                                                 className="w-full appearance-none focus:outline-none bg-transparent"
                                                                 as={Dropdown}
@@ -465,9 +470,10 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                     });
                                                                 }}
                                                                 //value={selectedActivities[index]}
-                                                                value={values.REPORT_LIST_IMAGES[index].ACTIVITY}
+                                                                value={values.REPORT_LIST_IMAGES[index][0].ACTIVITY}
+                                                                //value={selectedActivities[index].ACTIVITY}
                                                             />
-                                                            
+                                                            {console.log(values.REPORT_LIST_IMAGES)}
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                         </span>
@@ -483,6 +489,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                             type="button"
                                                             onClick={() => {
                                                                 setSelectedImagesIndex(index);
+                                                                 console.log(index); 
                                                                 setModalSeleccionImagenes(true);
                                                             }}
                                                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
@@ -519,11 +526,12 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                             // onChange={(e) => {
 
                                                             // }}
-                                                            value={
+                                                            /* value={
                                                                 textoActividadesState.find((obj) => obj[actividadSeleccionada])
                                                                   ? textoActividadesState.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
                                                                   : ''
-                                                            }
+                                                            } */
+                                                            value={values.REPORT_LIST_IMAGES[index][2].TEXT_IMAGES}
                                                         /> 
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -539,6 +547,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                                             as={InputTextarea}
                                                             name={`REPORT_LIST_IMAGES.${index}.OBSERVACIONES`}
+                                                            value={values.REPORT_LIST_IMAGES[index][3].OBSERVACIONES}
                                                         /> 
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
