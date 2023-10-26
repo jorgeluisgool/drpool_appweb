@@ -16,6 +16,7 @@ import { DialogDuplicidad } from '../../ui/components/DialogDuplicidad';
 import { DialogRegistroGuardado } from '../../ui/components/DialogRegistroGuardado';
 import { ReporteMensualForm } from '../components/ReporteMensualForm';
 import { TablaRegistrosReportesMensuales } from '../components/TablaRegistrosReportesMensuales';
+import { ReporteMensualFormEdit } from '../components/ReporteMensualFormEdit';
 
 export const RegistrosPage = () => {
 
@@ -23,7 +24,8 @@ export const RegistrosPage = () => {
   const { clienteSeleccionado, userAuth, setUserAuth } = useAuth();
 
   const navigate = useNavigate();
-
+  const [rfm, setRfm] = useState([]);
+  const [modalReporteMensualEdit, setModalReporteMensualEdit] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [usuariosSeleccionados, setUsuariosSeleccionados] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -320,6 +322,10 @@ export const RegistrosPage = () => {
               <TablaRegistrosReportesMensuales
                 reportesMensuales={reportesMensuales}
                 albercaSeleccionada={albercaSeleccionada}
+                rfm={rfm}
+                setRfm={setRfm}
+                modalReporteMensualEdit={modalReporteMensualEdit}
+                setModalReporteMensualEdit={setModalReporteMensualEdit}
               />
           </div>
         </div>
@@ -436,6 +442,20 @@ export const RegistrosPage = () => {
       clienteSeleccionado={clienteSeleccionado}
       albercaSeleccionada={albercaSeleccionada}
       setAlbercaSeleccionada={setAlbercaSeleccionada}
+    />
+
+  <ReporteMensualFormEdit 
+      modalReporteMensualEdit={modalReporteMensualEdit}
+      setModalReporteMensualEdit={setModalReporteMensualEdit}
+      sedes={sedes}
+      sedeSeleccionada={sedeSeleccionada}
+      setSedeSeleccionada={setSedeSeleccionada}
+      albercas={albercas}
+      setAlbercas={setAlbercas}
+      clienteSeleccionado={clienteSeleccionado}
+      albercaSeleccionada={albercaSeleccionada}
+      setAlbercaSeleccionada={setAlbercaSeleccionada}
+      rfm={rfm}
     />
 
     <BotonFlotanteRegresar  onClick={handleClickRegresar} />
