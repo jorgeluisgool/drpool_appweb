@@ -12,7 +12,7 @@ import { InputText } from 'primereact/inputtext';
   const opcionesTipoReporte = [
     {label: 'BITÁCORA DIARIA', value: 'BITACORA DIARIA'},
     {label: 'REPORTE SEMANAL', value: 'REPORTE SEMANAL'},
-    {label: 'REPORTE FOTOFRÁFICO MENSUAL', value: 'REPORTE FOTOFRÁFICO MENSUAL'},
+    {label: 'REPORTE FOTOGRÁFICO MENSUAL', value: 'REPORTE FOTOGRÁFICO MENSUAL'},
   ]
 
 const RegistrosForm = ({setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, registrosDrPool, setRegistrosDrPool, tipoReporSeleccionado, setTipoReporSeleccionado, setSearchSede, albercaSeleccionada, setAlbercaSeleccionada}) => {
@@ -141,7 +141,7 @@ const RegistrosForm = ({setModalNuevoReporteMensual, sedes, sedeSeleccionada, se
                       }        
                     </div>
                     {
-                      tipoReporSeleccionado === 'REPORTE FOTOFRÁFICO MENSUAL' &&
+                      tipoReporSeleccionado === 'REPORTE FOTOGRÁFICO MENSUAL' &&
                       <div className="mt-8 mx-4 flex-col flex py-2">
                       <button
                         type="button"

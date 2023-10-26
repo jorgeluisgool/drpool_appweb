@@ -64,11 +64,15 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
 
     const [indexActividadDelSelect, setIndexActividadDelSelect] = useState(null)
     const [textoActividadesState, setTextoActividadesState] = useState(textoActividades)
+    const [arregloDeTextosPorActividades, setArregloDeTextosPorActividades] = useState([]);
 
     const actividadSeleccionada = selectedActivities[0];
+    // console.log(actividadSeleccionada)
+    // console.log(textoActividadesState[2])
 
-    // console.log(selectedActivities);
 
+    const [activityTextImages, setActivityTextImages] = useState([]);
+    
     const initialValues = { 
         FOLIO: "",
         FECHA: "",
@@ -158,16 +162,21 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
 
         // Actualiza el valor del arreglo de IMAGES para todas las actividades
         // values.REPORT_LIST_IMAGES.forEach((report, index) => {
+        //     report.TEXT_IMAGES = arregloDeTextosPorActividades[index];
+        // });
+
+        // Actualiza el valor del arreglo de IMAGES para todas las actividades
+        // values.REPORT_LIST_IMAGES.forEach((report, index) => {
         //     report.TEXT_IMAGES = textoPorActividadState[index];
         // });
 
         // Actualiza el valor del arreglo de IMAGES para todas las actividades
-        values.REPORT_LIST_IMAGES.forEach((report, index) => {
-            const actividadSeleccionada = selectedActivities[index];
-            report.TEXT_IMAGES = textoActividadesState.find((obj) => obj[actividadSeleccionada])
-              ? textoActividadesState.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
-              : '';
-        });
+         values.REPORT_LIST_IMAGES.forEach((report, index) => {
+             const actividadSeleccionada = selectedActivities[index];
+             report.TEXT_IMAGES = textoActividadesState.find((obj) => obj[actividadSeleccionada])
+               ? textoActividadesState.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
+               : '';
+         });
   
   
         const initialValues2 = {
@@ -186,7 +195,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
             REPORT_LIST_IMAGES: values.REPORT_LIST_IMAGES.map((item, index) => ( 
                 [
                     {
-                        ACTIVITY: values.REPORT_LIST_IMAGES[index].ACTIVITY
+                        ACTIVITY: values.REPORT_LIST_IMAGES[index].ACTIVITY.replace(/_/g, ' ')
                     },
                     {
                         IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES
@@ -203,27 +212,27 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         
         console.log(initialValues2);
 
-          fetch(`${api}/generar/reporte/mensual`, {
-              method: 'POST',
-              headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-              },
-              body: JSON.stringify(initialValues2),
-            })
-              .then((response) => response.text())
-              .then((responseData) => {
-                    console.log(responseData);
-                    /* setVentanaCarga(false);
-                    setModalRegistroGuardado(true);
-                    setModalDetalleEquipo(false);
-                    resetForm(); */
-                    console.log("Se subio reporte mensual");
+        //   fetch(`${api}/generar/reporte/mensual`, {
+        //       method: 'POST',
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //         "Access-Control-Allow-Origin": "*",
+        //       },
+        //       body: JSON.stringify(initialValues2),
+        //     })
+        //       .then((response) => response.text())
+        //       .then((responseData) => {
+        //             console.log(responseData);
+        //             /* setVentanaCarga(false);
+        //             setModalRegistroGuardado(true);
+        //             setModalDetalleEquipo(false);
+        //             resetForm(); */
+        //             console.log("Se subio reporte mensual");
                   
-              })
-              .catch((error) => {
-                console.log(error);
-              });
+        //       })
+        //       .catch((error) => {
+        //         console.log(error);
+        //       });
     }  
 
   return (
@@ -444,6 +453,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                                 options={opcionesActividades}
                                                                 optionLabel="label"
                                                                 onChange={(e) => {
+                                                                    
                                                                     // const selectedIndex = opcionesActividades.findIndex(
                                                                     //     (opcion) => opcion.value === e.value.value
                                                                     //   );
@@ -488,28 +498,35 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                                             as={InputTextarea}
                                                             name={`REPORT_LIST_IMAGES.${index}.TEXT_IMAGES`}
+                                                            onChange={(e) => {
+                                                                    
+                                                                // const selectedIndex = opcionesActividades.findIndex(
+                                                                //     (opcion) => opcion.value === e.value.value
+                                                                //   );
 
-                                                             onChange={(e) => {
-                                                                 const newValue = e.target.value;
-                                            
-                                                                 // Actualiza el valor del campo en el formulario
-                                                                 setFieldValue(`REPORT_LIST_IMAGES[${index}].TEXT_IMAGES`, newValue);
-                                            
-                                                                 // Realiza la lógica para actualizar el valor de textoActividades si es necesario
-                                                                 const updatedTextoActividades = textoActividades.map((obj) => {
-                                                                   if (obj[actividadSeleccionada]) {
-                                                                     obj[actividadSeleccionada] = newValue;
-                                                                   }
-                                                                   return obj;
-                                                                 });
-                                            
-                                                                 // Luego, actualiza textoActividades si es necesario
-                                                                 setTextoActividadesState(updatedTextoActividades);
-                                                             }}
-                                                              
+                                                                // setIndexActividadDelSelect(selectedIndex);    
+                                                                
+                                                                // setSelectedActivities(report);
+                                                                setTextoActividadesState((prevTextActivities) => {
+                                                                 const newTextActivities = [...prevTextActivities];
+                                                                 newTextActivities[index] = e.target.value;
+                                                                 return newTextActivities;
+                                                                });
+                                                            }}
                                                             // onChange={(e) => {
-
-                                                            // }}
+                                                            //     const newValue = e.target.value;
+                                                            //     // Actualiza el valor del campo en el formulario
+                                                            //     // setFieldValue(`REPORT_LIST_IMAGES[${index}].TEXT_IMAGES`, newValue);
+                                                            //     // Realiza la lógica para actualizar el valor de textoActividades si es necesario
+                                                            //     const updatedTextoActividades = textoActividades.map((obj) => {
+                                                            //       if (obj[actividadSeleccionada]) {
+                                                            //         obj[actividadSeleccionada] = newValue;
+                                                            //       }
+                                                            //       return obj;
+                                                            //     });
+                                                            //     // Luego, actualiza textoActividades si es necesario
+                                                            //     setTextoActividadesState(updatedTextoActividades);
+                                                            // }} 
                                                             value={
                                                                 textoActividadesState.find((obj) => obj[actividadSeleccionada])
                                                                   ? textoActividadesState.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]

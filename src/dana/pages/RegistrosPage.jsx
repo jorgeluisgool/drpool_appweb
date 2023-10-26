@@ -314,7 +314,7 @@ export const RegistrosPage = () => {
     }
 
     {
-      (tipoReporSeleccionado === 'REPORTE FOTOFRÁFICO MENSUAL') && (
+      (tipoReporSeleccionado === 'REPORTE FOTOGRÁFICO MENSUAL') && (
         <div className="overflow-x-auto">
             <div className="my-6 mx-4 xl:mx-20">
               <TablaRegistrosReportesMensuales
