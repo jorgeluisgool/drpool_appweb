@@ -462,7 +462,18 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                   {({ insert, remove, push }) => (
                                     <div>
                                       {values.REPORT_LIST_IMAGES.length > 0 &&
-                                        values.REPORT_LIST_IMAGES.map((report, index) => (
+                                        values.REPORT_LIST_IMAGES.map((report, index) => {
+                                            
+
+                                            // El valor que deseas buscar
+                                           // const valorBuscado = values.REPORT_LIST_IMAGES[index].ACTIVITY;
+
+                                            // Utiliza el método find para buscar el label
+                                            //const opcionEncontrada = opcionesActividades.find(opcion => opcion.value === valorBuscado);
+
+                                            
+
+                                            return(
                                             
                                             <>
                                             <div key={index}>
@@ -476,6 +487,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                             <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-4 gap-6">
                                                 <div className="p-inputgroup mb-5 mt-5">
                                                     <span className='p-float-label relative'>
+                                                        {}
                                                    {/*  {setSelectedActivities((prevActivities) => {
                                                                      const newActivities = [...prevActivities];
                                                                      newActivities[index] = values.REPORT_LIST_IMAGES[index][0].ACTIVITY;
@@ -487,6 +499,23 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                 name={`REPORT_LIST_IMAGES.${index}.ACTIVITY`}
                                                                 options={opcionesActividades}
                                                                 optionLabel="label"
+                                                                onChange={(e) => {
+                                                                    
+                                                                    // const selectedIndex = opcionesActividades.findIndex(
+                                                                    //     (opcion) => opcion.value === e.value.value
+                                                                    //   );
+
+                                                                    // setIndexActividadDelSelect(selectedIndex);    
+                                                                    setSelectedActivityIndex(index);
+                                                                    //setSelectedActivities(values.REPORT_LIST_IMAGES.ACTIVITY);
+                                                                    // setSelectedActivities(report);
+                                                                     setSelectedActivities((prevActivities) => {
+                                                                     const newActivities = [...prevActivities];
+                                                                     newActivities[index] = e.value;
+                                                                     return newActivities;
+                                                                    });
+                                                                }}
+                                                                value={selectedActivities[index]}
                                                                 /*  onChange={(e) => {
                                                                      // const selectedIndex = opcionesActividades.findIndex(
                                                                  //     (opcion) => opcion.value === e.value.value
@@ -504,12 +533,13 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                 // value={selectedActivities[index]}
                                                                 // value={values.REPORT_LIST_IMAGES[index].ACTIVITY}
                                                             />
+
                                                             
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                         </span>
                                                         <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                            Actividad
+                                                            {values.REPORT_LIST_IMAGES[index].ACTIVITY}
                                                         </label>
                                                     </span>
                                                 </div>
@@ -599,7 +629,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                           </div>
                                           <hr className="divider" />
                                             </>  
-                                        ))}
+                                        )})}
                                       <button
                                           className='hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 text-left ml-auto flex items-center'
                                           type="button"
