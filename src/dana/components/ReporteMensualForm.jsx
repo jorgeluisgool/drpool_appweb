@@ -51,7 +51,7 @@ const opcionesTipoAlberca = [
     { label: 'NO TECHADA', value: 'NO TECHADA' }
   ];
 
-export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, albercaSeleccionada, setAlbercaSeleccionada}) => {
+export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, albercaSeleccionada, setAlbercaSeleccionada, setVentanaCarga}) => {
 
     const [modalSeleccionImagenes, setModalSeleccionImagenes] = useState(false);
     const [imagenesActivdades, setImagenesActivdades] = useState([]);
@@ -69,10 +69,12 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     const [modalTextoImagenesSate, setModalTextoImagenesSate] = useState(false);
 
     const actividadSeleccionada = selectedActivities[0];
-    console.log(selectedActivities[selectedActivityIndex])
-    console.log(textoActividades)
+    // console.log(selectedActivities[selectedActivityIndex])
+    // console.log(textoActividades)
 
     const [activityTextImages, setActivityTextImages] = useState([]);
+    const [showNotification, setShowNotification] = useState(false);
+
     
     const initialValues = { 
         FOLIO: "",
@@ -107,7 +109,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
       
             if (response.ok) {
               const jsonData = await response.json();
-              console.log(jsonData);
+            //   console.log(jsonData);
               setImagenesActivdades(jsonData);
             } else {
               console.error('Error en la solicitud');
@@ -134,6 +136,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     // FUNCION PARA ENVIAR EL FORMULARIO  
     const onSubmit = (values, { resetForm }) => {
 
+        setVentanaCarga(true);
         setSelectedImages([]); 
         
         if(typeof values.FECHA !== "string"){
@@ -212,28 +215,42 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         
         console.log(initialValues2);
 
-        //   fetch(`${api}/generar/reporte/mensual`, {
-        //       method: 'POST',
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //         "Access-Control-Allow-Origin": "*",
-        //       },
-        //       body: JSON.stringify(initialValues2),
-        //     })
-        //       .then((response) => response.text())
-        //       .then((responseData) => {
-        //             console.log(responseData);
-        //             /* setVentanaCarga(false);
-        //             setModalRegistroGuardado(true);
-        //             setModalDetalleEquipo(false);
-        //             resetForm(); */
-        //             console.log("Se subio reporte mensual");
-                  
-        //       })
-        //       .catch((error) => {
-        //         console.log(error);
-        //       });
+            fetch(`${api}/generar/reporte/mensual`, {
+                method: 'POST',
+                headers: {
+                  "Content-Type": "application/json",
+                  "Access-Control-Allow-Origin": "*",
+                },
+                body: JSON.stringify(initialValues2),
+              })
+                .then((response) => response.text())
+                .then((responseData) => {
+                    console.log(responseData);
+                    console.log("Se subio reporte mensual");
+                    resetForm();
+                    setModalNuevoReporteMensual(false);
+                    setVentanaCarga(false);            
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
     }  
+
+    useEffect(() => {
+        // Cuando cambia setSelectedActivities, mostramos la notificación durante 5 segundos.
+        setShowNotification(true);
+    
+        const notificationTimeout = setTimeout(() => {
+          // Ocultamos la notificación después de 5 segundos.
+          setShowNotification(false);
+        }, 5000);
+    
+        return () => {
+          // Limpiamos el temporizador si el componente se desmonta o setSelectedActivities cambia nuevamente.
+          clearTimeout(notificationTimeout);
+        };
+      }, [selectedActivities]);
+    
 
   return (
         <>
@@ -426,7 +443,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                             </div>
                         </div>
                         </div>
-                        <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2'>
+                        <div className='bg-[#E2E2E2] p-2 rounded-xl mt-4'>
                         <h1 className='text-2xl font-semibold'>Actividades</h1>
                             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-x-6'> 
                                 <FieldArray name="REPORT_LIST_IMAGES">
@@ -446,7 +463,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                             </button>
                                             <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
                                                 
-                                                <div className="p-inputgroup mb-5 mt-5">
+                                                <div className="p-inputgroup mb-5">
                                                     <span className='p-float-label relative'>
                                                             <Field
                                                                 className="w-full appearance-none focus:outline-none bg-transparent"
@@ -481,7 +498,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                 </div>
                                                 {/* {
                                                     selectedActivities[0] != undefined && */}
-                                                    <div className="p-inputgroup mb-5 mt-5 cursor-pointer flex gap-3 justify-center">
+                                                    <div className="p-inputgroup mb-5 cursor-pointer flex gap-3 justify-center">
                                                         <button
                                                             type="button"
                                                             onClick={() => {
@@ -494,7 +511,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                         </button>
                                                     </div>
                                                 {/* }       */}
-                                                <div className="p-inputgroup mb-5 mt-5 col-span-4">
+                                                <div className="p-inputgroup mb-5 col-span-4">
                                                     <span className='p-float-label relative'>
                                                         <Field
                                                             className="w-full appearance-none focus:outline-none bg-transparent"
@@ -601,7 +618,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                 </FieldArray>
                             </div>
                         </div>
-                        <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2'>
+                        <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2 mt-4'>
                         <h1 className='text-2xl font-semibold'>Responsables</h1>
                             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6'> 
                                 <div className="p-inputgroup mb-5 mt-5">
@@ -636,25 +653,26 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         </label>
                                     </span>
                                 </div>
-                            </div>
+                            </div>  
                         </div>
-                    <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-                    <button
-                        type="submit"
-                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                    >
-                        Guardar
-                    </button>
-                    </div>
-                    <div className="cursor-pointer absolute inset-x-0 bottom-4 left-4 flex gap-3 justify-start">
-                        <button
+                        <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+                            <button
+                                type="submit"
+                                className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 z-10"
+                            >
+                                Guardar
+                            </button>
+                        </div>    
+                        <div className="cursor-pointer absolute inset-x-0 bottom-4 left-4 flex gap-3 justify-start">
+                          <button
                             type="button"
-                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                            onClick={() => (setModalTextoImagenesSate(true))}
-                        >
-                            <ion-icon name="document-text-outline"></ion-icon> Textos de imagenes
-                        </button>
-                    </div>
+                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 relative z-0"
+                            onClick={() => setModalTextoImagenesSate(true)}
+                          >
+                            <ion-icon name="document-text-outline"></ion-icon> Textos de imágenes
+                            <span className={`bg-green-500 w-4 h-4 rounded-full absolute top-0 right-0 -mt-1 -mr-1 border ${showNotification ? 'animate-pulse' : 'hidden'}`}></span>
+                          </button>  
+                        </div>
                 </Form>
             )}
         </Formik>

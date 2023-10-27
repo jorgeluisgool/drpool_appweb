@@ -9,7 +9,6 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
         reporte.ALBERCA.nombrealberca === albercaSeleccionada.nombrealberca
     ));
 
-    console.log(reportesFiltradosPorAlberca);
     const handleButtonClick = (event, reporte) => {
         event.preventDefault();
     

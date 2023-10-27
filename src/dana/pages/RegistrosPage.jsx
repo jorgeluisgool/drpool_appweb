@@ -17,6 +17,7 @@ import { DialogRegistroGuardado } from '../../ui/components/DialogRegistroGuarda
 import { ReporteMensualForm } from '../components/ReporteMensualForm';
 import { TablaRegistrosReportesMensuales } from '../components/TablaRegistrosReportesMensuales';
 import { ReporteMensualFormEdit } from '../components/ReporteMensualFormEdit';
+import { VentanaCarga } from '../../ui/components/VentanaCarga';
 
 export const RegistrosPage = () => {
 
@@ -101,7 +102,7 @@ export const RegistrosPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [ventanaCarga]);
 
   // console.log(reportesMensuales);
 
@@ -252,17 +253,7 @@ export const RegistrosPage = () => {
   return (
     <>
     {ventanaCarga && (
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-slate-200 bg-opacity-50 flex items-center justify-center z-50">
-        <div className="flex items-center transition duration-500 ease-in-out">
-          <span className="hover:text-gray-400 duration-500 text-3xl text-slate-50">
-            <img src="/src/assets/isae.png" alt="Icono" className="h-20 xl:h-40 mr-1 animate-spin"/>
-          </span>
-          <img src="/src/assets/letras_isae.png" alt="Icono" className="h-20 xl:h-40 mr-2" />
-        </div>
-        <div className='fixed pt-36 xl:pt-60'>
-        <h1 className='text-[#C41420] text-4xl font-black animate-pulse'>Cargando...</h1>
-        </div>
-      </div>
+      <VentanaCarga/> 
     )}
     <h1 className="pt-6 pl-3 xl:pl-20 text-4xl font-black text-[#245A95]">Registros</h1>
     <div className="container mx-auto">
@@ -442,6 +433,7 @@ export const RegistrosPage = () => {
       clienteSeleccionado={clienteSeleccionado}
       albercaSeleccionada={albercaSeleccionada}
       setAlbercaSeleccionada={setAlbercaSeleccionada}
+      setVentanaCarga={setVentanaCarga}
     />
 
   <ReporteMensualFormEdit 
