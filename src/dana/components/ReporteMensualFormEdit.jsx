@@ -67,6 +67,8 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
 
     const actividadSeleccionada = selectedActivities[0];
 
+    const [arrayImg, setArrayImg] = useState([]);
+
     // Inicializa un arreglo vacío para almacenar los valores de REPORT_LIST_IMAGES 
     const reportListImages = [];
 
@@ -113,15 +115,17 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         REPORT_LIST_IMAGES: reportListImages
     };
 
-    console.log(rfm.REPORT_LIST_IMAGES);
+    console.log(reportListImages);
     
     useEffect(() => {
         const fetchData = async () => {
           try {
             const parametros = {
               ALBERCA: albercaSeleccionada.idalberca,
-              ACTIVIDAD: selectedActivities[selectedImagesIndex]
+              ACTIVIDAD: selectedActivities[selectedActivityIndex]
             };
+
+            console.log(parametros.ACTIVIDAD)
       
             const response = await fetch(`${api}/obtener/imagenes/actividades/`, {
               method: 'POST',
@@ -272,6 +276,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
             selectedImagesIndex={selectedImagesIndex}
             imagesForActivities={imagesForActivities}
             setImagesForActivities={setImagesForActivities}
+            arrayImg={arrayImg}
         />
 
         <Dialog header='Reporte Fotográfico Mensual' visible={modalReporteMensualEdit} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalReporteMensualEdit(false)} className='pt-20'>
@@ -482,24 +487,24 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                 name={`REPORT_LIST_IMAGES.${index}.ACTIVITY`}
                                                                 options={opcionesActividades}
                                                                 optionLabel="label"
-                                                                // onChange={(e) => {
-                                                                //     // const selectedIndex = opcionesActividades.findIndex(
-                                                                //     //     (opcion) => opcion.value === e.value.value
-                                                                //     //   );
+                                                                /*  onChange={(e) => {
+                                                                     // const selectedIndex = opcionesActividades.findIndex(
+                                                                 //     (opcion) => opcion.value === e.value.value
+                                                                     //   );
 
-                                                                //     // setIndexActividadDelSelect(selectedIndex);    
-                                                                //     setSelectedActivityIndex(index);
-                                                                //     // setSelectedActivities(report);
-                                                                //      setSelectedActivities((prevActivities) => {
-                                                                //      const newActivities = [...prevActivities];
-                                                                //      newActivities[index] = e.value;
-                                                                //      return newActivities;
-                                                                //     });
-                                                                // }}
+                                                                     // setIndexActividadDelSelect(selectedIndex);    
+                                                                     setSelectedActivityIndex(index);
+                                                                     // setSelectedActivities(report);
+                                                                      setSelectedActivities((prevActivities) => {
+                                                                      const newActivities = [...prevActivities];
+                                                                      newActivities[index] = e.value;
+                                                                      return newActivities;
+                                                                     });
+                                                                 }} */
                                                                 // value={selectedActivities[index]}
                                                                 // value={values.REPORT_LIST_IMAGES[index].ACTIVITY}
                                                             />
-                                                            {console.log(values.REPORT_LIST_IMAGES)}
+                                                            
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                         </span>
@@ -514,8 +519,16 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                         <button
                                                             type="button"
                                                             onClick={() => {
-                                                                setSelectedImagesIndex(index);
+                                                                setSelectedActivityIndex(index);
+                                                                // setSelectedActivities(report);
+                                                                 setSelectedActivities((prevActivities) => {
+                                                                 const newActivities = [...prevActivities];
+                                                                 newActivities[index] = values.REPORT_LIST_IMAGES[index].ACTIVITY;
+                                                                 return newActivities;
+                                                                })
                                                                  console.log(index); 
+                                                                setArrayImg(values.REPORT_LIST_IMAGES[index].IMAGES);
+                                                                console.log(arrayImg);
                                                                 setModalSeleccionImagenes(true);
                                                             }}
                                                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
@@ -572,7 +585,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                                             as={InputTextarea}
                                                             name={`REPORT_LIST_IMAGES.${index}.OBSERVACIONES`}
-                                                            value={values.REPORT_LIST_IMAGES[index][3].OBSERVACIONES}
+//                                                            value={values.REPORT_LIST_IMAGES[index][3].OBSERVACIONES}
                                                         /> 
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
