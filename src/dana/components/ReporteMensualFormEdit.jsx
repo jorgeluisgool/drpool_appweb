@@ -527,7 +527,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                  return newActivities;
                                                                 })
                                                                  console.log(index); 
-                                                                setArrayImg(values.REPORT_LIST_IMAGES[index].IMAGES);
+                                                                setSelectedImages(values.REPORT_LIST_IMAGES[index].IMAGES);
                                                                 console.log(arrayImg);
                                                                 setModalSeleccionImagenes(true);
                                                             }}

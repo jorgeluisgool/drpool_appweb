@@ -48,21 +48,37 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
     setModalSeleccionImagenes(false);
   };
 
-/*  for(let i = 0; i < arrayImg.length; i++){
-    toggleImageSelection(arrayImg[i]);
-  
- } */
+  /* useEffect(() => {
+    // Seleccionar automáticamente las imágenes cuyos URLs están en arrayImg y en imagenesActivdades
+    const autoSelectedImages = imagenesActivdades
+      .filter((imagen) => arrayImg.includes(imagen.url))
+      .map((imagen) => imagen.url);
+
+    setSelectedImages((prevSelectedImages) => {
+      return [...prevSelectedImages, ...autoSelectedImages];
+    });
+  }, [arrayImg, imagenesActivdades]);
+ */
+
+
 
   return (
     <Dialog header={`IMAGENES: ${selectedActivities[selectedActivityIndex]?.replace(/_/g, ' ')}`} visible={modalSeleccionImagenes}  baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalSeleccionImagenes(false)} className='pt-20'>
       <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4'>
       {
-        imagenesActivdades.map((imagen) => (
+        imagenesActivdades.map((imagen) => {
+console.log(selectedImages);
+          return(
+          
           <div 
+         
             key={imagen.idfoto} 
             className={`relative w-full max-w-md rounded overflow-hidden shadow-md bg-white hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 cursor-pointer ${selectedImages.includes(imagen.url) ? 'border-4 border-blue-500' : ''}`}
-            onClick={() => toggleImageSelection(imagen.url)}
+            onClick={() => {toggleImageSelection(imagen.url);
+            }}
           >
+             {console.log(imagenesActivdades)}
+            
             <div className="relative group">
               <img
                 className="w-full h-64 object-cover transform transition duration-500 ease-in-out hover:scale-110"
@@ -74,7 +90,7 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
               </div>
             </div>
           </div>
-        ))
+        )})
       }
       </div>
       <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
@@ -87,3 +103,13 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
 }
 
 export default ModalSeleccionImagenesReporMensual
+
+/* // Reemplaza el bucle for con Array.prototype.map
+var i = 0;
+arrayImg.map((img) => {
+  i++
+  if (imagenesActivdades.url.includes(img)) {
+    toggleImageSelection(img);
+  }
+  if(i == arrayImg.length) return null; // Otra opción podría ser retornar el elemento modificado si fuera necesario
+}); */
