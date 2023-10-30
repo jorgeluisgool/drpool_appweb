@@ -1,7 +1,7 @@
 import { Dialog } from 'primereact/dialog';
 import React, { useEffect, useState } from 'react'
 
-const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSeleccionImagenes, imagenesActivdades, selectedActivity, selectedImages, setSelectedImages, selectedActivities, selectedActivityIndex, selectedImagesIndex, imagesForActivities, setImagesForActivities, arrayImg = []}) => {   
+const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSeleccionImagenes, imagenesActivdades, selectedActivity, selectedImages, setSelectedImages, selectedActivities, selectedActivityIndex, selectedImagesIndex, imagesForActivities, setImagesForActivities}) => {   
 
   const toggleImageSelection = (imageUrl) => {
     setSelectedImages((prevSelectedImages) => {
@@ -43,6 +43,8 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
     newImages[activityIndex] = newImagesForActivity;
     return newImages;
   });
+
+  console.log(imagesForActivities);
     
     // Cierra la ventana modal
     setModalSeleccionImagenes(false);
@@ -60,14 +62,12 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
   }, [arrayImg, imagenesActivdades]);
  */
 
-
-
   return (
     <Dialog header={`IMAGENES: ${selectedActivities[selectedActivityIndex]?.replace(/_/g, ' ')}`} visible={modalSeleccionImagenes}  baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalSeleccionImagenes(false)} className='pt-20'>
       <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4'>
       {
         imagenesActivdades.map((imagen) => {
-console.log(selectedImages);
+
           return(
           
           <div 
@@ -77,7 +77,7 @@ console.log(selectedImages);
             onClick={() => {toggleImageSelection(imagen.url);
             }}
           >
-             {console.log(imagenesActivdades)}
+             
             
             <div className="relative group">
               <img
