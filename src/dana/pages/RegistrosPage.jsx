@@ -51,6 +51,7 @@ export const RegistrosPage = () => {
   const [registrosDrPool, setRegistrosDrPool] = useState();
   const [tipoReporSeleccionado, setTipoReporSeleccionado] = useState('BITACORA DIARIA');
   const [searchSede, setSearchSede] = useState('');
+  const [searchRFM, setSearchRFM] = useState('');
   const [albercaSeleccionada, setAlbercaSeleccionada] = useState({});
   const [reportesMensuales, setReportesMensuales] = useState();
 
@@ -279,6 +280,7 @@ export const RegistrosPage = () => {
           setSearchSede={setSearchSede}
           albercaSeleccionada={albercaSeleccionada}
           setAlbercaSeleccionada={setAlbercaSeleccionada}
+          setSearchRFM={setSearchRFM}
         />
     </div>
     {
@@ -317,6 +319,7 @@ export const RegistrosPage = () => {
                 setRfm={setRfm}
                 modalReporteMensualEdit={modalReporteMensualEdit}
                 setModalReporteMensualEdit={setModalReporteMensualEdit}
+                searchRFM={searchRFM}
               />
           </div>
         </div>

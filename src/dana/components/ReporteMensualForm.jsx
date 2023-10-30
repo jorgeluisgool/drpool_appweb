@@ -75,17 +75,24 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     const [activityTextImages, setActivityTextImages] = useState([]);
     const [showNotification, setShowNotification] = useState(false);
 
-    
+    // ESTE FRAGMENTO DE CODIGO GENERA EL FOLIO DEACUERDO A LA FECHA Y LA ABREVIATURA RFM
+    const currentDate = new Date();
+    const day = currentDate.getDate().toString().padStart(2, '0'); // Obtiene el día en formato "DD"
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Obtiene el mes en formato "MM"
+    const year = currentDate.getFullYear().toString().slice(-2); // Obtiene los últimos 2 dígitos del año en formato "YY"
+    const FOLIO = `RFM-${day}-${month}-${year}`;
+
+    console.log(albercaSeleccionada);
     const initialValues = { 
-        FOLIO: "",
+        FOLIO: FOLIO,
         FECHA: "",
         FIRSTDATE: "",
         LASTDATE: "",
         SEDE: sedeSeleccionada,
         ALCALDIA: sedeSeleccionada?.direccion.alcaldia,
         ALBERCA: albercaSeleccionada,
-        TIPOALBERCA: "",
-        CARACTERISTICA: "",
+        TIPOALBERCA: albercaSeleccionada.tipoalberca,
+        CARACTERISTICA: albercaSeleccionada.caracteristica,
         REALIZO: "",
         REVISO: "",
         REPORT_LIST_IMAGES: []
@@ -120,7 +127,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         };
       
         fetchData();
-      }, [selectedActivities, albercaSeleccionada, selectedImagesIndex, selectedImages]);
+      }, [selectedActivities, albercaSeleccionada, selectedImagesIndex, selectedImages, modalNuevoReporteMensual]);
       
 
     // Función para convertir la fecha en formato válido de la fecha
@@ -136,7 +143,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     // FUNCION PARA ENVIAR EL FORMULARIO  
     const onSubmit = (values, { resetForm }) => {
 
-        setVentanaCarga(true);
+        // setVentanaCarga(true);
         setSelectedImages([]); 
         
         if(typeof values.FECHA !== "string"){
@@ -215,25 +222,28 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         
         console.log(initialValues2);
 
-            fetch(`${api}/generar/reporte/mensual`, {
-                method: 'POST',
-                headers: {
-                  "Content-Type": "application/json",
-                  "Access-Control-Allow-Origin": "*",
-                },
-                body: JSON.stringify(initialValues2),
-              })
-                .then((response) => response.text())
-                .then((responseData) => {
-                    console.log(responseData);
-                    console.log("Se subio reporte mensual");
-                    resetForm();
-                    setModalNuevoReporteMensual(false);
-                    setVentanaCarga(false);            
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
+            // fetch(`${api}/generar/reporte/mensual`, {
+            //     method: 'POST',
+            //     headers: {
+            //       "Content-Type": "application/json",
+            //       "Access-Control-Allow-Origin": "*",
+            //     },
+            //     body: JSON.stringify(initialValues2),
+            //   })
+            //     .then((response) => response.text())
+            //     .then((responseData) => {
+            //         console.log(responseData);
+            //         console.log("Se subio reporte mensual");
+            //         resetForm();
+            //         setSelectedActivities([]);
+            //         setImagesForActivities([]);
+            //         setArregloDeTextosPorActividades([]);
+            //         setModalNuevoReporteMensual(false);
+            //         setVentanaCarga(false);            
+            //     })
+            //     .catch((error) => {
+            //       console.log(error);
+            //     });
     }  
 
     useEffect(() => {
@@ -268,7 +278,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
             setImagesForActivities={setImagesForActivities}
         />
 
-        <Dialog header='Reporte Fotográfico Mensual' visible={modalNuevoReporteMensual} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalNuevoReporteMensual(false)} className='pt-20'>
+        <Dialog header='Reporte Fotográfico Mensual' visible={modalNuevoReporteMensual} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => {setSelectedActivities([]); setImagesForActivities([]); setArregloDeTextosPorActividades([]); setModalNuevoReporteMensual(false)}} className='pt-20'>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6'>
             <div className="p-inputgroup mb-5 mt-5">
                 <span className='p-float-label relative'>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ReporteMensualFormEdit } from './ReporteMensualFormEdit';
 
-export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSeleccionada, rfm, setRfm, modalReporteMensualEdit, setModalReporteMensualEdit}) => {
+export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSeleccionada, rfm, setRfm, modalReporteMensualEdit, setModalReporteMensualEdit, searchRFM}) => {
 
   
 
@@ -24,6 +24,25 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
         console.log("Clicked on reporte:", JSON.stringify(reporte, null, 2));
        
       }
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const totalRows = reportesFiltradosPorAlberca?.length;
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+    // Obtener índice del último registro en la página actual
+    const indexOfLastRow = currentPage * rowsPerPage;
+    // Obtener índice del primer registro en la página actual
+    const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+    // Obtener los registros para la página actual
+    const currentRows = reportesFiltradosPorAlberca?.slice(indexOfFirstRow, indexOfLastRow) || [];
+
+    console.log(currentRows)
+    // const currentRows2 = currentRows?.filter((registroRows) => (registroRows.FOLIO.toLowerCase().includes(searchRFM.toLowerCase()) || registroRows.FECHA.toLowerCase().includes(searchRFM.toLowerCase())));
+      
+    // Función para cambiar de página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -58,7 +77,7 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200" >
-            {reportesFiltradosPorAlberca.map((reporte, index) => (
+            {currentRows.map((reporte, index) => (
               <tr 
                 key={index} 
                 className='cursor-pointer hover:bg-[#E2E2E2]'
@@ -103,6 +122,56 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
             ))}
           </tbody>
         </table>
+
+        <div className="flex items-center justify-between mt-4">
+        <div className="flex items-center">
+          <span className="mr-2 text-[#245A95] font-bold text-lg">Filas por página:</span>
+          <select
+            className="border border-gray-300 rounded px-3 py-1"
+            value={rowsPerPage}
+            onChange={(e) => setRowsPerPage(Number(e.target.value))}
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={15}>15</option>
+            <option value={20}>20</option>
+          </select>
+        </div>
+        <h1 className='text-[#245A95] font-bold text-lg'> 
+          Total de registros:
+          <span className='text-gray-700'> {totalRows}</span> 
+        </h1>
+        <div className="flex items-center pl-4">
+          <span className="mr-2 text-[#245A95] font-bold text-lg">
+            Página <span className='text-gray-700'>{currentPage}</span> de <span className='text-gray-700'>{totalPages}</span>
+          </span>
+          <nav className="relative z-0 inline-flex shadow-sm rounded-md">
+            <button
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`px-3 py-1 rounded-l-md focus:outline-none ${
+                currentPage === 1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-white hover:bg-[#245A95]'
+              }`}
+            >
+              <div className='text-[#245A95] hover:text-white'>
+              <ion-icon name="caret-back-circle"></ion-icon>
+              </div>
+            </button>
+            <span className="px-3 py-1 bg-gray-300 text-gray-700">{currentPage}</span>
+            <button
+              onClick={() => paginate(currentPage + 1)}
+              disabled={indexOfLastRow >= totalRows}
+              className={`px-3 py-1 rounded-r-md focus:outline-none ${
+                indexOfLastRow >= totalRows ? 'bg-gray-300 cursor-not-allowed' : 'bg-white hover:bg-[#245A95]'
+              }`}
+            >
+              <div className='text-[#245A95] hover:text-white'>
+              <ion-icon name="caret-forward-circle"></ion-icon>
+              </div>
+            </button>
+          </nav>
+        </div>
+      </div>
     </>
   )
 }

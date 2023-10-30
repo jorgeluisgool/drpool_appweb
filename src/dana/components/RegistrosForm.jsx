@@ -16,7 +16,7 @@ import { VentanaCarga } from '../../ui/components/VentanaCarga';
     {label: 'REPORTE FOTOGRÁFICO MENSUAL', value: 'REPORTE FOTOGRÁFICO MENSUAL'},
   ]
 
-const RegistrosForm = ({setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, registrosDrPool, setRegistrosDrPool, tipoReporSeleccionado, setTipoReporSeleccionado, setSearchSede, albercaSeleccionada, setAlbercaSeleccionada}) => {
+const RegistrosForm = ({setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, registrosDrPool, setRegistrosDrPool, tipoReporSeleccionado, setTipoReporSeleccionado, setSearchSede, albercaSeleccionada, setAlbercaSeleccionada, setSearchRFM}) => {
 
   const [cargando, setCargando] = useState(false);
 
@@ -147,7 +147,8 @@ const RegistrosForm = ({setModalNuevoReporteMensual, sedes, sedeSeleccionada, se
                     </div>
                     }
                     </div>
-                    {/* <div className="mt-8 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-4"> */}
+                    {
+                      (tipoReporSeleccionado === 'REPORTE SEMANAL' || tipoReporSeleccionado === 'BITACORA DIARIA') && (
                       <div className="mt-8 px-64 flex flex-col p-inputgroup justify-self-center">
                           <div className="flex flex-col">
                             <span className='p-float-label relative'>
@@ -168,7 +169,30 @@ const RegistrosForm = ({setModalNuevoReporteMensual, sedes, sedeSeleccionada, se
                             <p className="text-base text-[#245A95] font-semibold">Buscar por folio o fecha de creación</p>
                           </div>         
                       </div>
-                    {/* </div> */}
+                    )}
+                    {
+                      tipoReporSeleccionado === 'REPORTE FOTOGRÁFICO MENSUAL' && (
+                        <div className="mt-8 px-64 flex flex-col p-inputgroup justify-self-center">
+                          <div className="flex flex-col">
+                            <span className='p-float-label relative'>
+                                <InputText
+                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                    name="direccion"
+                                    type='text'
+                                    onChange={(e) => (setSearchRFM(e.target.value))}  
+                                /> 
+                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                  <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
+                                </span>
+                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                  Buscar reporte fotográfico mensual
+                                </label>
+                            </span>
+                            <p className="text-base text-[#245A95] font-semibold">Buscar por folio o fecha de creación</p>
+                          </div>         
+                      </div>
+                      )
+                    }
                 </div>
             </Form>
         )}
