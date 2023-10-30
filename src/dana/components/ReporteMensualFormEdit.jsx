@@ -54,6 +54,7 @@ const opcionesTipoAlberca = [
 export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporteMensualEdit, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, albercaSeleccionada, setAlbercaSeleccionada, setVentanaCarga, rfm}) => {
     
     
+    const [disabledEditFormRFM, setDisabledEditFormRFM] = useState(true);
 
     const [modalSeleccionImagenes, setModalSeleccionImagenes] = useState(false);
     const [imagenesActivdades, setImagenesActivdades] = useState([]);
@@ -180,7 +181,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
     // FUNCION PARA ENVIAR EL FORMULARIO  
     const onSubmit = (values, { resetForm }) => {
 
-       // setVentanaCarga(true);
+        setVentanaCarga(true);
         setSelectedImages([]); 
         
         if(typeof values.FECHA !== "string"){
@@ -259,7 +260,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         
         console.log(initialValues2);
 
-           /*  fetch(`${api}/generar/reporte/mensual`, {
+           fetch(`${api}/generar/reporte/mensual`, {
                 method: 'POST',
                 headers: {
                   "Content-Type": "application/json",
@@ -277,7 +278,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                 })
                 .catch((error) => {
                   console.log(error);
-                }); */
+                });
     }  
 
     useEffect(() => {
@@ -325,6 +326,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                         onChange={(e) => {setSedeSeleccionada(e.target.value)}}
                         filter
                         required
+                        disabled={disabledEditFormRFM}
                     /> 
                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -345,6 +347,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                         getOptionValue={(option) => option.nombrealberca}
                         required
                         onChange={(e) => setAlbercaSeleccionada(e.target.value)}
+                        disabled={disabledEditFormRFM}
                     /> 
                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -366,6 +369,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                     as={InputText}
                                     name="FOLIO"
                                     required
+                                    disabled={disabledEditFormRFM}
                                     // value={values.FOLIO}   
                                 /> 
                                 <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
@@ -389,6 +393,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                         value={parseDate(values.FECHA)}
                                         dateFormat="dd/MM/yy"
                                         locale='es'
+                                        disabled={disabledEditFormRFM}
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -407,6 +412,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                         value={parseDate(values.FIRSTDATE)}
                                         dateFormat="dd/MM/yy"
                                         locale='es'
+                                        disabled={disabledEditFormRFM}
                                     />  
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -425,6 +431,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                         value={parseDate(values.LASTDATE)}
                                         dateFormat="dd/MM/yy"
                                         locale='es'
+                                        disabled={disabledEditFormRFM}
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -441,6 +448,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                         as={InputText}
                                         name="ALCALDIA"
                                         value={values.ALCALDIA}
+                                        disabled={disabledEditFormRFM}
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -458,6 +466,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                         name="TIPOALBERCA"
                                         options={opcionesTipoAlberca}
                                         optionLabel="label" 
+                                        disabled={disabledEditFormRFM}
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -475,6 +484,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                         name="CARACTERISTICA"
                                         options={opcionesCaracteristicaAlberca}
                                         optionLabel="label" 
+                                        disabled={disabledEditFormRFM}
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -517,6 +527,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                 name={`REPORT_LIST_IMAGES.${index}.ACTIVITY`}
                                                                 options={opcionesActividades}
                                                                 optionLabel="label"
+                                                                disabled={disabledEditFormRFM}
                                                                 onChange={(e) => {
                                                                     
                                                                     // const selectedIndex = opcionesActividades.findIndex(
@@ -548,6 +559,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                     <div className="p-inputgroup mb-5 cursor-pointer flex gap-3 justify-center">
                                                         <button
                                                             type="button"
+                                                            disabled={disabledEditFormRFM}
                                                             onClick={() => {
                                                                 setSelectedActivityIndex(index);
                                                                 setSelectedImagesIndex(index);
@@ -566,6 +578,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                                             as={InputTextarea}
                                                             name={`REPORT_LIST_IMAGES.${index}.TEXT_IMAGES`}
+                                                            disabled={disabledEditFormRFM}
                                                             onChange={(e) => {
                                                                     
                                                                 // const selectedIndex = opcionesActividades.findIndex(
@@ -616,6 +629,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                                             as={InputTextarea}
                                                             name={`REPORT_LIST_IMAGES.${index}.OBSERVACIONES`}
+                                                            disabled={disabledEditFormRFM}
                                                         /> 
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -633,6 +647,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                       <button
                                           className='hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 text-left ml-auto flex items-center'
                                           type="button"
+                                          disabled={disabledEditFormRFM}
                                           onClick={() => {
                                             // Define la nueva actividad con sus propiedades
                                             const newActivity = {
@@ -677,6 +692,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                             as={InputText}
                                             name="REALIZO"
                                             value={values.REALIZO}    
+                                            disabled={disabledEditFormRFM}
                                         /> 
                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -692,7 +708,8 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                             as={InputText}
                                             name="REVISO"
-                                            value={values.REVISO}   
+                                            value={values.REVISO}
+                                            disabled={disabledEditFormRFM}
                                         /> 
                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -704,6 +721,17 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                 </div>
                             </div>  
                         </div>
+                        <div className="cursor-pointer absolute inset-x-0 bottom-4 right-40 flex gap-3 justify-end">
+                            <button
+                                type="button"
+                                className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 z-10"
+                                onClick={()=>{
+                                  setDisabledEditFormRFM(!disabledEditFormRFM);
+                                }}
+                            >
+                                 <ion-icon name="create-outline"></ion-icon> {disabledEditFormRFM ? <span>Editar</span> : <span>No editar</span>}
+                            </button>
+                        </div>  
                         <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
                             <button
                                 type="submit"
