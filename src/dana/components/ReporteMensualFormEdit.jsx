@@ -12,6 +12,7 @@ import { addLocale } from 'primereact/api'
 import ModalSeleccionImagenesReporMensual from './ModalSeleccionImagenesReporMensual'
 
 import textoActividades from '../data/textoActividades'
+import { ModalTextoImagenes } from './reporteMensual/ModalTextoImagenes'
 
 addLocale('es', {
     firstDayOfWeek: 1,
@@ -50,7 +51,9 @@ const opcionesTipoAlberca = [
     { label: 'NO TECHADA', value: 'NO TECHADA' }
   ];
 
-export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporteMensualEdit, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, albercaSeleccionada, setAlbercaSeleccionada, rfm}) => {
+export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporteMensualEdit, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, albercaSeleccionada, setAlbercaSeleccionada, setVentanaCarga, rfm}) => {
+    
+    
 
     const [modalSeleccionImagenes, setModalSeleccionImagenes] = useState(false);
     const [imagenesActivdades, setImagenesActivdades] = useState([]);
@@ -64,19 +67,28 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
 
     const [indexActividadDelSelect, setIndexActividadDelSelect] = useState(null)
     const [textoActividadesState, setTextoActividadesState] = useState(textoActividades)
+    const [arregloDeTextosPorActividades, setArregloDeTextosPorActividades] = useState([]);
+    const [modalTextoImagenesSate, setModalTextoImagenesSate] = useState(false);
 
     const actividadSeleccionada = selectedActivities[0];
+    // console.log(selectedActivities[selectedActivityIndex])
+    // console.log(textoActividades)
 
-    const [arrayImg, setArrayImg] = useState([]);
+    const [activityTextImages, setActivityTextImages] = useState([]);
+    const [showNotification, setShowNotification] = useState(false);
 
+
+    const listIMG = [];
     // Inicializa un arreglo vacío para almacenar los valores de REPORT_LIST_IMAGES 
     const reportListImages = [];
 
     // Verifica si rfm.REPORT_LIST_IMAGES es un arreglo y no es nulo
     if (Array.isArray(rfm.REPORT_LIST_IMAGES)) {
       // Recorre los subarreglos de REPORT_LIST_IMAGES
+      var index = 0;
       rfm.REPORT_LIST_IMAGES.forEach((subarray) => {
         // Inicializa un objeto para almacenar las propiedades de cada subarreglo
+        index++;
         const reportEntry = {
           ACTIVITY: '',
           IMAGES: [],
@@ -86,21 +98,26 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
 
         // Asigna los valores del subarreglo a las propiedades del objeto
         if (Array.isArray(subarray) && subarray.length >= 4) {
+          //const opcion = opcionesActividades.find((op) => op.value === subarray[0].ACTIVITY)
+          //opcion ? opcion.label : '';
           reportEntry.ACTIVITY = subarray[0]?.ACTIVITY || '';
           reportEntry.IMAGES = subarray[1]?.IMAGES || [];
           reportEntry.TEXT_IMAGES = subarray[2]?.TEXT_IMAGES || '';
           reportEntry.OBSERVACIONES = subarray[3]?.OBSERVACIONES || '';
+          listIMG.push(reportEntry.IMAGES)
         }
-
         // Agrega el objeto al arreglo reportListImages
         reportListImages.push(reportEntry);
       });
+
+      console.log(listIMG);
+      //setImagesForActivities(listIMG);
     }
 
-    // console.log(selectedActivities);
 
-    const initialValues = { 
-        idreportemensual: rfm.idreportemensual || 0,
+    
+    const initialValues = {
+        idreportemensual: rfm.idreportemensual || 0, 
         FOLIO: rfm.FOLIO || '',
         FECHA: rfm.FECHA || '',
         FIRSTDATE: rfm.FIRSTDATE || '',
@@ -115,17 +132,16 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         REPORT_LIST_IMAGES: reportListImages
     };
 
-    console.log(reportListImages);
+    
     
     useEffect(() => {
+
         const fetchData = async () => {
           try {
             const parametros = {
               ALBERCA: albercaSeleccionada.idalberca,
-              ACTIVIDAD: selectedActivities[selectedActivityIndex]
+              ACTIVIDAD: selectedActivities[selectedImagesIndex]
             };
-
-            console.log(parametros.ACTIVIDAD)
       
             const response = await fetch(`${api}/obtener/imagenes/actividades/`, {
               method: 'POST',
@@ -137,7 +153,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
       
             if (response.ok) {
               const jsonData = await response.json();
-              console.log(jsonData);
+            //   console.log(jsonData);
               setImagenesActivdades(jsonData);
             } else {
               console.error('Error en la solicitud');
@@ -164,7 +180,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
     // FUNCION PARA ENVIAR EL FORMULARIO  
     const onSubmit = (values, { resetForm }) => {
 
-        console.log(values)
+       // setVentanaCarga(true);
         setSelectedImages([]); 
         
         if(typeof values.FECHA !== "string"){
@@ -194,20 +210,24 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
 
         // Actualiza el valor del arreglo de IMAGES para todas las actividades
         // values.REPORT_LIST_IMAGES.forEach((report, index) => {
-        //     report.TEXT_IMAGES = textoPorActividadState[index];
+        //     report.TEXT_IMAGES = arregloDeTextosPorActividades[index];
         // });
 
         // Actualiza el valor del arreglo de IMAGES para todas las actividades
-        values.REPORT_LIST_IMAGES.forEach((report, index) => {
-            const actividadSeleccionada = selectedActivities[index];
-            report.TEXT_IMAGES = textoActividadesState.find((obj) => obj[actividadSeleccionada])
-              ? textoActividadesState.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
-              : '';
-        });
+         values.REPORT_LIST_IMAGES.forEach((report, index) => {
+             report.TEXT_IMAGES = arregloDeTextosPorActividades[index];
+         });
+        // Actualiza el valor del arreglo de IMAGES para todas las actividades
+        //  values.REPORT_LIST_IMAGES.forEach((report, index) => {
+        //      const actividadSeleccionada = selectedActivities[index];
+        //      report.TEXT_IMAGES = textoActividadesState.find((obj) => obj[actividadSeleccionada])
+        //        ? textoActividadesState.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
+        //        : '';
+        //  });
   
   
         const initialValues2 = {
-            idreportemensual: values.idreportemensual || 0,
+            idreportemensual: values.idreportemensual,
             FOLIO: values.FOLIO,
             FECHA: values.FECHA,
             FIRSTDATE: values.FIRSTDATE,
@@ -222,10 +242,10 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
             REPORT_LIST_IMAGES: values.REPORT_LIST_IMAGES.map((item, index) => ( 
                 [
                     {
-                        ACTIVITY: values.REPORT_LIST_IMAGES[index].ACTIVITY
+                        ACTIVITY: values.REPORT_LIST_IMAGES[index].ACTIVITY.replace(/_/g, ' ')
                     },
                     {
-                        IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES
+                        IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES === undefined ? listIMG[index] : values.REPORT_LIST_IMAGES[index].IMAGES
                     },
                     {
                         TEXT_IMAGES: values.REPORT_LIST_IMAGES[index].TEXT_IMAGES
@@ -239,28 +259,41 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         
         console.log(initialValues2);
 
-        //   fetch(`${api}/generar/reporte/mensual`, {
-        //       method: 'POST',
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //         "Access-Control-Allow-Origin": "*",
-        //       },
-        //       body: JSON.stringify(initialValues2),
-        //     })
-        //       .then((response) => response.text())
-        //       .then((responseData) => {
-        //             console.log(responseData);
-        //             /* setVentanaCarga(false);
-        //             setModalRegistroGuardado(true);
-        //             setModalDetalleEquipo(false);
-        //             resetForm(); */
-        //             console.log("Se subio reporte mensual");
-                  
-        //       })
-        //       .catch((error) => {
-        //         console.log(error);
-        //       });
+           /*  fetch(`${api}/generar/reporte/mensual`, {
+                method: 'POST',
+                headers: {
+                  "Content-Type": "application/json",
+                  "Access-Control-Allow-Origin": "*",
+                },
+                body: JSON.stringify(initialValues2),
+              })
+                .then((response) => response.text())
+                .then((responseData) => {
+                    console.log(responseData);
+                    console.log("Se subio reporte mensual");
+                    resetForm();
+                    setModalReporteMensualEdit(false);
+                    setVentanaCarga(false);            
+                })
+                .catch((error) => {
+                  console.log(error);
+                }); */
     }  
+
+    useEffect(() => {
+        // Cuando cambia setSelectedActivities, mostramos la notificación durante 5 segundos.
+        setShowNotification(true);
+    
+        const notificationTimeout = setTimeout(() => {
+          // Ocultamos la notificación después de 5 segundos.
+          setShowNotification(false);
+        }, 5000);
+    
+        return () => {
+          // Limpiamos el temporizador si el componente se desmonta o setSelectedActivities cambia nuevamente.
+          clearTimeout(notificationTimeout);
+        };
+      }, [selectedActivities]);  
 
   return (
         <>
@@ -276,7 +309,6 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
             selectedImagesIndex={selectedImagesIndex}
             imagesForActivities={imagesForActivities}
             setImagesForActivities={setImagesForActivities}
-            arrayImg={arrayImg}
         />
 
         <Dialog header='Reporte Fotográfico Mensual' visible={modalReporteMensualEdit} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalReporteMensualEdit(false)} className='pt-20'>
@@ -326,7 +358,6 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
             {({ values, handleChange, isSubmitting, setFieldValue  }) => (
                 <Form>
-                    {console.log(values.idreportemensual)}
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6'> 
                         <div className="p-inputgroup mb-5 mt-5">
                             <span className='p-float-label relative'>
@@ -455,28 +486,19 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                             </div>
                         </div>
                         </div>
-                        <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2'>
+                        <div className='bg-[#E2E2E2] p-2 rounded-xl mt-4'>
                         <h1 className='text-2xl font-semibold'>Actividades</h1>
                             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-x-6'> 
+
                                 <FieldArray name="REPORT_LIST_IMAGES">
                                   {({ insert, remove, push }) => (
                                     <div>
                                       {values.REPORT_LIST_IMAGES.length > 0 &&
-                                        values.REPORT_LIST_IMAGES.map((report, index) => {
-                                            
-
-                                            // El valor que deseas buscar
-                                           // const valorBuscado = values.REPORT_LIST_IMAGES[index].ACTIVITY;
-
-                                            // Utiliza el método find para buscar el label
-                                            //const opcionEncontrada = opcionesActividades.find(opcion => opcion.value === valorBuscado);
-
-                                            
-
-                                            return(
-                                            
+                                        values.REPORT_LIST_IMAGES.map((report, index) => (
                                             <>
+                                           
                                             <div key={index}>
+                                            <p className='text-center font-bold text-xl'>{values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/_/g, ' ')}</p>
                                             <button
                                                 className='hover:shadow-slate-600 border h-10 px-4 bg-[#BE1622] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-[#d52935] text-left ml-auto flex items-center'
                                                 type="button"
@@ -484,15 +506,11 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                             >
                                                 <ion-icon name="trash"></ion-icon>
                                             </button>
-                                            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-4 gap-6">
-                                                <div className="p-inputgroup mb-5 mt-5">
+                                            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
+                                                
+                                                <div className="p-inputgroup mb-5">
                                                     <span className='p-float-label relative'>
-                                                        {}
-                                                   {/*  {setSelectedActivities((prevActivities) => {
-                                                                     const newActivities = [...prevActivities];
-                                                                     newActivities[index] = values.REPORT_LIST_IMAGES[index][0].ACTIVITY;
-                                                                     return newActivities;
-                                                                    })} */}
+                                                        
                                                             <Field
                                                                 className="w-full appearance-none focus:outline-none bg-transparent"
                                                                 as={Dropdown}
@@ -507,7 +525,6 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
 
                                                                     // setIndexActividadDelSelect(selectedIndex);    
                                                                     setSelectedActivityIndex(index);
-                                                                    //setSelectedActivities(values.REPORT_LIST_IMAGES.ACTIVITY);
                                                                     // setSelectedActivities(report);
                                                                      setSelectedActivities((prevActivities) => {
                                                                      const newActivities = [...prevActivities];
@@ -515,50 +532,26 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                      return newActivities;
                                                                     });
                                                                 }}
-                                                                value={selectedActivities[index]}
-                                                                /*  onChange={(e) => {
-                                                                     // const selectedIndex = opcionesActividades.findIndex(
-                                                                 //     (opcion) => opcion.value === e.value.value
-                                                                     //   );
-
-                                                                     // setIndexActividadDelSelect(selectedIndex);    
-                                                                     setSelectedActivityIndex(index);
-                                                                     // setSelectedActivities(report);
-                                                                      setSelectedActivities((prevActivities) => {
-                                                                      const newActivities = [...prevActivities];
-                                                                      newActivities[index] = e.value;
-                                                                      return newActivities;
-                                                                     });
-                                                                 }} */
-                                                                // value={selectedActivities[index]}
-                                                                // value={values.REPORT_LIST_IMAGES[index].ACTIVITY}
+                                                                value={selectedActivities[index] || (selectedActivities[index] =  values.REPORT_LIST_IMAGES[index].ACTIVITY)}
                                                             />
-
                                                             
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                         </span>
                                                         <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                            {values.REPORT_LIST_IMAGES[index].ACTIVITY}
+                                                            Actividad
                                                         </label>
                                                     </span>
                                                 </div>
-                                                {
-                                                    
-                                                    <div className="p-inputgroup mb-5 mt-5 cursor-pointer flex gap-3 justify-center">
+                                                {/* {
+                                                    selectedActivities[0] != undefined && */}
+                                                    <div className="p-inputgroup mb-5 cursor-pointer flex gap-3 justify-center">
                                                         <button
                                                             type="button"
                                                             onClick={() => {
                                                                 setSelectedActivityIndex(index);
-                                                                // setSelectedActivities(report);
-                                                                 setSelectedActivities((prevActivities) => {
-                                                                 const newActivities = [...prevActivities];
-                                                                 newActivities[index] = values.REPORT_LIST_IMAGES[index].ACTIVITY;
-                                                                 return newActivities;
-                                                                })
-                                                                 console.log(index); 
+                                                                setSelectedImagesIndex(index);
                                                                 setSelectedImages(values.REPORT_LIST_IMAGES[index].IMAGES);
-                                                                console.log(arrayImg);
                                                                 setModalSeleccionImagenes(true);
                                                             }}
                                                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
@@ -566,35 +559,43 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                             <ion-icon name="images-outline"></ion-icon> Imagenes
                                                         </button>
                                                     </div>
-                                                }      
-                                                <div className="p-inputgroup mb-5 mt-5 col-span-2">
+                                                {/* }       */}
+                                                <div className="p-inputgroup mb-5 col-span-4">
                                                     <span className='p-float-label relative'>
                                                         <Field
                                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                                             as={InputTextarea}
                                                             name={`REPORT_LIST_IMAGES.${index}.TEXT_IMAGES`}
+                                                            onChange={(e) => {
+                                                                    
+                                                                // const selectedIndex = opcionesActividades.findIndex(
+                                                                //     (opcion) => opcion.value === e.value.value
+                                                                //   );
 
-                                                            //  onChange={(e) => {
-                                                            //      const newValue = e.target.value;
-                                            
-                                                            //      // Actualiza el valor del campo en el formulario
-                                                            //      setFieldValue(`REPORT_LIST_IMAGES[${index}].TEXT_IMAGES`, newValue);
-                                            
-                                                            //      // Realiza la lógica para actualizar el valor de textoActividades si es necesario
-                                                            //      const updatedTextoActividades = textoActividades.map((obj) => {
-                                                            //        if (obj[actividadSeleccionada]) {
-                                                            //          obj[actividadSeleccionada] = newValue;
-                                                            //        }
-                                                            //        return obj;
-                                                            //      });
-                                            
-                                                            //      // Luego, actualiza textoActividades si es necesario
-                                                            //      setTextoActividadesState(updatedTextoActividades);
-                                                            //  }}
-                                                              
+                                                                // setIndexActividadDelSelect(selectedIndex);    
+                                                                
+                                                                // setSelectedActivities(report);
+                                                                setArregloDeTextosPorActividades((prevTextActivities) => {
+                                                                 const newTextActivities = [...prevTextActivities];
+                                                                 newTextActivities[index] = e.target.value;
+                                                                 return newTextActivities;
+                                                                });
+                                                            }}
                                                             // onChange={(e) => {
-
+                                                            //     const newValue = e.target.value;
+                                                            //     // Actualiza el valor del campo en el formulario
+                                                            //     // setFieldValue(`REPORT_LIST_IMAGES[${index}].TEXT_IMAGES`, newValue);
+                                                            //     // Realiza la lógica para actualizar el valor de textoActividades si es necesario
+                                                            //     const updatedTextoActividades = textoActividades.map((obj) => {
+                                                            //       if (obj[actividadSeleccionada]) {
+                                                            //         obj[actividadSeleccionada] = newValue;
+                                                            //       }
+                                                            //       return obj;
+                                                            //     });
+                                                            //     // Luego, actualiza textoActividades si es necesario
+                                                            //     setTextoActividadesState(updatedTextoActividades);
                                                             // }}
+                                                            value={arregloDeTextosPorActividades[index] || (arregloDeTextosPorActividades[index] =values.REPORT_LIST_IMAGES[index].TEXT_IMAGES)} 
                                                             // value={
                                                             //     textoActividadesState.find((obj) => obj[actividadSeleccionada])
                                                             //       ? textoActividadesState.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
@@ -615,7 +616,6 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                             className="w-full appearance-none focus:outline-none bg-transparent"
                                                             as={InputTextarea}
                                                             name={`REPORT_LIST_IMAGES.${index}.OBSERVACIONES`}
-//                                                            value={values.REPORT_LIST_IMAGES[index][3].OBSERVACIONES}
                                                         /> 
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -629,7 +629,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                           </div>
                                           <hr className="divider" />
                                             </>  
-                                        )})}
+                                        ))}
                                       <button
                                           className='hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 text-left ml-auto flex items-center'
                                           type="button"
@@ -667,7 +667,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                 </FieldArray>
                             </div>
                         </div>
-                        <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2'>
+                        <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2 mt-4'>
                         <h1 className='text-2xl font-semibold'>Responsables</h1>
                             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6'> 
                                 <div className="p-inputgroup mb-5 mt-5">
@@ -702,19 +702,36 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                         </label>
                                     </span>
                                 </div>
-                            </div>
+                            </div>  
                         </div>
-                    <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-                    <button
-                        type="submit"
-                        className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
-                    >
-                        Guardar
-                    </button>
-                    </div>
+                        <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+                            <button
+                                type="submit"
+                                className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 z-10"
+                            >
+                                Guardar
+                            </button>
+                        </div>    
+                        <div className="cursor-pointer absolute inset-x-0 bottom-4 left-4 flex gap-3 justify-start">
+                          <button
+                            type="button"
+                            className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 relative z-0"
+                            onClick={() => setModalTextoImagenesSate(true)}
+                          >
+                            <ion-icon name="document-text-outline"></ion-icon> Textos de imágenes
+                            <span className={`bg-green-500 w-4 h-4 rounded-full absolute top-0 right-0 -mt-1 -mr-1 border ${showNotification ? 'animate-pulse' : 'hidden'}`}></span>
+                          </button>  
+                        </div>
                 </Form>
             )}
         </Formik>
+        <ModalTextoImagenes 
+            modalTextoImagenesSate={modalTextoImagenesSate} 
+            setModalTextoImagenesSate={setModalTextoImagenesSate}
+            selectedActivities={selectedActivities}
+            selectedActivityIndex={selectedActivityIndex}
+            textoActividadesState={textoActividadesState}
+        />
         </Dialog>
         </>
   )

@@ -447,6 +447,7 @@ export const RegistrosPage = () => {
       clienteSeleccionado={clienteSeleccionado}
       albercaSeleccionada={albercaSeleccionada}
       setAlbercaSeleccionada={setAlbercaSeleccionada}
+      setVentanaCarga={setVentanaCarga}
       rfm={rfm}
     />
 
