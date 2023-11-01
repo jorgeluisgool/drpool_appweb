@@ -327,7 +327,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
             setImagesForActivities={setImagesForActivities}
         />
 
-        <Dialog header='Reporte Fotográfico Mensual' visible={modalReporteMensualEdit} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalReporteMensualEdit(false)} className='pt-20'>
+        <Dialog header='Reporte Fotográfico Mensual' visible={modalReporteMensualEdit} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => { setSelectedActivities([]); setImagesForActivities([]); setArregloDeTextosPorActividades([]);setModalReporteMensualEdit(false)}} className='pt-20'>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6'>
             <div className="p-inputgroup mb-5 mt-5">
                 <span className='p-float-label relative'>
@@ -558,7 +558,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                      return newActivities;
                                                                     });
                                                                 }}
-                                                                value={selectedActivities[index] || (selectedActivities[index] =  values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_'))}
+                                                                value={selectedActivities[index] || ( (opcionesActividades.map(opcion => opcion.value).indexOf(values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_')) !== -1) ? (selectedActivities[index] =  values.REPORT_LIST_IMAGES[index].ACTIVITY.replace(/ /g, '_')) : (selectedActivities[index] = "OTRA_ACTIVIDAD"))}
                                                             />
                                                             {console.log(values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_'))}
                                                             
@@ -571,7 +571,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                     </span>
                                                 </div>
                                                 {
-                                                    selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' &&
+                                                   ( selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' || (opcionesActividades.map(opcion => opcion.value).indexOf(selectedActivities[index] =  values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_')) === -1)) &&
                                                     <div className="p-inputgroup mb-5">
                                                         <span className='p-float-label relative'>
                                                                 <Field
@@ -593,7 +593,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                          return newActivities;
                                                                         });
                                                                     }}
-                                                                    value={selectedActivitiesInputText[index]}
+                                                                value={selectedActivitiesInputText[index] || (selectedActivitiesInputText[index] = values.REPORT_LIST_IMAGES[index].ACTIVITY) }
                                                                 />
                                                             <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                               <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
