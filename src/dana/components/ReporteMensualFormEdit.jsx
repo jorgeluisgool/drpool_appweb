@@ -81,7 +81,6 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
 
     const combinedActivities = [...selectedActivities, ...selectedActivitiesInputText];
     const combinedActivitiesFilter = combinedActivities.filter((actividad) => actividad !== undefined  && actividad !== 'OTRA_ACTIVIDAD');
-    
     const listIMG = [];
     // Inicializa un arreglo vacío para almacenar los valores de REPORT_LIST_IMAGES 
     const reportListImages = [];
@@ -522,7 +521,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                       {values.REPORT_LIST_IMAGES.length > 0 &&
                                         values.REPORT_LIST_IMAGES.map((report, index) => (
                                             <>
-                                           {}
+                                           
                                             <div key={index}>
                                             <p className='text-center font-bold text-xl'>{values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/_/g, ' ')}</p>
                                             <button
@@ -572,14 +571,13 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                     </span>
                                                 </div>
                                                 {
-                                                   ( selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' || (opcionesActividades.map(opcion => opcion.value).indexOf(values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_')) === -1)) &&
+                                                   ( selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' || (opcionesActividades.map(opcion => opcion.value).indexOf(selectedActivities[index] =  values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_')) === -1)) &&
                                                     <div className="p-inputgroup mb-5">
                                                         <span className='p-float-label relative'>
                                                                 <Field
                                                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                                                     as={InputText}
                                                                     name={`REPORT_LIST_IMAGES.${index}.ACTIVITY`}
-                                                                    disabled={disabledEditFormRFM}
                                                                     onChange={(e) => {
                                                                         console.log(e.target.value)
                                                                         // const selectedIndex = opcionesActividades.findIndex(
