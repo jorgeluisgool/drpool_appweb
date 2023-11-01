@@ -571,7 +571,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                     </span>
                                                 </div>
                                                 {
-                                                   ( selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' || (opcionesActividades.map(opcion => opcion.value).indexOf(selectedActivities[index] =  values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_')) === -1)) &&
+                                                   ( selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' || (opcionesActividades.map(opcion => opcion.value).indexOf(values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_')) === -1)) &&
                                                     <div className="p-inputgroup mb-5">
                                                         <span className='p-float-label relative'>
                                                                 <Field
