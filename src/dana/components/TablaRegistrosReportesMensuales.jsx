@@ -7,7 +7,7 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
 
     const reportesFiltradosPorAlberca = reportesMensuales.filter((reporte) => (
         reporte.ALBERCA.nombrealberca === albercaSeleccionada.nombrealberca
-    ));
+    )).reverse();
 
     const handleButtonClick = (event, reporte) => {
         event.preventDefault();
@@ -38,7 +38,6 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
     // Obtener los registros para la página actual
     const currentRows = reportesFiltradosPorAlberca?.slice(indexOfFirstRow, indexOfLastRow) || [];
 
-    console.log(currentRows)
     const currentRows2 = currentRows?.filter((registroRows) => (registroRows.FOLIO?.toLowerCase().includes(searchRFM.toLowerCase()) || registroRows.FECHA?.toLowerCase().includes(searchRFM.toLowerCase())));
       
     // Función para cambiar de página

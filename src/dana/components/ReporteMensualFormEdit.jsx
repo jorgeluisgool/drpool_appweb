@@ -79,7 +79,9 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
     const [activityTextImages, setActivityTextImages] = useState([]);
     const [showNotification, setShowNotification] = useState(false);
 
-
+    const combinedActivities = [...selectedActivities, ...selectedActivitiesInputText];
+    const combinedActivitiesFilter = combinedActivities.filter((actividad) => actividad !== undefined  && actividad !== 'OTRA_ACTIVIDAD');
+    
     const listIMG = [];
     // Inicializa un arreglo vacío para almacenar los valores de REPORT_LIST_IMAGES 
     const reportListImages = [];
@@ -200,15 +202,28 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
             values.LASTDATE = formattedDate;
         }
 
-        // Actualiza el valor de ACTIVITY para todas las actividades
-        values.REPORT_LIST_IMAGES.forEach((report, index) => {
-          report.ACTIVITY = selectedActivities[index];
-        });
+        {
+          selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' ? 
+          // Actualiza el valor de ACTIVITY para todas las actividades
+          values.REPORT_LIST_IMAGES.forEach((report, index) => {
+              report.ACTIVITY = combinedActivitiesFilter[index]
+          })
+          :
+          // Actualiza el valor de ACTIVITY para todas las actividades
+          values.REPORT_LIST_IMAGES.forEach((report, index) => {
+              report.ACTIVITY = combinedActivitiesFilter[index]
+          })
+        }
+
+        // // Actualiza el valor de ACTIVITY para todas las actividades
+        // values.REPORT_LIST_IMAGES.forEach((report, index) => {
+        //   report.ACTIVITY = selectedActivities[index];
+        // });
         
-        // Actualiza el valor del arreglo de IMAGES para todas las actividades
-        values.REPORT_LIST_IMAGES.forEach((report, index) => {
-            report.IMAGES = imagesForActivities[index];
-        });
+        // // Actualiza el valor del arreglo de IMAGES para todas las actividades
+        // values.REPORT_LIST_IMAGES.forEach((report, index) => {
+        //     report.IMAGES = imagesForActivities[index];
+        // });
 
         // Actualiza el valor del arreglo de IMAGES para todas las actividades
         // values.REPORT_LIST_IMAGES.forEach((report, index) => {
