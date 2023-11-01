@@ -595,8 +595,11 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                          return newActivities;
                                                                         });
                                                                     }}
-                                                                value={selectedActivitiesInputText[index] || (selectedActivities[index]==="" ? "" : (selectedActivitiesInputText[index] = values.REPORT_LIST_IMAGES[index].ACTIVITY))}
+                                                                //value={selectedActivitiesInputText[index] || (selectedActivities[index]==="" ? "" : (selectedActivitiesInputText[index] = values.REPORT_LIST_IMAGES[index].ACTIVITY))}
+                                                                value={selectedActivitiesInputText[index] !== undefined ? selectedActivitiesInputText[index] : (selectedActivities[index] === "" ? "" : values.REPORT_LIST_IMAGES[index].ACTIVITY)}
+
                                                                 />
+                                                                {console.log(selectedActivitiesInputText[index])}
                                                             <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                               <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                             </span>
@@ -660,6 +663,11 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                             //     // Luego, actualiza textoActividades si es necesario
                                                             //     setTextoActividadesState(updatedTextoActividades);
                                                             // }}
+
+                                                          
+                                                            
+
+
                                                             value={arregloDeTextosPorActividades[index] || (arregloDeTextosPorActividades[index] =values.REPORT_LIST_IMAGES[index].TEXT_IMAGES)} 
                                                             // value={
                                                             //     textoActividadesState.find((obj) => obj[actividadSeleccionada])
