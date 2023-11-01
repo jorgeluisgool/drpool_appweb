@@ -26,15 +26,15 @@ addLocale('es', {
   });
 
 const opcionesActividades = [
-    { label: 'Limpieza de trampas de pelo', value: 'LIMPIEZA_DE_TRAMPAS' },
-    { label: 'Retiro de sólidos suspendidos', value: 'RETIRO_DE_SOLIDOS' },
-    { label: 'Retrolavado de filtro', value: 'RETROLAVADO' },
-    { label: 'Cepillado de paredes y piso', value: 'CEPILLADO_DE_PAREDES' },
+    { label: 'Limpieza de trampas de pelo', value: 'LIMPIEZA_DE_TRAMPAS_DE_PELO' },
+    { label: 'Retiro de sólidos suspendidos', value: 'RETIRO_DE_SÓLIDOS_SUSPENDIDOS' },
+    { label: 'Retrolavado de filtro', value: 'RETROLAVADO_DE_FILTRO' },
+    { label: 'Cepillado de paredes y piso', value: 'CEPILLADO_DE_PAREDES_Y_PISO' },
     { label: 'Aspirado', value: 'ASPIRADO' },
     { label: 'Limpieza de cenefa', value: 'LIMPIEZA_DE_CENEFA' },
-    { label: 'Limpieza de la rejilla perimetral', value: 'LIMPIEZA_DE_REJILLA' },
+    { label: 'Limpieza de la rejilla perimetral', value: 'LIMPIEZA_DE_LA_REJILLA_PERIMETRAL' },
     { label: 'Limpieza de área perimetral', value: 'LIMPIEZA_DE_AREA_PERIMETRAL' },
-    { label: 'Otro', value: 'OTRO' },
+    { label: 'Otra actividad', value: 'OTRA_ACTIVIDAD' },
 ];
 
 const opcionesTipoAlberca = [
@@ -60,6 +60,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     const [imagesForActivities, setImagesForActivities] = useState([]);
 
     const [selectedActivities, setSelectedActivities] = useState([]);
+    const [selectedActivitiesInputText, setSelectedActivitiesInputText] = useState([]);
     const [selectedActivityIndex, setSelectedActivityIndex] = useState(null);
     const [selectedImagesIndex, setSelectedImagesIndex] = useState(null);
 
@@ -70,11 +71,16 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
 
     const actividadSeleccionada = selectedActivities[0];
     // console.log(selectedActivities[selectedActivityIndex])
-    // console.log(textoActividades)
+    // console.log(selectedActivitiesInputText);
 
     const [activityTextImages, setActivityTextImages] = useState([]);
     const [showNotification, setShowNotification] = useState(false);
 
+    // Fusiona los dos arreglos en uno solo
+    console.log(selectedActivities);
+    console.log(selectedActivitiesInputText);
+    const combinedActivities = [...selectedActivities, ...selectedActivitiesInputText];
+    const combinedActivitiesFilter = combinedActivities.filter((actividad) => actividad !== undefined  && actividad !== 'OTRA_ACTIVIDAD')
     // ESTE FRAGMENTO DE CODIGO GENERA EL FOLIO DEACUERDO A LA FECHA Y LA ABREVIATURA RFM
     const currentDate = new Date();
     const day = currentDate.getDate().toString().padStart(2, '0'); // Obtiene el día en formato "DD"
@@ -82,7 +88,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     const year = currentDate.getFullYear().toString().slice(-2); // Obtiene los últimos 2 dígitos del año en formato "YY"
     const FOLIO = `RFM-${day}-${month}-${year}`;
 
-    console.log(albercaSeleccionada);
+    // console.log(albercaSeleccionada);
     const initialValues = { 
         FOLIO: FOLIO,
         FECHA: "",
@@ -91,8 +97,8 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         SEDE: sedeSeleccionada,
         ALCALDIA: sedeSeleccionada?.direccion.alcaldia,
         ALBERCA: albercaSeleccionada,
-        TIPOALBERCA: albercaSeleccionada.tipoalberca,
-        CARACTERISTICA: albercaSeleccionada.caracteristica,
+        TIPOALBERCA: albercaSeleccionada?.tipoalberca,
+        CARACTERISTICA: albercaSeleccionada?.caracteristica,
         REALIZO: "",
         REVISO: "",
         REPORT_LIST_IMAGES: []
@@ -128,7 +134,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
       
         fetchData();
       }, [selectedActivities, albercaSeleccionada, selectedImagesIndex, selectedImages, modalNuevoReporteMensual]);
-      
 
     // Función para convertir la fecha en formato válido de la fecha
     const parseDate = (dateString) => {
@@ -143,6 +148,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     // FUNCION PARA ENVIAR EL FORMULARIO  
     const onSubmit = (values, { resetForm }) => {
 
+        console.log(selectedActivities[selectedActivityIndex])
         // setVentanaCarga(true);
         setSelectedImages([]); 
         
@@ -161,34 +167,30 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
             values.LASTDATE = formattedDate;
         }
 
-        // Actualiza el valor de ACTIVITY para todas las actividades
-        values.REPORT_LIST_IMAGES.forEach((report, index) => {
-          report.ACTIVITY = selectedActivities[index];
-        });
+        {
+            selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' ? 
+            // Actualiza el valor de ACTIVITY para todas las actividades
+            values.REPORT_LIST_IMAGES.forEach((report, index) => {
+                report.ACTIVITY = combinedActivitiesFilter[index]
+            })
+            :
+            // Actualiza el valor de ACTIVITY para todas las actividades
+            values.REPORT_LIST_IMAGES.forEach((report, index) => {
+                report.ACTIVITY = combinedActivitiesFilter[index]
+            })
+        }
         
         // Actualiza el valor del arreglo de IMAGES para todas las actividades
         values.REPORT_LIST_IMAGES.forEach((report, index) => {
             report.IMAGES = imagesForActivities[index];
         });
 
-        // Actualiza el valor del arreglo de IMAGES para todas las actividades
-        // values.REPORT_LIST_IMAGES.forEach((report, index) => {
-        //     report.TEXT_IMAGES = arregloDeTextosPorActividades[index];
-        // });
 
         // Actualiza el valor del arreglo de IMAGES para todas las actividades
          values.REPORT_LIST_IMAGES.forEach((report, index) => {
              report.TEXT_IMAGES = arregloDeTextosPorActividades[index];
          });
-        // Actualiza el valor del arreglo de IMAGES para todas las actividades
-        //  values.REPORT_LIST_IMAGES.forEach((report, index) => {
-        //      const actividadSeleccionada = selectedActivities[index];
-        //      report.TEXT_IMAGES = textoActividadesState.find((obj) => obj[actividadSeleccionada])
-        //        ? textoActividadesState.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
-        //        : '';
-        //  });
-  
-  
+
         const initialValues2 = {
             idreportemensual: 0,
             FOLIO: values.FOLIO,
@@ -222,30 +224,31 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         
         console.log(initialValues2);
 
-            // fetch(`${api}/generar/reporte/mensual`, {
-            //     method: 'POST',
-            //     headers: {
-            //       "Content-Type": "application/json",
-            //       "Access-Control-Allow-Origin": "*",
-            //     },
-            //     body: JSON.stringify(initialValues2),
-            //   })
-            //     .then((response) => response.text())
-            //     .then((responseData) => {
-            //         console.log(responseData);
-            //         console.log("Se subio reporte mensual");
-            //         resetForm();
-            //         setSelectedActivities([]);
-            //         setImagesForActivities([]);
-            //         setArregloDeTextosPorActividades([]);
-            //         setModalNuevoReporteMensual(false);
-            //         setVentanaCarga(false);            
-            //     })
-            //     .catch((error) => {
-            //       console.log(error);
-            //     });
+        // fetch(`${api}/generar/reporte/mensual`, {
+        //     method: 'POST',
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       "Access-Control-Allow-Origin": "*",
+        //     },
+        //     body: JSON.stringify(initialValues2),
+        //   })
+        //     .then((response) => response.text())
+        //     .then((responseData) => {
+        //         console.log(responseData);
+        //         console.log("Se subio reporte mensual");
+        //         resetForm();
+        //         setSelectedActivities([]);
+        //         setImagesForActivities([]);
+        //         setArregloDeTextosPorActividades([]);
+        //         setModalNuevoReporteMensual(false);
+        //         setVentanaCarga(false);            
+        //     })
+        //     .catch((error) => {
+        //       console.log(error);
+        //     });
     }  
 
+    console.log(selectedActivities[selectedActivityIndex])
     useEffect(() => {
         // Cuando cambia setSelectedActivities, mostramos la notificación durante 5 segundos.
         setShowNotification(true);
@@ -353,15 +356,16 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                         as={Calendar}
                                         name="FECHA"
-                                        value={parseDate(values.FECHA)}
+                                        value={(values.FECHA)}
                                         dateFormat="dd/MM/yy"
                                         locale='es'
+                                        required
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                     </span>
                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                        Fecha  
+                                        * Fecha  
                                     </label>
                                 </span>
                             </div>
@@ -371,15 +375,16 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                         as={Calendar}
                                         name="FIRSTDATE"
-                                        value={parseDate(values.FIRSTDATE)}
+                                        value={(values.FIRSTDATE)}
                                         dateFormat="dd/MM/yy"
                                         locale='es'
+                                        required
                                     />  
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                     </span>
                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                        Periodo (Fecha Inicial)
+                                        * Periodo (Fecha Inicial)
                                     </label>
                                 </span>
                             </div>
@@ -389,15 +394,16 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                         as={Calendar}
                                         name="LASTDATE"
-                                        value={parseDate(values.LASTDATE)}
+                                        value={(values.LASTDATE)}
                                         dateFormat="dd/MM/yy"
                                         locale='es'
+                                        required
                                     /> 
                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                     </span>
                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                        Periodo (Fecha final)
+                                        * Periodo (Fecha final)
                                     </label>
                                 </span>
                             </div>
@@ -463,7 +469,9 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         values.REPORT_LIST_IMAGES.map((report, index) => (
                                             <>
                                             <div key={index}>
-                                            <p className='text-center font-bold text-xl'>{selectedActivities[index]?.replace(/_/g, ' ')}</p>
+                                            {/* <p className='text-center font-bold text-xl'>
+                                              {selectedActivities[index] ? selectedActivities[index].replace(/_/g, ' ') : ''}
+                                            </p> */}
                                             <button
                                                 className='hover:shadow-slate-600 border h-10 px-4 bg-[#BE1622] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-[#d52935] text-left ml-auto flex items-center'
                                                 type="button"
@@ -471,8 +479,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                             >
                                                 <ion-icon name="trash"></ion-icon>
                                             </button>
-                                            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
-                                                
+                                            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6">     
                                                 <div className="p-inputgroup mb-5">
                                                     <span className='p-float-label relative'>
                                                             <Field
@@ -506,6 +513,41 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                         </label>
                                                     </span>
                                                 </div>
+                                                {
+                                                    selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' &&
+                                                    <div className="p-inputgroup mb-5">
+                                                        <span className='p-float-label relative'>
+                                                                <Field
+                                                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                                                    as={InputText}
+                                                                    name={`REPORT_LIST_IMAGES.${index}.ACTIVITY`}
+                                                                    onChange={(e) => {
+                                                                        console.log(e.target.value)
+                                                                        // const selectedIndex = opcionesActividades.findIndex(
+                                                                        //     (opcion) => opcion.value === e.value.value
+                                                                        //   );
+
+                                                                        // setIndexActividadDelSelect(selectedIndex);    
+                                                                        // setSelectedActivityIndex(index);
+                                                                        // setSelectedActivities(report);
+                                                                         setSelectedActivitiesInputText((prevActivities) => {
+                                                                         const newActivities = [...prevActivities];
+                                                                         newActivities[index] = e.target.value;
+                                                                         return newActivities;
+                                                                        });
+                                                                    }}
+                                                                    value={selectedActivitiesInputText[index]}
+                                                                />
+                                                            <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                                              <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                                            </span>
+                                                            <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                                                Actividad
+                                                            </label>
+                                                        </span>
+                                                    </div>
+                                                }
+                                                
                                                 {/* {
                                                     selectedActivities[0] != undefined && */}
                                                     <div className="p-inputgroup mb-5 cursor-pointer flex gap-3 justify-center">
