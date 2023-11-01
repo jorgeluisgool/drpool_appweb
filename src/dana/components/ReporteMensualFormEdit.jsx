@@ -25,16 +25,16 @@ addLocale('es', {
     clear: 'Limpiar'
   });
 
-const opcionesActividades = [
-    { label: 'Limpieza de trampas de pelo', value: 'LIMPIEZA_DE_TRAMPAS' },
-    { label: 'Retiro de sólidos suspendidos', value: 'RETIRO_DE_SOLIDOS' },
-    { label: 'Retrolavado de filtro', value: 'RETROLAVADO' },
-    { label: 'Cepillado de paredes y piso', value: 'CEPILLADO_DE_PAREDES' },
+  const opcionesActividades = [
+    { label: 'Limpieza de trampas de pelo', value: 'LIMPIEZA_DE_TRAMPAS_DE_PELO' },
+    { label: 'Retiro de sólidos suspendidos', value: 'RETIRO_DE_SÓLIDOS_SUSPENDIDOS' },
+    { label: 'Retrolavado de filtro', value: 'RETROLAVADO_DE_FILTRO' },
+    { label: 'Cepillado de paredes y piso', value: 'CEPILLADO_DE_PAREDES_Y_PISO' },
     { label: 'Aspirado', value: 'ASPIRADO' },
     { label: 'Limpieza de cenefa', value: 'LIMPIEZA_DE_CENEFA' },
-    { label: 'Limpieza de la rejilla perimetral', value: 'LIMPIEZA_DE_REJILLA' },
+    { label: 'Limpieza de la rejilla perimetral', value: 'LIMPIEZA_DE_LA_REJILLA_PERIMETRAL' },
     { label: 'Limpieza de área perimetral', value: 'LIMPIEZA_DE_AREA_PERIMETRAL' },
-    { label: 'Otro', value: 'OTRO' },
+    { label: 'Otra actividad', value: 'OTRA_ACTIVIDAD' },
 ];
 
 const opcionesTipoAlberca = [
@@ -61,6 +61,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [selectedImages, setSelectedImages] = useState([]);
     const [imagesForActivities, setImagesForActivities] = useState([]);
+    const [selectedActivitiesInputText, setSelectedActivitiesInputText] = useState([]);
 
     const [selectedActivities, setSelectedActivities] = useState([]);
     const [selectedActivityIndex, setSelectedActivityIndex] = useState(null);
@@ -543,8 +544,9 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                      return newActivities;
                                                                     });
                                                                 }}
-                                                                value={selectedActivities[index] || (selectedActivities[index] =  values.REPORT_LIST_IMAGES[index].ACTIVITY)}
+                                                                value={selectedActivities[index] || (selectedActivities[index] =  values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_'))}
                                                             />
+                                                            {console.log(values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_'))}
                                                             
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -554,6 +556,40 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                         </label>
                                                     </span>
                                                 </div>
+                                                {
+                                                    selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' &&
+                                                    <div className="p-inputgroup mb-5">
+                                                        <span className='p-float-label relative'>
+                                                                <Field
+                                                                    className="w-full appearance-none focus:outline-none bg-transparent"
+                                                                    as={InputText}
+                                                                    name={`REPORT_LIST_IMAGES.${index}.ACTIVITY`}
+                                                                    onChange={(e) => {
+                                                                        console.log(e.target.value)
+                                                                        // const selectedIndex = opcionesActividades.findIndex(
+                                                                        //     (opcion) => opcion.value === e.value.value
+                                                                        //   );
+
+                                                                        // setIndexActividadDelSelect(selectedIndex);    
+                                                                        // setSelectedActivityIndex(index);
+                                                                        // setSelectedActivities(report);
+                                                                         setSelectedActivitiesInputText((prevActivities) => {
+                                                                         const newActivities = [...prevActivities];
+                                                                         newActivities[index] = e.target.value;
+                                                                         return newActivities;
+                                                                        });
+                                                                    }}
+                                                                    value={selectedActivitiesInputText[index]}
+                                                                />
+                                                            <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                                                              <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
+                                                            </span>
+                                                            <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                                                                Actividad
+                                                            </label>
+                                                        </span>
+                                                    </div>
+                                                }
                                                 {/* {
                                                     selectedActivities[0] != undefined && */}
                                                     <div className="p-inputgroup mb-5 cursor-pointer flex gap-3 justify-center">
