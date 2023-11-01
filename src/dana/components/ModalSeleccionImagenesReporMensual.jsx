@@ -63,7 +63,7 @@ const ModalSeleccionImagenesReporMensual = ({modalSeleccionImagenes, setModalSel
  */
 
   return (
-    <Dialog header={`IMAGENES: ${selectedActivities[selectedActivityIndex]?.replace(/_/g, ' ')}`} visible={modalSeleccionImagenes}  baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalSeleccionImagenes(false)} className='pt-20'>
+    <Dialog header={`IMÁGENES: ${selectedActivities[selectedActivityIndex]?.replace(/_/g, ' ')}`} visible={modalSeleccionImagenes}  baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => setModalSeleccionImagenes(false)} className='pt-20'>
       <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4'>
       {
         imagenesActivdades.map((imagen) => {

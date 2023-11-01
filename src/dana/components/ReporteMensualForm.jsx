@@ -77,8 +77,8 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     const [showNotification, setShowNotification] = useState(false);
 
     // Fusiona los dos arreglos en uno solo
-    console.log(selectedActivities);
-    console.log(selectedActivitiesInputText);
+    // console.log(selectedActivities);
+    // console.log(selectedActivitiesInputText);
     const combinedActivities = [...selectedActivities, ...selectedActivitiesInputText];
     const combinedActivitiesFilter = combinedActivities.filter((actividad) => actividad !== undefined  && actividad !== 'OTRA_ACTIVIDAD')
     // ESTE FRAGMENTO DE CODIGO GENERA EL FOLIO DEACUERDO A LA FECHA Y LA ABREVIATURA RFM
@@ -148,8 +148,8 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
     // FUNCION PARA ENVIAR EL FORMULARIO  
     const onSubmit = (values, { resetForm }) => {
 
-        console.log(selectedActivities[selectedActivityIndex])
-        // setVentanaCarga(true);
+        // console.log(selectedActivities[selectedActivityIndex])
+        setVentanaCarga(true);
         setSelectedImages([]); 
         
         if(typeof values.FECHA !== "string"){
@@ -224,31 +224,31 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         
         console.log(initialValues2);
 
-        // fetch(`${api}/generar/reporte/mensual`, {
-        //     method: 'POST',
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       "Access-Control-Allow-Origin": "*",
-        //     },
-        //     body: JSON.stringify(initialValues2),
-        //   })
-        //     .then((response) => response.text())
-        //     .then((responseData) => {
-        //         console.log(responseData);
-        //         console.log("Se subio reporte mensual");
-        //         resetForm();
-        //         setSelectedActivities([]);
-        //         setImagesForActivities([]);
-        //         setArregloDeTextosPorActividades([]);
-        //         setModalNuevoReporteMensual(false);
-        //         setVentanaCarga(false);            
-        //     })
-        //     .catch((error) => {
-        //       console.log(error);
-        //     });
+        fetch(`${api}/generar/reporte/mensual`, {
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+            body: JSON.stringify(initialValues2),
+          })
+            .then((response) => response.text())
+            .then((responseData) => {
+                console.log(responseData);
+                console.log("Se subio reporte mensual");
+                resetForm();
+                setSelectedActivities([]);
+                setImagesForActivities([]);
+                setArregloDeTextosPorActividades([]);
+                setModalNuevoReporteMensual(false);
+                setVentanaCarga(false);            
+            })
+            .catch((error) => {
+              console.log(error);
+            });
     }  
 
-    console.log(selectedActivities[selectedActivityIndex])
+    // console.log(selectedActivities[selectedActivityIndex])
     useEffect(() => {
         // Cuando cambia setSelectedActivities, mostramos la notificación durante 5 segundos.
         setShowNotification(true);
@@ -264,7 +264,6 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
         };
       }, [selectedActivities]);
     
-
   return (
         <>
         <ModalSeleccionImagenesReporMensual
@@ -419,7 +418,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                     </span>
                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                      Alcaldia
+                                      Alcaldía
                                     </label>
                                 </span>
                             </div>
@@ -436,7 +435,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                     </span>
                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                        Tipo de Alberca
+                                        Tipo de alberca
                                     </label>
                                 </span>
                             </div>
@@ -453,7 +452,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                     </span>
                                     <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                        Caracteristica de la Alberca
+                                        Característica de la alberca
                                     </label>
                                 </span>
                             </div>
@@ -469,9 +468,9 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                         values.REPORT_LIST_IMAGES.map((report, index) => (
                                             <>
                                             <div key={index}>
-                                            {/* <p className='text-center font-bold text-xl'>
+                                            <p className='text-center font-bold text-xl'>
                                               {selectedActivities[index] ? selectedActivities[index].replace(/_/g, ' ') : ''}
-                                            </p> */}
+                                            </p>
                                             <button
                                                 className='hover:shadow-slate-600 border h-10 px-4 bg-[#BE1622] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-[#d52935] text-left ml-auto flex items-center'
                                                 type="button"
@@ -559,7 +558,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                             }}
                                                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                                                         >
-                                                            <ion-icon name="images-outline"></ion-icon> Imagenes
+                                                            <ion-icon name="images-outline"></ion-icon> Imágenes
                                                         </button>
                                                     </div>
                                                 {/* }       */}
@@ -609,7 +608,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                         </span>
                                                         <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                                            Texto de imagenes
+                                                            Texto de imágenes
                                                         </label>
                                                     </span>
                                                 </div>
@@ -685,7 +684,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                         </span>
                                         <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                            Realizo (Cordinador) 
+                                            Realizó (Cordinador) 
                                         </label>
                                     </span>
                                 </div>
@@ -701,7 +700,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                         </span>
                                         <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                            Reviso (Administrador de la sede)
+                                            Revisó (Administrador de la sede)
                                         </label>
                                     </span>
                                 </div>

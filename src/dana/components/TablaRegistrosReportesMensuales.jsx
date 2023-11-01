@@ -39,7 +39,7 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
     const currentRows = reportesFiltradosPorAlberca?.slice(indexOfFirstRow, indexOfLastRow) || [];
 
     console.log(currentRows)
-    // const currentRows2 = currentRows?.filter((registroRows) => (registroRows.FOLIO.toLowerCase().includes(searchRFM.toLowerCase()) || registroRows.FECHA.toLowerCase().includes(searchRFM.toLowerCase())));
+    const currentRows2 = currentRows?.filter((registroRows) => (registroRows.FOLIO?.toLowerCase().includes(searchRFM.toLowerCase()) || registroRows.FECHA?.toLowerCase().includes(searchRFM.toLowerCase())));
       
     // Función para cambiar de página
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -77,7 +77,7 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200" >
-            {currentRows.map((reporte, index) => (
+            {currentRows2.map((reporte, index) => (
               <tr 
                 key={index} 
                 className='cursor-pointer hover:bg-[#E2E2E2]'
