@@ -275,7 +275,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         
         console.log(initialValues2);
 
-          /*  fetch(`${api}/generar/reporte/mensual`, {
+          fetch(`${api}/generar/reporte/mensual`, {
                 method: 'POST',
                 headers: {
                   "Content-Type": "application/json",
@@ -293,7 +293,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                 })
                 .catch((error) => {
                   console.log(error);
-                }); */
+                }); 
     }  
 
     useEffect(() => {
@@ -659,12 +659,8 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                             //     // Luego, actualiza textoActividades si es necesario
                                                             //     setTextoActividadesState(updatedTextoActividades);
                                                             // }}
-
-                                                          
-                                                            
-
-
-                                                            value={arregloDeTextosPorActividades[index] || (arregloDeTextosPorActividades[index] =values.REPORT_LIST_IMAGES[index].TEXT_IMAGES)} 
+                                                            value={arregloDeTextosPorActividades[index] !== undefined ? arregloDeTextosPorActividades[index] : (arregloDeTextosPorActividades[index] === "" ? "" : arregloDeTextosPorActividades[index] = values.REPORT_LIST_IMAGES[index].TEXT_IMAGES)}
+                                                            //value={arregloDeTextosPorActividades[index] || (arregloDeTextosPorActividades[index] =values.REPORT_LIST_IMAGES[index].TEXT_IMAGES)} 
                                                             // value={
                                                             //     textoActividadesState.find((obj) => obj[actividadSeleccionada])
                                                             //       ? textoActividadesState.find((obj) => obj[actividadSeleccionada])[actividadSeleccionada]
