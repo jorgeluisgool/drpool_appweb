@@ -327,7 +327,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
             setImagesForActivities={setImagesForActivities}
         />
 
-        <Dialog header='Reporte Fotográfico Mensual' visible={modalReporteMensualEdit} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => { setSelectedActivities([]); setImagesForActivities([]); setArregloDeTextosPorActividades([]);setModalReporteMensualEdit(false)}} className='pt-20'>
+        <Dialog header='Reporte Fotográfico Mensual' visible={modalReporteMensualEdit} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => { setSelectedActivities([]); setImagesForActivities([]); setArregloDeTextosPorActividades([]); setSelectedActivitiesInputText([]); setDisabledEditFormRFM(true); setModalReporteMensualEdit(false)}} className='pt-20'>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6'>
             <div className="p-inputgroup mb-5 mt-5">
                 <span className='p-float-label relative'>
@@ -576,6 +576,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                                                     as={InputText}
                                                                     name={`REPORT_LIST_IMAGES.${index}.ACTIVITY`}
+                                                                    disabled={disabledEditFormRFM}
                                                                     onChange={(e) => {
                                                                         console.log(e.target.value)
                                                                         // const selectedIndex = opcionesActividades.findIndex(
