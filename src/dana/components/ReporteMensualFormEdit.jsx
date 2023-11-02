@@ -183,7 +183,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
     // FUNCION PARA ENVIAR EL FORMULARIO  
     const onSubmit = (values, { resetForm }) => {
 
-        setVentanaCarga(true);
+        //setVentanaCarga(true);
         setSelectedImages([]); 
         
         if(typeof values.FECHA !== "string"){
@@ -220,9 +220,9 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         // });
         
         // // Actualiza el valor del arreglo de IMAGES para todas las actividades
-        // values.REPORT_LIST_IMAGES.forEach((report, index) => {
-        //     report.IMAGES = imagesForActivities[index];
-        // });
+         values.REPORT_LIST_IMAGES.forEach((report, index) => {
+             report.IMAGES = imagesForActivities[index];
+         });
 
         // Actualiza el valor del arreglo de IMAGES para todas las actividades
         // values.REPORT_LIST_IMAGES.forEach((report, index) => {
@@ -275,7 +275,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         
         console.log(initialValues2);
 
-           fetch(`${api}/generar/reporte/mensual`, {
+          /*  fetch(`${api}/generar/reporte/mensual`, {
                 method: 'POST',
                 headers: {
                   "Content-Type": "application/json",
@@ -293,7 +293,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                 })
                 .catch((error) => {
                   console.log(error);
-                });
+                }); */
     }  
 
     useEffect(() => {
@@ -560,8 +560,6 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                 }}
                                                                 value={selectedActivities[index] || ( (opcionesActividades.map(opcion => opcion.value).indexOf(values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_')) !== -1) ? (selectedActivities[index] =  values.REPORT_LIST_IMAGES[index].ACTIVITY.replace(/ /g, '_')) : (selectedActivities[index] = "OTRA_ACTIVIDAD"))}
                                                             />
-                                                            {console.log(values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_'))}
-                                                            
                                                         <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                           <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                         </span>
