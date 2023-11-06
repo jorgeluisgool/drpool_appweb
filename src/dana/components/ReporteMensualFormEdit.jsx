@@ -183,7 +183,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
     // FUNCION PARA ENVIAR EL FORMULARIO  
     const onSubmit = (values, { resetForm }) => {
 
-        //setVentanaCarga(true);
+        setVentanaCarga(true);
         setSelectedImages([]); 
         
         if(typeof values.FECHA !== "string"){
@@ -275,7 +275,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         
         console.log(initialValues2);
 
-         /* fetch(`${api}/generar/reporte/mensual`, {
+         fetch(`${api}/generar/reporte/mensual`, {
                 method: 'POST',
                 headers: {
                   "Content-Type": "application/json",
@@ -293,7 +293,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                 })
                 .catch((error) => {
                   console.log(error);
-                });  */
+                }); 
     }  
 
     useEffect(() => {
