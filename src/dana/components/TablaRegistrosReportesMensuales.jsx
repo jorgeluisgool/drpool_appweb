@@ -5,7 +5,7 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
 
   
 
-    const reportesFiltradosPorAlberca = reportesMensuales.filter((reporte) => (
+    const reportesFiltradosPorAlberca = reportesMensuales?.filter((reporte) => (
         reporte.ALBERCA.nombrealberca === albercaSeleccionada.nombrealberca
     )).reverse();
 

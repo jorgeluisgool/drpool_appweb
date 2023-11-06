@@ -183,7 +183,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
     // FUNCION PARA ENVIAR EL FORMULARIO  
     const onSubmit = (values, { resetForm }) => {
 
-        setVentanaCarga(true);
+        //setVentanaCarga(true);
         setSelectedImages([]); 
         
         if(typeof values.FECHA !== "string"){
@@ -275,7 +275,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         
         console.log(initialValues2);
 
-         fetch(`${api}/generar/reporte/mensual`, {
+         /* fetch(`${api}/generar/reporte/mensual`, {
                 method: 'POST',
                 headers: {
                   "Content-Type": "application/json",
@@ -293,7 +293,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                 })
                 .catch((error) => {
                   console.log(error);
-                }); 
+                });  */
     }  
 
     useEffect(() => {
@@ -586,7 +586,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                     </span>
                                                 </div>
                                                 {
-                                                   ( selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' || ((opcionesActividades.map(opcion => opcion.value).indexOf(values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_')) === -1)  && (selectedActivityIndex[index] !== undefined || selectedActivities[index] === "OTRA_ACTIVIDAD"))) &&
+                                                   ( selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' || ((opcionesActividades.map(opcion => opcion.value).indexOf(values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_')) === -1)  && (selectedActivities[index] !== undefined || selectedActivities[index] === "OTRA_ACTIVIDAD"))) &&
                                                     <div className="p-inputgroup mb-5">
                                                         <span className='p-float-label relative'>
                                                                 <Field
