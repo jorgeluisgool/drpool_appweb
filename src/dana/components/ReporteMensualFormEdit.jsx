@@ -527,7 +527,24 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                             <button
                                                 className='hover:shadow-slate-600 border h-10 px-4 bg-[#BE1622] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-[#d52935] text-left ml-auto flex items-center'
                                                 type="button"
-                                                onClick={() => remove(index)}
+                                                onClick={() => {
+                                                    remove(index);
+                                                   setSelectedActivities(prevSelectedActivities => {
+                                                        const updatedSelectedActivities = [...prevSelectedActivities];
+                                                        updatedSelectedActivities.splice(index, 1);
+                                                        return updatedSelectedActivities;
+                                                    });
+                                                    setSelectedImages(prevSelectedImages => {
+                                                        const updatedSelectedImages = [...prevSelectedImages];
+                                                        updatedSelectedImages.splice(index, 1);
+                                                        return updatedSelectedImages;
+                                                    });
+                                                    setArregloDeTextosPorActividades(prevArregloDeTextos => {
+                                                        const updatedArregloDeTextos = [...prevArregloDeTextos];
+                                                        updatedArregloDeTextos.splice(index, 1);
+                                                        return updatedArregloDeTextos;
+                                                    });
+                                                  }}
                                             >
                                                 <ion-icon name="trash"></ion-icon>
                                             </button>
@@ -569,7 +586,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                     </span>
                                                 </div>
                                                 {
-                                                   ( selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' || (opcionesActividades.map(opcion => opcion.value).indexOf(values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_')) === -1)) &&
+                                                   ( selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' || ((opcionesActividades.map(opcion => opcion.value).indexOf(values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_')) === -1)  && (selectedActivityIndex[index] !== undefined || selectedActivities[index] === "OTRA_ACTIVIDAD"))) &&
                                                     <div className="p-inputgroup mb-5">
                                                         <span className='p-float-label relative'>
                                                                 <Field
