@@ -267,7 +267,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                         ACTIVITY: values.REPORT_LIST_IMAGES[index].ACTIVITY.replace(/_/g, ' ')
                     },
                     {
-                        IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES === undefined ? listIMG[index] : values.REPORT_LIST_IMAGES[index].IMAGES
+                        IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES === undefined ? listIMG[index] || [] : values.REPORT_LIST_IMAGES[index].IMAGES || []
                     },
                     {
                         TEXT_IMAGES: values.REPORT_LIST_IMAGES[index].TEXT_IMAGES
