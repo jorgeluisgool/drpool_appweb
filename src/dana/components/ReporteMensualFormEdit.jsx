@@ -294,6 +294,12 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                 .catch((error) => {
                   console.log(error);
                 }); 
+        
+                setSelectedActivities([]); 
+                setImagesForActivities([]); 
+                setArregloDeTextosPorActividades([]); 
+                setSelectedActivitiesInputText([]);
+                setSelectedActivityIndex([]);
     }  
 
     useEffect(() => {
@@ -309,7 +315,24 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
           // Limpiamos el temporizador si el componente se desmonta o setSelectedActivities cambia nuevamente.
           clearTimeout(notificationTimeout);
         };
-      }, [selectedActivities]);  
+      }, [selectedActivities]);
+
+      useEffect(() => {
+        setSelectedActivities([]);
+        setImagesForActivities([]); 
+        setArregloDeTextosPorActividades([]); 
+        setDisabledEditFormRFM(true);
+        initialValues:[];
+      }, [modalReporteMensualEdit]);
+
+        /* const handle_states = () =>{
+            setSelectedActivities([]);
+            setImagesForActivities([]); 
+            setArregloDeTextosPorActividades([]); 
+            setDisabledEditFormRFM(true);
+            initialValues:[];
+            setModalReporteMensualEdit(false);
+      } */
 
   return (
         <>
@@ -327,7 +350,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
             setImagesForActivities={setImagesForActivities}
         />
 
-        <Dialog header='Reporte Fotográfico Mensual' visible={modalReporteMensualEdit} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => { setSelectedActivities([]); setImagesForActivities([]); setArregloDeTextosPorActividades([]); setSelectedActivitiesInputText([]); setDisabledEditFormRFM(true); setModalReporteMensualEdit(false)}} className='pt-20'>
+        <Dialog header='Reporte Fotográfico Mensual' visible={modalReporteMensualEdit} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => {setModalReporteMensualEdit(false)}} className='pt-20'>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6'>
             <div className="p-inputgroup mb-5 mt-5">
                 <span className='p-float-label relative'>
