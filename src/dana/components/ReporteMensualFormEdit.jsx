@@ -80,7 +80,9 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
     const [showNotification, setShowNotification] = useState(false);
 
     const combinedActivities = [...selectedActivities, ...selectedActivitiesInputText];
+    console.log(combinedActivities);
     const combinedActivitiesFilter = combinedActivities.filter((actividad) => actividad !== undefined  && actividad !== 'OTRA_ACTIVIDAD');
+    console.log(combinedActivitiesFilter);
     const listIMG = [];
     // Inicializa un arreglo vacío para almacenar los valores de REPORT_LIST_IMAGES 
     const reportListImages = [];
@@ -201,16 +203,20 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
             values.LASTDATE = formattedDate;
         }
 
+        var cont = 0; 
+
         {
           selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' ? 
           // Actualiza el valor de ACTIVITY para todas las actividades
           values.REPORT_LIST_IMAGES.forEach((report, index) => {
-              report.ACTIVITY = combinedActivitiesFilter[index]
+            combinedActivities[index] === "OTRA_ACTIVIDAD" ? combinedActivities[index] = selectedActivitiesInputText[selectedActivityIndex] :  combinedActivities[index];
+              report.ACTIVITY = combinedActivities[index]
           })
           :
           // Actualiza el valor de ACTIVITY para todas las actividades
           values.REPORT_LIST_IMAGES.forEach((report, index) => {
-              report.ACTIVITY = combinedActivitiesFilter[index]
+              report.ACTIVITY = selectedActivities[index]
+
           })
         }
 
