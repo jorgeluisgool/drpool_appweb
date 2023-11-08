@@ -21,7 +21,7 @@ export const TablaRegistrosReportesMensuales = ({reportesMensuales, albercaSelec
 
       const handleRowClick = (event, reporte) =>{
         setRfm(reporte);
-        console.log("Clicked on reporte:", JSON.stringify(reporte, null, 2));
+        //console.log("Clicked on reporte:", JSON.stringify(reporte, null, 2));
        
       }
 

@@ -80,7 +80,6 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
     const [showNotification, setShowNotification] = useState(false);
 
     const combinedActivities = [...selectedActivities, ...selectedActivitiesInputText];
-    console.log(combinedActivities);
     const combinedActivitiesFilter = combinedActivities.filter((actividad) => actividad !== undefined  && actividad !== 'OTRA_ACTIVIDAD');
     console.log(combinedActivitiesFilter);
     const listIMG = [];
@@ -115,7 +114,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         reportListImages.push(reportEntry);
       });
 
-      console.log(listIMG);
+      //console.log(listIMG);
       //setImagesForActivities(listIMG);
     }
 
@@ -203,19 +202,28 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
             values.LASTDATE = formattedDate;
         }
 
-        var cont = 0; 
 
-        {
+        /* {
           selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' ? 
           // Actualiza el valor de ACTIVITY para todas las actividades
           values.REPORT_LIST_IMAGES.forEach((report, index) => {
-            combinedActivities[index] === "OTRA_ACTIVIDAD" ? combinedActivities[index] = selectedActivitiesInputText[selectedActivityIndex] :  combinedActivities[index];
-              report.ACTIVITY = combinedActivities[index]
+            
+            combinedActivities[index] === "OTRA_ACTIVIDAD" ? combinedActivities[index] = selectedActivitiesInputText[index] :  combinedActivities[index];
+              report.ACTIVITY = combinedActivities[index];
           })
           :
           // Actualiza el valor de ACTIVITY para todas las actividades
           values.REPORT_LIST_IMAGES.forEach((report, index) => {
-              report.ACTIVITY = selectedActivities[index]
+            combinedActivities[index] === "OTRA_ACTIVIDAD" ? combinedActivities[index] = selectedActivitiesInputText[index] :  combinedActivities[index];
+            report.ACTIVITY = combinedActivities[index];
+
+          })
+        } */
+
+        {
+          values.REPORT_LIST_IMAGES.forEach((report, index) => {
+            combinedActivities[index] === "OTRA_ACTIVIDAD" ? combinedActivities[index] = selectedActivitiesInputText[index] :  combinedActivities[index];
+            report.ACTIVITY = combinedActivities[index];
 
           })
         }
@@ -281,7 +289,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         
         console.log(initialValues2);
 
-         fetch(`${api}/generar/reporte/mensual`, {
+        fetch(`${api}/generar/reporte/mensual`, {
                 method: 'POST',
                 headers: {
                   "Content-Type": "application/json",
@@ -327,6 +335,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         setSelectedActivities([]);
         setImagesForActivities([]); 
         setArregloDeTextosPorActividades([]); 
+        setSelectedActivitiesInputText([]);
         setDisabledEditFormRFM(true);
         initialValues:[];
       }, [modalReporteMensualEdit]);
@@ -615,7 +624,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                     </span>
                                                 </div>
                                                 {
-                                                   ( selectedActivities[selectedActivityIndex] === 'OTRA_ACTIVIDAD' || ((opcionesActividades.map(opcion => opcion.value).indexOf(values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_')) === -1)  && (selectedActivities[index] === "OTRA_ACTIVIDAD"))) &&
+                                                   ( selectedActivities[index] === 'OTRA_ACTIVIDAD' || ((opcionesActividades.map(opcion => opcion.value).indexOf(values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/ /g, '_')) === -1) && (selectedActivities[index] === "OTRA_ACTIVIDAD"))) &&
                                                     <div className="p-inputgroup mb-5">
                                                         <span className='p-float-label relative'>
                                                                 <Field
@@ -642,7 +651,6 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                                 value={selectedActivitiesInputText[index] !== undefined ? selectedActivitiesInputText[index] : (selectedActivities[index] === "" ? "" : (selectedActivitiesInputText[index] = values.REPORT_LIST_IMAGES[index].ACTIVITY))}
 
                                                                 />
-                                                                {console.log(selectedActivitiesInputText[index])}
                                                             <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                               <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                             </span>
@@ -750,7 +758,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                           onClick={() => {
                                             // Define la nueva actividad con sus propiedades
                                             const newActivity = {
-                                              ACTIVITY: "",
+                                              ACTIVITY: "LIMPIEZA_DE_TRAMPAS_DE_PELO",
                                               IMAGES: [],
                                               TEXT_IMAGES: "",
                                               OBSERVACIONES: "",
