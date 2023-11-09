@@ -81,7 +81,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
 
     const combinedActivities = [...selectedActivities, ...selectedActivitiesInputText];
     const combinedActivitiesFilter = combinedActivities.filter((actividad) => actividad !== undefined  && actividad !== 'OTRA_ACTIVIDAD');
-    console.log(combinedActivitiesFilter);
+    //console.log(combinedActivitiesFilter);
     const listIMG = [];
     // Inicializa un arreglo vacío para almacenar los valores de REPORT_LIST_IMAGES 
     const reportListImages = [];
@@ -112,6 +112,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         }
         // Agrega el objeto al arreglo reportListImages
         reportListImages.push(reportEntry);
+        
       });
 
       //console.log(listIMG);
@@ -181,10 +182,23 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         }  
       };
 
+    const llenarImagesForActivities = () =>{
+      if(imagesForActivities.length == 0 || imagesForActivities.some(item => item === undefined)){
+        let cont = 0;
+
+      listIMG.forEach((list) =>{
+        if(imagesForActivities[cont] === undefined){
+          imagesForActivities[cont] = list;
+        }
+        cont++;
+      })
+      }
+    }
+
     // FUNCION PARA ENVIAR EL FORMULARIO  
     const onSubmit = (values, { resetForm }) => {
 
-        setVentanaCarga(true);
+        //setVentanaCarga(true);
         setSelectedImages([]); 
         
         if(typeof values.FECHA !== "string"){
@@ -289,7 +303,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         
         console.log(initialValues2);
 
-        fetch(`${api}/generar/reporte/mensual`, {
+        /* fetch(`${api}/generar/reporte/mensual`, {
                 method: 'POST',
                 headers: {
                   "Content-Type": "application/json",
@@ -307,7 +321,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                 })
                 .catch((error) => {
                   console.log(error);
-                }); 
+                });  */
         
                 setSelectedActivities([]); 
                 setImagesForActivities([]); 
@@ -582,6 +596,18 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                         updatedArregloDeTextos.splice(index, 1);
                                                         return updatedArregloDeTextos;
                                                     });
+                                                    setImagesForActivities(prevArregloDeImagenes => {
+                                                      const updatedArregloDeTextos = [...prevArregloDeImagenes];
+                                                      updatedArregloDeTextos.splice(index, 1);
+                                                      return updatedArregloDeTextos;
+                                                  });
+                                                  console.log("Antes de splice:", listIMG);
+                                                  listIMG.splice(index, 1);
+                                                  console.log("Después de splice:", listIMG);
+
+                                                  llenarImagesForActivities();
+
+
                                                   }}
                                             >
                                                 <ion-icon name="trash"></ion-icon>
@@ -757,27 +783,36 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                           disabled={disabledEditFormRFM}
                                           onClick={() => {
                                             // Define la nueva actividad con sus propiedades
+
+                                            llenarImagesForActivities();
+
+
                                             const newActivity = {
                                               ACTIVITY: "LIMPIEZA_DE_TRAMPAS_DE_PELO",
                                               IMAGES: [],
                                               TEXT_IMAGES: "",
                                               OBSERVACIONES: "",
                                             };
+
                                         
                                             // Asegúrate de que imagesForActivities sea un arreglo
-                                            if (!Array.isArray(imagesForActivities)) {
+                                            /* if (!Array.isArray(imagesForActivities)) {
                                               imagesForActivities = [];
-                                            }
+                                            } */
+
+                                            
                                         
                                             // Añade un nuevo subarreglo vacío para esta actividad
                                             imagesForActivities.push([]);
+
+                                            
                                         
                                             // Agrega la nueva actividad al arreglo de actividades
                                             push(newActivity);
                                         
                                             // Actualiza selectedActivityIndex al índice de la nueva actividad
                                             setSelectedActivityIndex(imagesForActivities.length - 1);
-
+                                            
                                             setSelectedImages([]);
                                           }}
                                         >
