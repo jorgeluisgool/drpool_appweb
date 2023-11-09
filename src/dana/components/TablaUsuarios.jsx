@@ -39,6 +39,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
     const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
     const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers(modalCrearEditarUsuario);
 
+    console.log(usuarioLogiado)
     // Función para convertir la fecha en formato válido de la fecha
     const parseDate = (dateString) => {
         if (typeof dateString === "string") {
@@ -564,21 +565,32 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                             </div>
                                             <div className="p-inputgroup mb-5 mt-8">
                                                 <span className='p-float-label relative'>
+                                                {usuarioLogiado[0].perfile.perfil === "COORDINADOR" ? (
+                                                    <Field
+                                                        className="w-full appearance-none focus:outline-none bg-transparent"
+                                                        as={Password}
+                                                        name="pass"
+                                                        value={values.pass}
+                                                        disabled={
+                                                            usuarioSeleccionado !== undefined &&
+                                                            editFields
+                                                        }
+                                                        required
+                                                    />
+                                                    ) : (
                                                     <Field
                                                         className="w-full appearance-none focus:outline-none bg-transparent"
                                                         as={Password}
                                                         name="pass"
                                                         value={values.pass}
                                                         toggleMask
-                                                        disabled = {
-                                                            usuarioSeleccionado != undefined &&
-                                                            editFields}
-                                                        // onChange={(e) => {
-                                                        //   handleChange(e);
-                                                        //   setNombreSede(e.target.value.toUpperCase());
-                                                        // }}
+                                                        disabled={
+                                                            usuarioSeleccionado !== undefined &&
+                                                            editFields
+                                                        }
                                                         required
-                                                    /> 
+                                                    />
+                                                    )}
                                                     <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                                                       <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                                                     </span>

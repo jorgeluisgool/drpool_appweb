@@ -16,7 +16,7 @@ import { VentanaCarga } from '../../ui/components/VentanaCarga';
     {label: 'REPORTE FOTOGRÁFICO MENSUAL', value: 'REPORTE FOTOGRÁFICO MENSUAL'},
   ]
 
-const RegistrosForm = ({setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, registrosDrPool, setRegistrosDrPool, tipoReporSeleccionado, setTipoReporSeleccionado, setSearchSede, albercaSeleccionada, setAlbercaSeleccionada, setSearchRFM}) => {
+const RegistrosForm = ({setModalNuevoReporteMensual, sedes, sedeSeleccionada, setSedeSeleccionada, albercas, setAlbercas, clienteSeleccionado, registrosDrPool, setRegistrosDrPool, tipoReporSeleccionado, setTipoReporSeleccionado, setSearchSede, albercaSeleccionada, setAlbercaSeleccionada, setSearchRFM, setVentanaCarga}) => {
 
   const [cargando, setCargando] = useState(false);
 
@@ -74,7 +74,8 @@ const RegistrosForm = ({setModalNuevoReporteMensual, sedes, sedeSeleccionada, se
                               filter
                               emptyFilterMessage='No se encontraron albercas'
                               value={albercaSeleccionada}
-                              onChange={(e)=>{   
+                              onChange={(e)=>{ 
+                                setVentanaCarga(true); 
                                 setAlbercaSeleccionada(e.target.value);
                                 fetch(`${api}/obtener/registrosalberca/${e.target.value.idalberca}`, {
                                   method: 'GET',
@@ -87,7 +88,8 @@ const RegistrosForm = ({setModalNuevoReporteMensual, sedes, sedeSeleccionada, se
                                   .then(responseData => {
                                     // console.log(responseData)
                                     // obtenemos los proyectos
-                                    setRegistrosDrPool(responseData)                     
+                                    setRegistrosDrPool(responseData);
+                                    setVentanaCarga(false);                     
                                   })
                                   .catch(error => console.log(error));
                               }}

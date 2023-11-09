@@ -281,6 +281,7 @@ export const RegistrosPage = () => {
           albercaSeleccionada={albercaSeleccionada}
           setAlbercaSeleccionada={setAlbercaSeleccionada}
           setSearchRFM={setSearchRFM}
+          setVentanaCarga={setVentanaCarga}
         />
     </div>
     {
