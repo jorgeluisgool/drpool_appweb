@@ -575,7 +575,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                             <>
                                            
                                             <div key={index}>
-                                            <p className='text-center font-bold text-xl'>{values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/_/g, ' ')}</p>
+                                            <p className='text-center font-bold text-xl'>{selectedActivities[index]?.replace(/_/g, ' ') || values.REPORT_LIST_IMAGES[index].ACTIVITY?.replace(/_/g, ' ')}</p>
                                             <button
                                                 className='hover:shadow-slate-600 border h-10 px-4 bg-[#BE1622] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-[#d52935] text-left ml-auto flex items-center'
                                                 type="button"
