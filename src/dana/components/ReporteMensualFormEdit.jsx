@@ -863,7 +863,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                 </div>
                             </div>  
                         </div>
-                        <div className="cursor-pointer absolute inset-x-0 bottom-4 right-40 flex gap-3 justify-end">
+                        <div className="cursor-pointer absolute inset-x-0 bottom-4 right-80 flex gap-3 justify-end">
                             <button
                                 type="button"
                                 className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 z-10"
@@ -874,12 +874,23 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                  <ion-icon name="create-outline"></ion-icon> {disabledEditFormRFM ? <span>Editar</span> : <span>No editar</span>}
                             </button>
                         </div>  
-                        <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
+                        <div className="cursor-pointer absolute inset-x-0 bottom-4 right-44 flex gap-3 justify-end">
                             <button
                                 type="submit"
                                 className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 z-10"
                             >
-                                Guardar
+                              <ion-icon name="save"></ion-icon>  Guardar
+                            </button>
+                        </div>
+                        <div className="cursor-pointer absolute inset-x-0 bottom-4 right-8 flex gap-3 justify-end">
+                            <button
+                                className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600 z-10"
+                                onClick={() => {
+                                  setModalReporteMensualEdit(false);
+                                }}
+                                type='button'
+                            >
+                                <ion-icon name="close-circle"></ion-icon> Cancelar
                             </button>
                         </div>    
                         <div className="cursor-pointer absolute inset-x-0 bottom-4 left-4 flex gap-3 justify-start">
