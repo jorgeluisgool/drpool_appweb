@@ -49,7 +49,7 @@ export const AsistenciaPage = () => {
     });
 
     
-    console.log(sedeSeleccionada)
+    // console.log(sedeSeleccionada)
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -63,8 +63,8 @@ export const AsistenciaPage = () => {
     
         fetchData();
       }, []);
-    
-    const listUsuarioPorSede = listaUsuarios.filter((usuario) => (usuario.nombre === sedeSeleccionada.coordinador.nombre))
+    console.log(listaUsuarios)
+    const listUsuarioPorSede = listaUsuarios.filter((usuario) => (usuario.nombre === sedeSeleccionada.coordinador.nombre || usuario.nombre === sedeSeleccionada.operador.nombre))
     
     
 
