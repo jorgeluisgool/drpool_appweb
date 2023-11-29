@@ -122,44 +122,41 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
 
       console.log("PROYECTO--> ",valuesToSend);
 
-      console.log(valuesToSend)
-              setVentanaCarga(true);
+              // setVentanaCarga(true);
 
-               fetch(`${api}/nuevo/proyectoalberca`, {
-                   method: 'POST',
-                   headers: {
-                     'Content-Type': 'application/json',
-                   },
-                   body: JSON.stringify(valuesToSend),
-                 })
-                   .then((response) => response.text())
-                   .then((responseData) => {
-                       console.log(responseData);
+              //  fetch(`${api}/nuevo/proyectoalberca`, {
+              //      method: 'POST',
+              //      headers: {
+              //        'Content-Type': 'application/json',
+              //      },
+              //      body: JSON.stringify(valuesToSend),
+              //    })
+              //      .then((response) => response.text())
+              //      .then((responseData) => {
+              //          console.log(responseData);
 
-                       if(responseData == "se guardo correctamente el proyecto"){
-                         setModalCrearEditarProyectos(false);
-                         setVentanaCarga(false);
-                         setModalRegistroGuardado(true);
-                       }else{
-                         if (responseData.match("No hay algun equipo relacionado con la alberca")) {
-                           // setModalCrearEditarProyectos(false);
-                           setVentanaCarga(false);
-                           setMensajeNoAlbercasEnSedes(`No hay algun "EQUIPO" relacionado con la o las albercas: ${responseData.split(":")[1]}, de la sede o sedes selecionadas.`);
-                           setModalWarning(true)
-                         }
-                         if (responseData.match("No hay albercas relacionadas")) {
-                           // setModalCrearEditarProyectos(false);
-                           setVentanaCarga(false);
-                           setMensajeNoAlbercasEnSedes(`La sede o sedes: ${responseData.split(",")[1]} no tiene alguna alberca relacionada, deberas dar de alta una alberca o relacionarle a una ya existente. `);
-                           setModalWarning(true)
-                         }
-                       }
-
-                     
-                   })
-                   .catch((error) => {
-                     console.log(error);
-                   });
+              //          if(responseData == "se guardo correctamente el proyecto"){
+              //            setModalCrearEditarProyectos(false);
+              //            setVentanaCarga(false);
+              //            setModalRegistroGuardado(true);
+              //          }else{
+              //            if (responseData.match("No hay algun equipo relacionado con la alberca")) {
+              //              // setModalCrearEditarProyectos(false);
+              //              setVentanaCarga(false);
+              //              setMensajeNoAlbercasEnSedes(`No hay algun "EQUIPO" relacionado con la o las albercas: ${responseData.split(":")[1]}, de la sede o sedes selecionadas.`);
+              //              setModalWarning(true)
+              //            }
+              //            if (responseData.match("No hay albercas relacionadas")) {
+              //              // setModalCrearEditarProyectos(false);
+              //              setVentanaCarga(false);
+              //              setMensajeNoAlbercasEnSedes(`La sede o sedes: ${responseData.split(",")[1]} no tiene alguna alberca relacionada, deberas dar de alta una alberca o relacionarle a una ya existente. `);
+              //              setModalWarning(true)
+              //            }
+              //          }   
+              //      })
+              //      .catch((error) => {
+              //        console.log(error);
+              //      });
     }
 
     const renderClienteOption = (option) => {
@@ -172,6 +169,7 @@ export const FormProyectos = ({modalCrearEditarProyectos, setModalCrearEditarPro
     };
 
     console.log(proyectoAlbercaSeleccionado)
+    console.log("SEDES", sedes)
 
     
     

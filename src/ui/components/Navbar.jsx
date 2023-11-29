@@ -255,6 +255,21 @@ export const Navbar = () => {
                   </Link>
                 </li> : <></>
             }
+            {
+              usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
+                <li className="nav-item transition duration-500 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl mr-3">
+                  <Link className="flex p-1 items-center text-[#E2E2E2] rounded-lg text-lg font-semibold hover:text-white" to="/dashboard">
+                    <div className="xl:hidden">
+                      <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-lg drop-shadow-md text-[#245A95] text-3xl">
+                        <ion-icon name="bar-chart"></ion-icon>
+                      </div>
+                    </div>
+                    <div className="xl:ml-1">
+                      <p className="text-lg xl:text-center font-semibold">Dashboard</p>
+                    </div>
+                  </Link>
+                </li> : <></>
+            }
             
             <div className="card flex justify-content-center">
                 <TieredMenu model={items} popup ref={menu} breakpoint="767px" />

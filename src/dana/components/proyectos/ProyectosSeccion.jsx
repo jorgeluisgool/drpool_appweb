@@ -24,8 +24,7 @@ export const ProyectosSeccion = () => {
   const [sedeSelect, setSedeSelect] = useState('');
   const [mensajeNoAlbercasEnSedes, setMensajeNoAlbercasEnSedes] = useState('');
   const [modalWarning, setModalWarning] = useState(false);
-
-  console.log(proyectoAlbercaSeleccionado); 
+ 
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -72,14 +71,14 @@ export const ProyectosSeccion = () => {
     setSearchTerm(event.target.value);
   };
 
-  console.log(proyectoAlbercaData)
+  // console.log(proyectoAlbercaData)
    const filterProyectos = proyectoAlbercaData.filter((proyectoAlbercaData) =>
      proyectoAlbercaData.nombreproyectoalberca.toLowerCase().includes(searchTerm.toLowerCase()) ||
      proyectoAlbercaData.numeroproyecto.toLowerCase().includes(searchTerm.toLowerCase())
      
    );
 
-   console.log(clienteSelect);
+  //  console.log(clienteSelect);
   const clientesActivos = clientes.filter(cliente => cliente.estatus === "ACTIVO");
 
   return (

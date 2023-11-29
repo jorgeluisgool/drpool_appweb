@@ -62,7 +62,7 @@ export const ClientesPage = () => {
       cliente.cliente.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const filterSedes = sedes?? sedes.filter((sede) =>
+    const filterSedes = sedes.filter((sede) =>
       sede.nombre.toLowerCase().includes(searchSede.toLowerCase()) || 
       sede.encargadosede.toLowerCase().includes(searchSede.toLowerCase())
     );

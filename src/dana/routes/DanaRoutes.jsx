@@ -19,6 +19,7 @@ import { CatalogosPage } from '../pages/CatalogosPage'
 import { AsignacionesPage } from '../pages/AsignacionesPage'
 import { ClienteConfiguracionPage } from '../pages/ClienteConfiguracionPage'
 import { EquiposAlbercaPage } from '../pages/EquiposAlbercaPage'
+import { DashboardPage } from '../pages/DashboardPage'
 
 
 export const DanaRoutes = () => {
@@ -34,16 +35,16 @@ export const DanaRoutes = () => {
               <Route path='proyectos' element={ <ProyectosPage/>}/>
               <Route path='usuarios' element={ <UsuariosPage/>}/>
               <Route path='asistencia' element={ <AsistenciaPage/>}/>
-              <Route path='ejemplo' element={ <MultiFile/>}/>
               <Route path='camposproyecto' element={ <CamposProyectoPage/>}/>
               {/* <Route path='registros' element={ <RegistrosPagePrueba/>}/> */}
               <Route path='registros' element={ <RegistrosPage/>}/>
               <Route path='cliente' element={ <ClientesRegistrosPage/>}/>
               <Route path='clientes' element={ <ClientesPage/>}/>
-              <Route path='catalogos' element={ <CatalogosPage/>}/>
-              <Route path='asignaciones' element={ <AsignacionesPage/>}/>
+              {/* <Route path='catalogos' element={ <CatalogosPage/>}/> */}
+              {/* <Route path='asignaciones' element={ <AsignacionesPage/>}/> */}
               <Route path='configuracion' element={ <ClienteConfiguracionPage/>}/>
               <Route path='equipos' element={ <EquiposAlbercaPage/>}/>
+              <Route path='dashboard' element={ <DashboardPage/>}/>
               <Route path='/' element={<Navigate to='menu'/>}/>
             </Route>
           </Routes>

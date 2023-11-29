@@ -113,6 +113,17 @@ export const HomeScreem = ({titulo}) => {
           </div>
         </div> : <></>
       }
+      {
+        usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
+        <div className="flex flex-col items-center justify-center">
+          <Link to='/dashboard'>
+            <BotonMenu titulo='ASISTENCIA' icono='bar-chart'/>
+          </Link>
+          <div className='pt-5'>
+            <p className='text-center text-[#245A95] font-bold'>DASHBOARD</p>
+          </div>
+        </div> : <></>
+      }
       {/* <div className="place-self-center">
         <Link to='/'>
           <BotonMenu titulo='DASHBORAD' icono='extension-puzzle-outline'/>
