@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../../dana/hooks/useAuth';
 import { api } from '../../dana/helpers/variablesGlobales';
+import DialogUsuarioOContrasenaInvalidos from '../../ui/components/DialogUsuarioOContrasenaInvalidos';
 
 
 export const FormLogin = () => {
@@ -10,6 +11,8 @@ export const FormLogin = () => {
 
     //Hook use Navigate
     const navigate = useNavigate();
+    
+    const [dialogUsuarioContraseña, setDialogUsuarioContraseña] = useState(false);
 
     //Estados de los Imput para formulario controlado
     const [usuario, setUsuario] = useState('');
@@ -80,6 +83,7 @@ export const FormLogin = () => {
                 })
                                
             }else{
+                setDialogUsuarioContraseña(true)
                 console.log("usuario o contraseña incorrectos")
             }
             
@@ -91,6 +95,10 @@ export const FormLogin = () => {
 
   return (
         <>
+        <DialogUsuarioOContrasenaInvalidos
+            dialogUsuarioContraseña={dialogUsuarioContraseña}
+            setDialogUsuarioContraseña={setDialogUsuarioContraseña}
+        />
         <div className='drop-shadow-lg bg-slate-50 px-6 py-12 rounded-3xl border border-[#245A95]'>
             <div className='flex items-center justify-center pb-6'>
                 <img src="https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool-black.png?alt=media&token=a9161a39-9ed7-472e-af7f-ba8dcd856d62" alt="Your Company" className='h-32'/>

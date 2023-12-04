@@ -49,7 +49,7 @@ export const AsistenciaPage = () => {
     });
 
     
-    // console.log(sedeSeleccionada)
+    console.log(sedeSeleccionada)
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -57,7 +57,8 @@ export const AsistenciaPage = () => {
             const jsonData = await response.json();
             setSedes(jsonData);
           } catch (error) {
-            console.log('Error:', error);
+            con
+            sole.log('Error:', error);
           }
         };
     
@@ -206,13 +207,18 @@ export const AsistenciaPage = () => {
                             </span>
                         </div>
                 </div>
-                <button 
-                className='hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600'
-                    label='Consultar'
-                    onClick={consultarAsistencia}
-                >
-                    consultar
-                </button>
+                {
+                    Object.keys(sedeSeleccionada).length === 0 ?
+                    <></>
+                    :
+                    <button 
+                        className='hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600'
+                        label='Consultar'
+                        onClick={consultarAsistencia}
+                    >
+                        consultar
+                    </button>
+                }
 
                 {
                     listaUsuarios.length == 0 ?

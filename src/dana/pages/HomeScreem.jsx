@@ -113,7 +113,7 @@ export const HomeScreem = ({titulo}) => {
           </div>
         </div> : <></>
       }
-      {
+      {/* {
         usuarioLogiado[0]?.perfile.perfil === "SUBDIRECTOR" || usuarioLogiado[0]?.perfile.perfil === "COORDINADOR" ?
         <div className="flex flex-col items-center justify-center">
           <Link to='/dashboard'>
@@ -123,7 +123,7 @@ export const HomeScreem = ({titulo}) => {
             <p className='text-center text-[#245A95] font-bold'>DASHBOARD</p>
           </div>
         </div> : <></>
-      }
+      } */}
       {/* <div className="place-self-center">
         <Link to='/'>
           <BotonMenu titulo='DASHBORAD' icono='extension-puzzle-outline'/>

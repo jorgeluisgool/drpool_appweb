@@ -387,7 +387,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               name="operador"
                               value={values.operador}
                               options={listaUsuarios
-                                .filter((usuario) => usuario.perfile.perfil === "OPERADOR" && !usuarioEstaAsignado(usuario, sedes))
+                                .filter((usuario) => usuario.perfile.perfil === "OPERADOR")
                               }
                               optionLabel="nombre"
                               filter
