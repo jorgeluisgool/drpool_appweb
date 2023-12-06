@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useFetchUsers } from '../hooks/useFetchUsers';
 import { SkeletonTable } from './SkeletonTable';
 import { Dialog } from 'primereact/dialog';
-import { Field, Form, Formik } from 'formik';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 
@@ -123,29 +123,29 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
         
         console.log(values);
 
-         setVentanaCarga(true);
+        setVentanaCarga(true);
 
-          fetch(`${api}/crear/usuario`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json' 
-              },
-              body: JSON.stringify(values) 
-            })
-              .then(response => response.json())
-              .then(responseData => {
-                 setModalCrearEditarUsuario(false);
-                 setVentanaCarga(false);
-                 setModalRegistroGuardado(true);
+        fetch(`${api}/crear/usuario`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify(values) 
+          })
+            .then(response => response.json())
+            .then(responseData => {
+               setModalCrearEditarUsuario(false);
+               setVentanaCarga(false);
+               setModalRegistroGuardado(true);
     
-                console.log('Respuesta de la API:', responseData);
-                  return 'Correcto';
-              })
-              .catch(error =>{ 
-                  console.log(error);
-                  return 'Error';
-              }
-              );
+            console.log('Respuesta de la API:', responseData);
+              return 'Correcto';
+          })
+          .catch(error =>{ 
+              console.log(error);
+              return 'Error';
+          }
+          );
     };
 
     // Obtener los perfiles
@@ -318,11 +318,41 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                         </div>
                         {/* MODAL DEL FORMULARIO USUARIOS */}
                         <Dialog header={`Usuario`} visible={modalCrearEditarUsuario} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => {setModalCrearEditarUsuario(false); setEditFields(true)}}  className='pt-12'>
-                            <Formik initialValues={ usuarioSeleccionado === undefined ? usuarioVacio : usuarioSeleccionado} onSubmit={handleSubmit}>
+                            <Formik 
+                                initialValues={ usuarioSeleccionado === undefined ? usuarioVacio : usuarioSeleccionado} 
+                                onSubmit={handleSubmit}
+                                validate={(values) => {
+                                    const errors = {};
+
+                                    if (!values.nombre) {
+                                      errors.nombre = 'Este campo es obligatorio';
+                                    }
+                                    if (!values.perfile || Object.keys(values.perfile).length === 0) {
+                                      errors.perfile = 'Este campo es obligatorio';
+                                    }
+                                    if (!values.usuario) {
+                                      errors.usuario = 'Este campo es obligatorio';
+                                    }
+                                    if (!values.correo) {
+                                        errors.correo = 'Este campo es obligatorio';
+                                      }
+                                      if (!values.telefono) {
+                                        errors.telefono = 'Este campo es obligatorio';
+                                      }
+                                      if (!values.jefeinmediato) {
+                                        errors.jefeinmediato = 'Este campo es obligatorio';
+                                      }
+                                      if (!values.pass) {
+                                        errors.pass = 'Este campo es obligatorio';
+                                      }
+
+                                    return errors
+                                }}
+                            >
                                 {({ values, setFieldValue }) => (
                                     <Form>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
-                                            <div className="p-inputgroup mb-5 mt-8">
+                                            <div className="p-inputgroup mb-5 mt-8 relative">
                                                 <span className='p-float-label relative'>
                                                     <Field
                                                         className="w-full appearance-none focus:outline-none bg-transparent"
@@ -345,8 +375,20 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                       Nombre completo del colaborador *
                                                     </label>
                                                 </span>
+                                                <div className="absolute left-2 mt-14">
+                                                  <ErrorMessage
+                                                    name="nombre"
+                                                    render={(msg) => (
+                                                      <div className="flex items-center">
+                                                        <div className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce">
+                                                          <ion-icon name="alert-circle-outline"></ion-icon> {msg}
+                                                        </div>
+                                                      </div>
+                                                    )}
+                                                  />
+                                                </div>
                                             </div>
-                                            <div className="p-inputgroup mb-5 mt-8">
+                                            <div className="p-inputgroup mb-5 mt-8 relative">
                                                 <span className='p-float-label relative'>
                                                     <Field
                                                         className="w-full appearance-none focus:outline-none bg-transparent"
@@ -367,8 +409,20 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                       Rol *
                                                     </label>
                                                 </span>
+                                                <div className="absolute left-2 mt-14">
+                                                  <ErrorMessage
+                                                    name="perfile"
+                                                    render={(msg) => (
+                                                      <div className="flex items-center">
+                                                        <div className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce">
+                                                          <ion-icon name="alert-circle-outline"></ion-icon> {msg}
+                                                        </div>
+                                                      </div>
+                                                    )}
+                                                  />
+                                                </div>
                                             </div>
-                                            <div className="p-inputgroup mb-5 mt-8">
+                                            <div className="p-inputgroup mb-5 mt-8 relative">
                                                 <span className='p-float-label relative'>
                                                     <Field
                                                         className="w-full appearance-none focus:outline-none bg-transparent"
@@ -391,8 +445,20 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                       Nombre de usuario *
                                                     </label>
                                                 </span>
+                                                <div className="absolute left-2 mt-14">
+                                                  <ErrorMessage
+                                                    name="usuario"
+                                                    render={(msg) => (
+                                                      <div className="flex items-center">
+                                                        <div className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce">
+                                                          <ion-icon name="alert-circle-outline"></ion-icon> {msg}
+                                                        </div>
+                                                      </div>
+                                                    )}
+                                                  />
+                                                </div>
                                             </div>
-                                            <div className="p-inputgroup mb-5 mt-8">
+                                            <div className="p-inputgroup mb-5 mt-8 relative">
                                                 <span className='p-float-label relative'>
                                                     <Field
                                                         className="w-full appearance-none focus:outline-none bg-transparent"
@@ -415,6 +481,18 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                       Correo electrónico del colaborador *
                                                     </label>
                                                 </span>
+                                                <div className="absolute left-2 mt-14">
+                                                  <ErrorMessage
+                                                    name="correo"
+                                                    render={(msg) => (
+                                                      <div className="flex items-center">
+                                                        <div className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce">
+                                                          <ion-icon name="alert-circle-outline"></ion-icon> {msg}
+                                                        </div>
+                                                      </div>
+                                                    )}
+                                                  />
+                                                </div>
                                             </div>
                                             <div className="p-inputgroup mb-5 mt-8">
                                                 <span className='p-float-label relative'>
@@ -488,7 +566,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                     </label>
                                                 </span>
                                             </div>
-                                            <div className="p-inputgroup mb-5 mt-8">
+                                            <div className="p-inputgroup mb-5 mt-8 relative">
                                                 <span className='p-float-label relative'>
                                                     <Field
                                                         className="w-full appearance-none focus:outline-none bg-transparent"
@@ -512,8 +590,20 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                       Teléfono del colaborador *
                                                     </label>
                                                 </span>
+                                                <div className="absolute left-2 mt-14">
+                                                  <ErrorMessage
+                                                    name="telefono"
+                                                    render={(msg) => (
+                                                      <div className="flex items-center">
+                                                        <div className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce">
+                                                          <ion-icon name="alert-circle-outline"></ion-icon> {msg}
+                                                        </div>
+                                                      </div>
+                                                    )}
+                                                  />
+                                                </div>
                                             </div>
-                                            <div className="p-inputgroup mb-5 mt-8">
+                                            <div className="p-inputgroup mb-5 mt-8 relative">
                                                 <span className='p-float-label relative'>
                                                     <Field
                                                         className="w-full appearance-none focus:outline-none bg-transparent"
@@ -536,6 +626,18 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                       Jefe inmediato *
                                                     </label>
                                                 </span>
+                                                <div className="absolute left-2 mt-14">
+                                                  <ErrorMessage
+                                                    name="jefeinmediato"
+                                                    render={(msg) => (
+                                                      <div className="flex items-center">
+                                                        <div className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce">
+                                                          <ion-icon name="alert-circle-outline"></ion-icon> {msg}
+                                                        </div>
+                                                      </div>
+                                                    )}
+                                                  />
+                                                </div>
                                             </div>
                                             <div className="p-inputgroup mb-5 mt-8">
                                                 <span className='p-float-label relative'>
@@ -563,7 +665,7 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                     </label>
                                                 </span>
                                             </div>
-                                            <div className="p-inputgroup mb-5 mt-8">
+                                            <div className="p-inputgroup mb-5 mt-8 relative">
                                                 <span className='p-float-label relative'>
                                                 {usuarioLogiado[0].perfile.perfil === "COORDINADOR" ? (
                                                     <Field
@@ -598,6 +700,18 @@ export const TabaUsuarios = ({modalCrearEditarUsuario, setModalCrearEditarUsuari
                                                       Contraseña *
                                                     </label>
                                                 </span>
+                                                <div className="absolute left-2 mt-14">
+                                                  <ErrorMessage
+                                                    name="pass"
+                                                    render={(msg) => (
+                                                      <div className="flex items-center">
+                                                        <div className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce">
+                                                          <ion-icon name="alert-circle-outline"></ion-icon> {msg}
+                                                        </div>
+                                                      </div>
+                                                    )}
+                                                  />
+                                                </div>
                                             </div>
                                         
                                         </div>

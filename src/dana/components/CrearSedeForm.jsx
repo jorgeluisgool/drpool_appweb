@@ -1,4 +1,4 @@
-import { Field, Form, Formik } from 'formik'
+import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import React, { useState } from 'react'
@@ -31,8 +31,8 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
   
   const [coordinadorValue, setCoordinadorValue] = useState(sedeSeleccionada);
 
-  console.log(listaUsuarios)
-  console.log(sedes)
+  // console.log(listaUsuarios)
+  // console.log(sedes)
 
   const initialValues = {
     nombre: '', 
@@ -74,25 +74,25 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
       console.log(values);
         setVentanaCarga(true);
   
-         fetch(`${api}/nueva/sede`, {
-           method: 'POST',
-           headers: {
-             'Content-Type': 'application/json',
-           },
-           body: JSON.stringify(values),
-         })
-           .then((response) => response.text())
-           .then((responseData) => {
-             setVentanaCarga(false);
-             setModalRegistroGuardado(true);
-             setDialogNuevaSedeForm(false);
-           })
-           .catch((error) => {
-             console.log(error);
-           });
+        fetch(`${api}/nueva/sede`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(values),
+        })
+          .then((response) => response.text())
+          .then((responseData) => {
+            setVentanaCarga(false);
+            setModalRegistroGuardado(true);
+            setDialogNuevaSedeForm(false);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
   };
 
-  console.log(sedeSeleccionada)
+  // console.log(sedeSeleccionada)
 
   function usuarioEstaAsignado(usuario, sedes) {
     // Verificar si el usuario está asignado a alguna sede
@@ -101,14 +101,44 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
   
   return (
     <Dialog header='Sede' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => {setDialogNuevaSedeForm(false); setEditFields(true)}} className='pt-16'>
-        <Formik initialValues={sedeSeleccionada === undefined?  initialValues : sedeSeleccionada} onSubmit={onSubmit}>
+        <Formik 
+          initialValues={sedeSeleccionada === undefined?  initialValues : sedeSeleccionada} 
+          onSubmit={onSubmit}
+          validate={(values) => {
+            const errors = {};
+
+            if (!values.nombre) {
+              errors.nombre = 'Este campo es obligatorio';
+            }
+            if (!values.encargadosede) {
+              errors.encargadosede = 'Este campo es obligatorio';
+            }
+            if (!values.direccion || !values.direccion.alcaldia) {
+              errors.direccion = {
+                ...errors.direccion,
+                alcaldia: 'La alcaldía es obligatoria',
+              };
+            }
+            if (!values.cliente || Object.keys(values.cliente).length === 0) {
+              errors.cliente = 'Es obligatorio seleccionar un cliente';
+            }
+            if (!values.coordinador || Object.keys(values.coordinador).length === 0) {
+              errors.coordinador = 'Es obligatorio seleccionar un coordinador';
+            }
+            if (!values.operador || Object.keys(values.operador).length === 0) {
+              errors.operador = 'Es obligatorio seleccionar un operador';
+            }
+
+            return errors
+          }}
+        >
         {({ values, handleChange }) => (
             <Form> 
-              {console.log(values)}
+              {/* {console.log(values)} */}
               <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2'>
                 <h1 className='text-2xl font-semibold'>Datos generales</h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
-                  <div className="p-inputgroup mb-5 mt-8">
+                  <div className="p-inputgroup mb-5 mt-8 relative">
                       <span className='p-float-label relative'>
                           <Field
                               className="w-full appearance-none focus:outline-none bg-transparent"
@@ -131,8 +161,11 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                             Nombre de la sede *
                           </label>
                       </span>
+                      <div className="absolute left-2 mt-14">
+                        <ErrorMessage name="nombre" component="div" className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce"/>
+                      </div>
                   </div>
-                  <div className="p-inputgroup mb-5 mt-8">
+                  <div className="p-inputgroup mb-5 mt-8 relative">
                       <span className='p-float-label relative'>
                           <Field
                               className="w-full appearance-none focus:outline-none bg-transparent"
@@ -151,6 +184,9 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                             Administrador de la sede *
                           </label>
                       </span>
+                      <div className="absolute left-2 mt-14">
+                        <ErrorMessage name="encargadosede" component="div" className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce"/>
+                      </div>
                   </div>
                   <div className="p-inputgroup mb-5 mt-8">
                       <span className='p-float-label relative'>
@@ -258,7 +294,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                           </label>
                       </span>
                   </div>
-                  <div className="p-inputgroup mb-5 mt-8">
+                  <div className="p-inputgroup mb-5 mt-8 relative">
                       <span className='p-float-label relative'>
                           <Field
                               className="w-full appearance-none focus:outline-none bg-transparent"
@@ -268,6 +304,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               disabled ={
                                 sedeSeleccionada != undefined &&
                                 editFields}
+                              required
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
@@ -276,6 +313,18 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                             Alcaldía o municipio *
                           </label>
                       </span>
+                      <div className="absolute left-2 mt-14">
+                        <ErrorMessage
+                          name="direccion.alcaldia"
+                          render={(msg) => (
+                            <div className="flex items-center">
+                              <div className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce">
+                                <ion-icon name="alert-circle-outline"></ion-icon> {msg}
+                              </div>
+                            </div>
+                          )}
+                        />
+                      </div>
                   </div>
                   <div className="p-inputgroup mb-5 mt-8">
                       <span className='p-float-label relative'>
@@ -321,7 +370,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
               <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2'>
                 <h1 className='text-2xl font-semibold'>Relaciones y estatus</h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
-                  <div className="p-inputgroup mb-5 mt-8">
+                  <div className="p-inputgroup mb-5 mt-8 relative">
                       <span className='p-float-label relative'>
                           <Field
                               className="w-full appearance-none focus:outline-none bg-transparent"
@@ -343,11 +392,22 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                             Cliente al que pertenece *
                           </label>
                       </span>
-                      
+                      <div className="absolute left-2 mt-14">
+                        <ErrorMessage
+                          name="cliente"
+                          render={(msg) => (
+                            <div className="flex items-center">
+                              <div className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce">
+                                <ion-icon name="alert-circle-outline"></ion-icon> {msg}
+                              </div>
+                            </div>
+                          )}
+                        />
+                      </div>
                   </div>
-                  <div className="p-inputgroup mb-5 mt-8">
-                    {console.log(values.coordinador)}
-                    {console.log(sedeSeleccionada)}
+                  <div className="p-inputgroup mb-5 mt-8 relative">
+                    {/* {console.log(values.coordinador)}
+                    {console.log(sedeSeleccionada)} */}
 
                       <span className='p-float-label relative'> 
                         <div className="absolute left-100 top-100 pl-3 pt-3">
@@ -373,10 +433,21 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                             Coordinador de la sede * 
                           </label>
                       </span>
-                      
+                      <div className="absolute left-2 mt-14">
+                        <ErrorMessage
+                          name="coordinador"
+                          render={(msg) => (
+                            <div className="flex items-center">
+                              <div className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce">
+                                <ion-icon name="alert-circle-outline"></ion-icon> {msg}
+                              </div>
+                            </div>
+                          )}
+                        />
+                      </div>
                   </div>
                   
-                  <div className="p-inputgroup mb-5 mt-8">
+                  <div className="p-inputgroup mb-5 mt-8 relative">
                       <span className='p-float-label relative'>
                       <div className="absolute left-100 top-100 pl-3 pt-3">
                           <p >{values.operador.nombre}</p>
@@ -403,6 +474,18 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                             Operador de la sede *
                           </label>
                       </span>
+                      <div className="absolute left-2 mt-14">
+                        <ErrorMessage
+                          name="operador"
+                          render={(msg) => (
+                            <div className="flex items-center">
+                              <div className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce">
+                                <ion-icon name="alert-circle-outline"></ion-icon> {msg}
+                              </div>
+                            </div>
+                          )}
+                        />
+                      </div>
                   </div>
                   <div className="p-inputgroup mb-5 mt-8">
                       <span className='p-float-label relative'>

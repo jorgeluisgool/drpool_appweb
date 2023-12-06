@@ -156,6 +156,7 @@ export const ClientesPage = () => {
     }
   }, []);
   
+  console.log(sedes)
   return (
     <>
       {ventanaCarga && (
@@ -318,29 +319,25 @@ export const ClientesPage = () => {
                   </th>
                   <th scope="col" className="relative px-6 py-3">
                     <div className="items-center">
-                      <span>Dirección</span>
+                      <span>Cliente</span>
                     </div>
                   </th>
                   <th scope="col" className="relative px-6 py-3">
                     <div className="items-center">
-                      <span>Administrador de la sede</span>
+                      <span>Operador</span>
                     </div>
                   </th>
                   <th scope="col" className="relative px-6 py-3">
                   <div className="items-center">
-                      <span>Teléfono</span>
+                      <span>Coordinador</span>
                     </div>
                   </th>
                   <th scope="col" className="relative px-6 py-3">
                   <div className="items-center">
-                      <span>e-mail</span>
+                      <span>Administrador</span>
                     </div>
                   </th>
-                  <th scope="col" className="relative px-6 py-3">
-                  <div className="items-center">
-                      <span>Cliente</span>
-                    </div>
-                  </th>
+                  
                   <th scope="col" className="relative px-6 py-3">
                   <div className="items-center">
                       <span>Estatus</span>
@@ -367,27 +364,22 @@ export const ClientesPage = () => {
                     </td>
                     <td className="px-6 py-2">
                       <div className="flex space-x-4">
-                      <div className="text-sm font-medium text-gray-900">{sede.direccion.calle}</div>
+                      <div className="text-sm font-medium text-gray-900">{sede.cliente.cliente}</div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-2">
+                      <div className="flex space-x-4">
+                      <div className="text-sm font-medium text-gray-900">{sede.operador?.nombre}</div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-2">
+                      <div className="flex space-x-4">
+                      <div className="text-sm font-medium text-gray-900">{sede.coordinador?.nombre}</div>
                       </div>
                     </td>
                     <td className="px-6 py-2">
                       <div className="flex space-x-4">
                       <div className="text-sm font-medium text-gray-900">{sede.encargadosede}</div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-2">
-                      <div className="flex space-x-4">
-                      <div className="text-sm font-medium text-gray-900">{sede.telefono}</div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-2">
-                      <div className="flex space-x-4">
-                      <div className="text-sm font-medium text-gray-900">{sede.correo}</div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-2">
-                      <div className="flex space-x-4">
-                      <div className="text-sm font-medium text-gray-900">{sede.cliente.cliente}</div>
                       </div>
                     </td>
                     <td className="px-6 py-2">

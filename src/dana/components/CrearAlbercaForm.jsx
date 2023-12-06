@@ -1,4 +1,4 @@
-import { Field, Form, Formik } from 'formik';
+import { ErrorMessage, Field, Form, Formik, useFormikContext } from 'formik';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 
@@ -56,12 +56,12 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
         profundidadmaxima: '',
         observaciones: '',
         sede: {
-          correo: '',
-          direccion: '',
-          encargado: '',
-          idsede: '',
-          nombre: '',
-          telefono: ''
+          // correo: '',
+          // direccion: '',
+          // encargado: '',
+          // idsede: '',
+          // nombre: '',
+          // telefono: ''
         },
         equiponombre: '',
         tipoequipo: '',
@@ -76,23 +76,23 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
 
         console.log(values);
        
-            fetch(`${api}/nueva/alberca`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(values),
-            })
-              .then((response) => response.text())
-              .then((responseData) => {
-                 console.log(responseData);
-                 setVentanaCarga(false);
-                 setModalRegistroGuardado(true);
-                  setModalAlberca(false);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
+        fetch(`${api}/nueva/alberca`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(values),
+        })
+          .then((response) => response.text())
+          .then((responseData) => {
+             console.log(responseData);
+             setVentanaCarga(false);
+             setModalRegistroGuardado(true);
+              setModalAlberca(false);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       };
 
 
@@ -115,14 +115,43 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
   return (
     <>
     <Dialog header='Albercas' visible={modalAlberca} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => {setModalAlberca(false); setEditFields(true)}} className='pt-20'>
-        <Formik initialValues={albercaSeleccionada === undefined? initialValues : albercaSeleccionada} onSubmit={onSubmit}>
+        <Formik 
+          initialValues={albercaSeleccionada === undefined? initialValues : albercaSeleccionada} 
+          onSubmit={onSubmit} 
+          validate={(values) => {
+            const errors = {};
+
+            if (!values.nombrealberca) {
+              errors.nombrealberca = 'Este campo es obligatorio';
+            }
+            if (!values.tipoalberca) {
+              errors.tipoalberca = 'Este campo es obligatorio';
+            }
+            if (!values.caracteristica) {
+              errors.caracteristica = 'Este campo es obligatorio';
+            }
+            if (!values.sede || Object.keys(values.sede).length === 0) {
+              errors.sede = 'Este campo es obligatorio';
+            }
+            if (!values.capacidad) {
+              errors.capacidad = 'Este campo es obligatorio';
+            }
+            if (!values.forma) {
+              errors.forma = 'Este campo es obligatorio';
+            }
+          
+            // Puedes agregar más validaciones para otros campos si es necesario
+          
+            return errors;
+          }}
+        >
         {({ values, handleChange }) => (
             <Form>  
                 <div className='bg-[#E2E2E2] p-2 rounded-xl mb-2'>
                     <h1 className='text-2xl font-semibold'>Datos generales</h1>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
                     {/* <div className='grid place-items-center'> */}
-                        <div className="p-inputgroup mb-5 mt-8">
+                        <div className="p-inputgroup mb-5 mt-8 relative">
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
@@ -146,8 +175,11 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   Nombre de la alberca *
                                 </label>
                             </span>
+                            <div className="absolute left-2 mt-14">
+                              <ErrorMessage name="nombrealberca" component="div" className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce"/>
+                            </div>
                         </div>
-                        <div className="p-inputgroup mb-5 mt-8">
+                        <div className="p-inputgroup mb-5 mt-8 relative">
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
@@ -169,8 +201,11 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   Tipo de alberca *
                                 </label>
                             </span>
+                            <div className="absolute left-2 mt-14">
+                              <ErrorMessage name="tipoalberca" component="div" className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce"/>
+                            </div>
                         </div> 
-                        <div className="p-inputgroup mb-5 mt-8">
+                        <div className="p-inputgroup mb-5 mt-8 relative">
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
@@ -192,6 +227,9 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   Caracteristica de la alberca *
                                 </label>
                             </span>
+                            <div className="absolute left-2 mt-14">
+                              <ErrorMessage name="caracteristica" component="div" className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce"/>
+                            </div>
                         </div> 
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
@@ -214,7 +252,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                 </label>
                             </span>
                         </div>
-                        <div className="p-inputgroup mb-5 mt-8">
+                        <div className="p-inputgroup mb-5 mt-8 relative">
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
@@ -239,8 +277,11 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   Cliente al que pertenece *
                                 </label>
                             </span>
+                            {/* <div className="absolute left-2 mt-14">
+                              <ErrorMessage name="clientes" component="div" className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce"/>
+                            </div> */}
                         </div>
-                        <div className="p-inputgroup mb-5 mt-8">
+                        <div className="p-inputgroup mb-5 mt-8 relative">
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
@@ -264,6 +305,9 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   Sede a la que pertenece *
                                 </label>
                             </span>
+                            <div className="absolute left-2 mt-14">
+                              <ErrorMessage name="sede" component="div" className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce"/>
+                            </div>
                         </div>
                         <div className="p-inputgroup mb-5 mt-8">
                             <span className='p-float-label relative'>
@@ -295,7 +339,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                     <h1 className='text-2xl font-semibold'>Dimensiones de la alberca</h1>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6">
                       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-6'>
-                        <div className="p-inputgroup mb-5 mt-8">
+                        <div className="p-inputgroup mb-5 mt-8 relative">
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
@@ -318,37 +362,39 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                                   Forma de la alberca *
                                 </label>
                             </span>
+                            <div className="absolute left-2 mt-14">
+                               <ErrorMessage name="forma" component="div" className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce"/>
+                            </div>
                         </div>
-                        <div className="p-inputgroup mb-5 mt-8">
-                            <span className='p-float-label relative'>
-                                <Field
-                                    className="w-full appearance-none focus:outline-none bg-transparent"
-                                    as={InputText}
-                                    name="capacidad"
-                                    value={values.capacidad}
-                                    onKeyPress={(e) => {
-                                      const charCode = e.which || e.keyCode;
-                                      // Permitir solo números (0-9) y el punto (.)
-                                      if ((charCode < 48 || charCode > 57) && charCode !== 46) {
-                                        e.preventDefault();
-                                      }
-                                    }}
-                                    disabled={
-                                      albercaSeleccionada != undefined &&
-                                      editFields
-                                    }
-                                    required
-                                /> 
-                                <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
-                                  <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
-                                </span>
-                                <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
-                                  Volumen (m³) *
-                                </label>
+                        <div className="p-inputgroup mb-5 mt-8 relative">
+                          <span className='p-float-label relative'>
+                            <Field
+                              className="w-full appearance-none focus:outline-none bg-transparent"
+                              as={InputText}
+                              name="capacidad"
+                              value={values.capacidad}
+                              onKeyPress={(e) => {
+                                const charCode = e.which || e.keyCode;
+                                // Permitir solo números (0-9) y el punto (.)
+                                if ((charCode < 48 || charCode > 57) && charCode !== 46) {
+                                  e.preventDefault();
+                                }
+                              }}
+                              disabled={albercaSeleccionada !== undefined && editFields}
+                              required
+                            /> 
+                            <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
+                              <i className="pi pi-file-edit text-[#245A95] font-bold text-2xl"></i>
                             </span>
-                        </div>  
-                        
-                        <div className="p-inputgroup mb-5 mt-8">
+                            <label htmlFor="name" className='text-lg text-[#245A95] font-semibold absolute top-0 left-0 transform'>
+                              Volumen (m³) *
+                            </label>
+                          </span>
+                          <div className="absolute left-2 mt-14">
+                            <ErrorMessage name="capacidad" component="div" className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce"/>
+                          </div>
+                        </div> 
+                        <div className="p-inputgroup mb-5 mt-8 relative">
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
@@ -489,7 +535,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
                     
                 {/* </div>  */}
                 <div className="cursor-pointer absolute inset-x-0 bottom-4 right-12 flex gap-3 justify-end">
-                <button
+                  <button
                             type="button"
                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
                             onClick={() => setModaAceptarlAbrirCerrar(true)}
