@@ -9,6 +9,7 @@ import { api } from '../helpers/variablesGlobales';
 import { AlbercaDraw } from './AlbercaDraw';
 import { FormAlbercaEquipo } from './alberca/FormAlbercaEquipo';
 import { DialogConfirmacion } from '../../ui/components/DialogConfirmacion';
+import { DialogNombreYaExiste } from '../../ui/components/DialogNombreYaExiste';
 
 
 const opcionesStatus = [
@@ -43,6 +44,7 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
   const [rotate, setRotate] = useState(false);
   const [editFields, setEditFields] = useState(true);
   const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
+  const [nombreDuplicadoStateModal, setNombreDuplicadoStateModal] = useState(false);
 
     const initialValues = {
         nombrealberca: '',
@@ -85,10 +87,17 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
         })
           .then((response) => response.text())
           .then((responseData) => {
-             console.log(responseData);
-             setVentanaCarga(false);
-             setModalRegistroGuardado(true);
+            console.log(responseData);
+
+            if (responseData === "El nombre de la Alberca ya se encuentra registrado") {
+              setVentanaCarga(false);
+              setNombreDuplicadoStateModal(true);
+            }else{
+              setVentanaCarga(false);
+              setModalRegistroGuardado(true);
               setModalAlberca(false);
+            }
+            
           })
           .catch((error) => {
             console.log(error);
@@ -114,6 +123,11 @@ export const CrearAlbercaForm = ({modalAlberca, setModalAlberca, sedes, albercaS
 
   return (
     <>
+    <DialogNombreYaExiste
+      nombreDuplicadoStateModal={nombreDuplicadoStateModal}
+      setNombreDuplicadoStateModal={setNombreDuplicadoStateModal}
+      mensajeNombreDuplicado={"El nombre de la alberca ya existe."}
+    />
     <Dialog header='Albercas' visible={modalAlberca} baseZIndex={-1} style={{ width: '80vw', height: '40vw' }} onHide={() => {setModalAlberca(false); setEditFields(true)}} className='pt-20'>
         <Formik 
           initialValues={albercaSeleccionada === undefined? initialValues : albercaSeleccionada} 
