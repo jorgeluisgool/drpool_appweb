@@ -7,6 +7,7 @@ import { useDropzone } from 'react-dropzone';
 import { api } from '../helpers/variablesGlobales'
 import useAuth from '../hooks/useAuth'
 import { Dropdown } from 'primereact/dropdown'
+import { DialogNombreYaExiste } from '../../ui/components/DialogNombreYaExiste'
 
 const opcionesStatus = [
   { label: 'ACTIVO', value: 'ACTIVO' },
@@ -22,10 +23,22 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
     const [file, setFile] = useState(null);
     const [imagenByte, setImagenByte] = useState([]);
 
+    const [imagenSeleccionada, setImagenSeleccionada] = useState(null);
+    const [error, setError] = useState('');
+
+    const [nombreDuplicadoStateModal, setNombreDuplicadoStateModal] = useState(false);
+
     const onDrop = (acceptedFiles) => {
         const file = acceptedFiles[0];
         setFile(acceptedFiles[0])
         setUploadedImage(URL.createObjectURL(file));
+
+        setImagenSeleccionada(file);
+    };
+
+    const handleInputChange = (e) => {
+      const imagen = e.target.files[0];
+      setImagenSeleccionada(imagen);
     };
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop, accept: 'image/*', maxFiles: 1 });
@@ -57,14 +70,20 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
     
 
     const onSubmit = (values, { resetForm }) => {
-      setVentanaCarga(true);
 
       values.cliente = values.cliente.toUpperCase();
       values.direccion = values.direccion.toUpperCase();
       values.clienteAplicacion = usuarioLogiado[0].clienteAplicacion;
       //clienteAplicacion: usuarioLogiado.clienteAplicacion,
-    
-      // Pasar una función de callback que maneje la creación de nuevoCliente
+
+      if (!imagenSeleccionada) {
+        setError('Debes seleccionar una imagen antes de Guardar.');
+      } else {
+        // Aquí puedes realizar acciones adicionales al enviar el formulario con la imagen seleccionada
+        // Por ejemplo, enviar la imagen a un servidor
+        setVentanaCarga(true);
+
+        // Pasar una función de callback que maneje la creación de nuevoCliente
       convertirUrlaBytes(file, (arregloImagen) => {
         //const values2 = {clienteAplicacion: usuarioLogiado[0].clienteAplicacion, ...values}
         const nuevoCliente = {
@@ -83,19 +102,37 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
         })
           .then((response) => response.text())
           .then((responseData) => {
-            setVentanaCarga(false);
-            setModalRegistroGuardado(true);
-            setDialogNuevoClienteForm(false);    
+            console.log(responseData);
+            if (responseData === "El nombre del Cliente ya se encuentra registrado") {
+              setVentanaCarga(false);
+              setNombreDuplicadoStateModal(true);
+            }else{
+              setVentanaCarga(false);
+              setModalRegistroGuardado(true);
+              setDialogNuevoClienteForm(false); 
+            }
+               
           })
           .catch((error) => {
             console.log(error);
           });
       });
+
+        setError('');
+      }
+    
     };
     
 
   return (
-    <Dialog header='DAR DE ALTA NUEVO CLIENTE' visible={dialogNuevoClienteForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setDialogNuevoClienteForm(false)} className='pt-20'>
+    <>
+      <DialogNombreYaExiste 
+        nombreDuplicadoStateModal={nombreDuplicadoStateModal}
+        setNombreDuplicadoStateModal={setNombreDuplicadoStateModal}
+        mensajeNombreDuplicado={"El nombre del cliente ya esxiste."}
+      />
+
+      <Dialog header='DAR DE ALTA NUEVO CLIENTE' visible={dialogNuevoClienteForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => setDialogNuevoClienteForm(false)} className='pt-20'>
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ values, handleChange }) => (
             <Form>   
@@ -212,8 +249,9 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
                         </div>
                         {/* <Toast ref={toast}></Toast> */}
                         {/* <FileUpload mode="basic" name="demo[]" url="/api/upload" accept="image/*" maxFileSize={1000000} onUpload={onUpload} /> */}
+                        {error && <p style={{ color: 'red' }}>{error}</p>}
                         <div {...getRootProps()} style={{ border: '2px dashed gray', padding: '20px', textAlign: 'center' }}>
-                          <input {...getInputProps()} />
+                          <input {...getInputProps()} onChange={handleInputChange}/>
                           <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar una.</p>
                         </div>
                     </div>
@@ -246,6 +284,7 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
             </Form>
         )}
         </Formik>
-    </Dialog> 
+    </Dialog>
+    </> 
   )
 }

@@ -40,6 +40,8 @@ export const ClientesPage = () => {
 
     const [uploadedImage, setUploadedImage] = useState(null);
     const [file, setFile] = useState(null);
+
+    const [datosCargados, setDatosCargados] = useState(false);
     
     // obtener la lista de iusuarios
     const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers();
@@ -74,12 +76,17 @@ export const ClientesPage = () => {
           const response = await fetch(`${api}/obtener/clientes/usuario/${userAuth[0].clienteAplicacion.idcliente}`);
           const jsonData = await response.json();
           setClientes(jsonData);
+          setDatosCargados(true);  // Indicar que los datos se han cargado
         } catch (error) {
           console.log('Error:', error);
         }
       };
-      fetchData();
-    }, [dialogEditatarClienteForm, uploadedImage]);
+
+      if (!datosCargados) {
+        fetchData();  // Solo carga los datos si aún no se han cargado
+      }
+
+    }, [datosCargados, userAuth, dialogEditatarClienteForm, uploadedImage]);
 
    useEffect(() => {
     const fetchData = async () => {
@@ -95,6 +102,7 @@ export const ClientesPage = () => {
     fetchData();
   }, [dialogNuevaSedeForm, uploadedImage, setVentanaCarga]);
   
+  console.log("CLIENTES->",clientes)
   //  useEffect(() => {
   //   const fetchData = async () => {
   //     try {
@@ -156,7 +164,6 @@ export const ClientesPage = () => {
     }
   }, []);
   
-  console.log(sedes)
   return (
     <>
       {ventanaCarga && (

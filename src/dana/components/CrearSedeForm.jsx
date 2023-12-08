@@ -23,6 +23,7 @@ const opcionesEstados = [
 
 export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setVentanaCarga, setModalRegistroGuardado, setSedeSeleccionada, sedeSeleccionada, clientes, listaUsuarios, sedes}) => {
 
+  console.log(listaUsuarios)
   const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
 
   const [nombreSede, setNombreSede] = useState('NUEVA SEDE')
@@ -90,6 +91,23 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
           .catch((error) => {
             console.log(error);
           });
+  };
+
+  const renderClienteOption = (option) => {
+    return (
+      <div className="flex items-center">
+        <img src={option.urllogo} alt={option.cliente} className="mr-2" style={{ width: '40px' }} />
+        <span>{option.cliente}</span>
+      </div>
+    );
+  };
+
+  const renderAsignacionOperador = (option) => {
+    return (
+      <div className="flex items-center">
+        <span>{option.nombre}</span> <span className='ml-2 text-green-600'>{option?.asignacion}</span>
+      </div>
+    );
   };
 
   // console.log(sedeSeleccionada)
@@ -379,6 +397,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               value={values.cliente}
                               options={clientes.filter(cliente => cliente.estatus === "ACTIVO")} 
                               optionLabel="cliente"
+                              itemTemplate={renderClienteOption}
                               filter
                               required
                               disabled ={
@@ -460,6 +479,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               options={listaUsuarios
                                 .filter((usuario) => usuario.perfile.perfil === "OPERADOR")
                               }
+                              itemTemplate={renderAsignacionOperador}
                               optionLabel="nombre"
                               filter
                               required

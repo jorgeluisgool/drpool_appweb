@@ -1,4 +1,4 @@
-import { Field, Form, Formik } from 'formik'
+import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { Calendar } from 'primereact/calendar'
 import { Dropdown } from 'primereact/dropdown'
 import { InputText } from 'primereact/inputtext'
@@ -114,13 +114,25 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
 
   return (
     <>
-    <Formik initialValues={initialValues} onSubmit={onSubmit}>
+    <Formik 
+        initialValues={initialValues} 
+        onSubmit={onSubmit}
+        validate={(values) => {
+            const errors = {};
+
+            if (!values.numero) {
+                errors.numero = 'Este campo es obligatorio';
+              }
+            
+            return errors
+        }}
+    >
         {({ values, handleChange }) => (
             <Form>
                 <div className='mt-4 mb-8 p-4 transition duration-500 ease-in-out relative w-full max-w-full rounded overflow-hidden group'>
                 <h1 className='font-bold text-sm xl:text-2xl mb-2 text-[#245A95]'><ion-icon name="caret-forward-outline"></ion-icon>Filtrado</h1>
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6'>
-                        <div className="p-inputgroup mb-5 mt-5">
+                        <div className="p-inputgroup mb-5 mt-5 relative">
                             <span className='p-float-label relative'>
                                 <Field
                                     className="w-full appearance-none focus:outline-none bg-transparent"
@@ -136,6 +148,18 @@ export const FiltradoForm = ({albercaSelected, setVentanaCarga, setModalRegistro
                                   Número *
                                 </label>
                             </span>
+                            <div className="absolute left-2 mt-14">
+                              <ErrorMessage
+                                name="numero"
+                                render={(msg) => (
+                                  <div className="flex items-center">
+                                    <div className="text-red-500 bg-red-100 border border-red-400 rounded px-2 shadow-md animate-bounce">
+                                      <ion-icon name="alert-circle-outline"></ion-icon> {msg}
+                                    </div>
+                                  </div>
+                                )}
+                              />
+                            </div>
                         </div> 
                     {/*     <div className="p-inputgroup mb-5 mt-5">
                             <span className='p-float-label relative'>
