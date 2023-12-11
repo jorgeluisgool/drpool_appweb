@@ -64,6 +64,7 @@ export const ClientesPage = () => {
       cliente.cliente.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    console.log(filterClientes)
     const filterSedes = sedes.filter((sede) =>
       sede.nombre.toLowerCase().includes(searchSede.toLowerCase()) || 
       sede.encargadosede.toLowerCase().includes(searchSede.toLowerCase())
@@ -75,6 +76,7 @@ export const ClientesPage = () => {
         try {
           const response = await fetch(`${api}/obtener/clientes/usuario/${userAuth[0].clienteAplicacion.idcliente}`);
           const jsonData = await response.json();
+          console.log('Clientes =>', jsonData);
           setClientes(jsonData);
           setDatosCargados(true);  // Indicar que los datos se han cargado
         } catch (error) {
@@ -102,7 +104,6 @@ export const ClientesPage = () => {
     fetchData();
   }, [dialogNuevaSedeForm, uploadedImage, setVentanaCarga]);
   
-  console.log("CLIENTES->",clientes)
   //  useEffect(() => {
   //   const fetchData = async () => {
   //     try {
