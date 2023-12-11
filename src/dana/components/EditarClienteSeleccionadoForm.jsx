@@ -17,10 +17,12 @@ const opcionesStatus = [
 export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClienteForm, setDialogEditatarClienteForm, setVentanaCarga, setVentanaConfirmacion, setUploadedImage, uploadedImage, setFile, file, setRespuestaApiCliente}) => {
 
   const { userAuth: usuarioLogiado} = useAuth();
+  const [valTrue, setValTrue] = useState(false);
 
     console.log(clienteState);
 
     const onDrop = (acceptedFiles) => {
+        setValTrue(true);
         const file = acceptedFiles[0];
         setFile(acceptedFiles[0])
         setUploadedImage(URL.createObjectURL(file));
@@ -44,10 +46,11 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
           //const values2 = {clienteAplicacion: usuarioLogiado[0].clienteAplicacion, ...values}
           const nuevoCliente = {
             cliente: values,
-            imagen: arregloImagen,
+            imagen: valTrue ? arregloImagen : null,
           };
           // console.log(usuarioLogiado[0].clienteAplicacion);
-          // console.log(nuevoCliente);
+          // 
+          console.log(nuevoCliente);
           
           fetch(`${api}/nuevo/cliente`, {
             method: 'POST',
