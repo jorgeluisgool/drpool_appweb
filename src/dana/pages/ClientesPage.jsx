@@ -64,10 +64,13 @@ export const ClientesPage = () => {
       cliente.cliente.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    console.log(filterClientes)
+    console.log(sedes)
     const filterSedes = sedes.filter((sede) =>
-      sede.nombre.toLowerCase().includes(searchSede.toLowerCase()) || 
-      sede.encargadosede.toLowerCase().includes(searchSede.toLowerCase())
+      sede.idsede !== 13 &&
+      (
+        sede.nombre.toLowerCase().includes(searchSede.toLowerCase()) || 
+        sede.encargadosede.toLowerCase().includes(searchSede.toLowerCase())
+      )
     );
 
     
@@ -153,7 +156,7 @@ export const ClientesPage = () => {
     }  
   }
 
-  const clientesActivos = filterClientes.filter(cliente => cliente.estatus === "ACTIVO" && cliente.idcliente != 2);
+  const clientesActivos = filterClientes.filter(cliente => cliente.estatus === "ACTIVO" && cliente.idcliente != 28);
 
   // funcion que hace que al hacer refesh se mantenga el usuario activo
   useEffect(() => {
@@ -506,6 +509,7 @@ export const ClientesPage = () => {
           clientes={clientes}
           listaUsuarios={listaUsuarios}
           sedes={sedes}
+          clientesActivos={clientesActivos}
         />
         <ModalClientesInactivos
           dialogClientesInactivos={dialogClientesInactivos}

@@ -21,7 +21,7 @@ const opcionesEstados = [
   { label: 'TABASCO', value: 'TABASCO' },
 ];
 
-export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setVentanaCarga, setModalRegistroGuardado, setSedeSeleccionada, sedeSeleccionada, clientes, listaUsuarios, sedes}) => {
+export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setVentanaCarga, setModalRegistroGuardado, setSedeSeleccionada, sedeSeleccionada, clientes, listaUsuarios, sedes, clientesActivos}) => {
 
   console.log(listaUsuarios)
   const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
@@ -395,7 +395,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
                               as={Dropdown}
                               name="cliente"
                               value={values.cliente}
-                              options={clientes.filter(cliente => cliente.estatus === "ACTIVO")} 
+                              options={clientesActivos} 
                               optionLabel="cliente"
                               itemTemplate={renderClienteOption}
                               filter

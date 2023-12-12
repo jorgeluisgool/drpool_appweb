@@ -24,8 +24,12 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
       fetchData();
     }, [modalRegistroGuardado]);
 
+
+    console.log(albercas)
     const filterAlbercas = albercas.filter((alberca) =>
-      alberca.nombrealberca.toLowerCase().includes(searchAlberca.toLowerCase())
+      alberca.idalberca !== 13 && (
+        alberca.nombrealberca.toLowerCase().includes(searchAlberca.toLowerCase())
+      )
     );
 
     // Estados y logica para que funcione el paginator
