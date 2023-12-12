@@ -30,8 +30,15 @@ export const ModalSeeleccionarCliente = ({modalSeleccionCliente, setModalSelecci
     fetchData();
   }, [modalSeleccionCliente]);
 
+   //  FILTRAR LOS CLIENTES ACTIVOS
+   const clientesActivos = clientes.filter((cliente) => 
+   cliente.estatus === 'ACTIVO' && cliente.idcliente != 2
+  );
+
+  console.log(clientesActivos)
+
    //Clientes filtrados para Search 
-   const filterClientes = clientes.filter((cliente) =>
+   const filterClientes = clientesActivos.filter((cliente) =>
    cliente.cliente.toLowerCase().includes(searchCliente.toLowerCase())
    );
     

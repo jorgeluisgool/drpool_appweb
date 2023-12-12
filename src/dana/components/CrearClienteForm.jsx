@@ -52,6 +52,7 @@ export const CrearClienteForm = ({dialogNuevoClienteForm, setDialogNuevoClienteF
         estatus: 'ACTIVO'     
     };
 
+    
     const convertirUrlaBytes = (data, onSubmitCallback) => {
       const reader = new FileReader();
     

@@ -153,7 +153,7 @@ export const ClientesPage = () => {
     }  
   }
 
-  const clientesActivos = filterClientes.filter(cliente => cliente.estatus === "ACTIVO");
+  const clientesActivos = filterClientes.filter(cliente => cliente.estatus === "ACTIVO" && cliente.idcliente != 2);
 
   // funcion que hace que al hacer refesh se mantenga el usuario activo
   useEffect(() => {

@@ -31,7 +31,7 @@ export const ClientesRegistrosPage = () => {
 
     //  FILTRAR LOS CLIENTES ACTIVOS
     const clientesActivos = clientes.filter((cliente) => 
-     cliente.estatus === 'ACTIVO'
+     cliente.estatus === 'ACTIVO' && cliente.idcliente != 28
     );
 
      //Clientes filtrados para Search 
