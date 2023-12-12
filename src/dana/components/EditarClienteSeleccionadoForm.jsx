@@ -46,7 +46,7 @@ export const EditarClienteSeleccionadoForm = ({clienteState, dialogEditatarClien
           //const values2 = {clienteAplicacion: usuarioLogiado[0].clienteAplicacion, ...values}
           const nuevoCliente = {
             cliente: values,
-            imagen: valTrue ? arregloImagen : null,
+            imagen: valTrue ? arregloImagen : [],
           };
           // console.log(usuarioLogiado[0].clienteAplicacion);
           // 
