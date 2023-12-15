@@ -26,11 +26,13 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
 
 
     console.log(albercas)
+
+    // Albercas filtradas por searsh 
     const filterAlbercas = albercas.filter((alberca) =>
       alberca.idalberca !== 13 && (
         alberca.nombrealberca.toLowerCase().includes(searchAlberca.toLowerCase())
       )
-    );
+    ).reverse();
 
     // Estados y logica para que funcione el paginator
     const [currentPage, setCurrentPage] = useState(1);
@@ -87,7 +89,7 @@ export const AlbercasSeccion = ({sedes, ventanaCarga, setVentanaCarga, modalRegi
         {/* TABLA ALBERCAS */}
         {
           !currentRows || currentRows.length === 0 ?  
-          <SkeletonTable/>
+          <SkeletonTable mensaje={"NO SE HAN ENCONTRADO ALBERCAS"}/>
           : 
           <>
           <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">

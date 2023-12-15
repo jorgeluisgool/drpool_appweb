@@ -32,7 +32,7 @@ export const ModalSeeleccionarCliente = ({modalSeleccionCliente, setModalSelecci
 
    //  FILTRAR LOS CLIENTES ACTIVOS
    const clientesActivos = clientes.filter((cliente) => 
-   cliente.estatus === 'ACTIVO' && cliente.idcliente != 2
+   cliente.estatus === 'ACTIVO' && cliente.idcliente != 28
   );
 
   console.log(clientesActivos)
@@ -43,7 +43,7 @@ export const ModalSeeleccionarCliente = ({modalSeleccionCliente, setModalSelecci
    );
     
   return (
-    <Dialog header='Selecciona un cliente' visible={modalSeleccionCliente} style={{ width: '90vw'}} onHide={() => setModalSeleccionCliente(false)}>
+    <Dialog header='Selecciona un cliente' visible={modalSeleccionCliente} style={{ width: '90vw'}} onHide={() => setModalSeleccionCliente(false)} className='pt-16'>
       <div className='grid grid-cols-2 xl:mx-20'>
         <h1 className="pt-20 pl-3 text-4xl font-black text-[#245A95]">Clientes</h1>
         <div className="p-inputgroup mb-5 mt-8 col-span-3 xl:col-start-3">

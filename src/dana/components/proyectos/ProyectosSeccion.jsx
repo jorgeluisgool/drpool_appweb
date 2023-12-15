@@ -76,10 +76,10 @@ export const ProyectosSeccion = () => {
      proyectoAlbercaData.nombreproyectoalberca.toLowerCase().includes(searchTerm.toLowerCase()) ||
      proyectoAlbercaData.numeroproyecto.toLowerCase().includes(searchTerm.toLowerCase())
      
-   );
+   ).reverse();
 
   //  console.log(clienteSelect);
-  const clientesActivos = clientes.filter(cliente => cliente.estatus === "ACTIVO");
+  const clientesActivos = clientes.filter(cliente => cliente.estatus === "ACTIVO" && cliente.idcliente != 28).reverse();
 
   return (
     <>

@@ -8,7 +8,7 @@ const ModalClientesInactivos = ({dialogClientesInactivos, setDialogClientesInact
 
   return (
     <>
-    <Dialog header='Clientes inactivos' visible={dialogClientesInactivos} style={{ width: '90vw', height: '40vw' }} onHide={() => setDialogClientesInactivos(false)}>
+    <Dialog header='Clientes inactivos' visible={dialogClientesInactivos} style={{ width: '90vw', height: '40vw' }} onHide={() => setDialogClientesInactivos(false)} className='pt-16'>
         <div className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-8 m-4'> 
             {
               clientesInactivos.map((cliente, index) => (

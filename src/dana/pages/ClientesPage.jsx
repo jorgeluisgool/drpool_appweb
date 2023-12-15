@@ -20,8 +20,7 @@ export const ClientesPage = () => {
 
     const { userAuth, setUserAuth, setClienteSeleccionado } = useAuth();
 
-
-    const[urlImage, setUrlImage] = useState("")
+    const [urlImage, setUrlImage] = useState("")
     const [clientes, setClientes] = useState([]);
     const [sedes, setSedes] = useState([]);
     const [dialogNuevoClienteForm, setDialogNuevoClienteForm ] = useState(false);
@@ -42,11 +41,12 @@ export const ClientesPage = () => {
     const [file, setFile] = useState(null);
 
     const [datosCargados, setDatosCargados] = useState(false);
+    const [actualizarClientes, setActualizarClientes] = useState(false);
     
     // obtener la lista de iusuarios
     const { data: listaUsuarios, loading: loadingUsuarios } = useFetchUsers();
     
-
+    //FUNCIONES PARA LOS SEARCH
     const handleSearchClientes = (event) => {
       setSearchTerm(event.target.value);
     };
@@ -62,18 +62,17 @@ export const ClientesPage = () => {
     //Clientes filtrados para Search 
     const filterClientes = clientes.filter((cliente) =>
       cliente.cliente.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    ).reverse();
 
-    console.log(sedes)
+    //Sedes filtradas por search
     const filterSedes = sedes.filter((sede) =>
       sede.idsede !== 13 &&
       (
         sede.nombre.toLowerCase().includes(searchSede.toLowerCase()) || 
         sede.encargadosede.toLowerCase().includes(searchSede.toLowerCase())
       )
-    );
-
-    
+    ).reverse();
+ 
     useEffect(() => {
       const fetchData = async () => {
         try {
@@ -82,6 +81,7 @@ export const ClientesPage = () => {
           console.log('Clientes =>', jsonData);
           setClientes(jsonData);
           setDatosCargados(true);  // Indicar que los datos se han cargado
+          
         } catch (error) {
           console.log('Error:', error);
         }
@@ -91,7 +91,20 @@ export const ClientesPage = () => {
         fetchData();  // Solo carga los datos si aún no se han cargado
       }
 
-    }, [datosCargados, userAuth, dialogEditatarClienteForm, uploadedImage]);
+      // Configura el tiempo de espera de 5 segundos
+      const timeoutId = setTimeout(() => {
+        // Lógica que se ejecutará después de 5 segundos
+        // Aquí podrías colocar cualquier lógica adicional que necesites
+        // ...
+      
+        // Después de la lógica, vuelve a ejecutar el efecto
+        setDatosCargados(false);
+      }, 1000);
+    
+      // Limpieza del timeout para evitar fugas de memoria
+      return () => clearTimeout(timeoutId);
+
+    }, [datosCargados, userAuth, dialogEditatarClienteForm, uploadedImage, ventanaCarga, modalRegistroGuardado, actualizarClientes]);
 
    useEffect(() => {
     const fetchData = async () => {
@@ -105,21 +118,7 @@ export const ClientesPage = () => {
     };
 
     fetchData();
-  }, [dialogNuevaSedeForm, uploadedImage, setVentanaCarga]);
-  
-  //  useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(`${api}/obtener/sedes`);
-  //       const jsonData = await response.json();
-  //       setSedes(jsonData);
-  //     } catch (error) {
-  //       console.log('Error:', error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [dialogNuevaSedeForm, uploadedImage, setVentanaCarga]);
+  }, [dialogNuevaSedeForm, uploadedImage, ventanaCarga]);
 
   // Estados y logica para que funcione el paginator
   const [currentPage, setCurrentPage] = useState(1);
@@ -167,6 +166,14 @@ export const ClientesPage = () => {
       setUserAuth(foundUser);
     }
   }, []);
+
+  // Función para forzar la recarga del componente
+  const reload = () => setActualizarClientes(prevState => !prevState);
+
+  useEffect(() => {
+    // Lógica para manejar la recarga del componente cuando clientesActivos cambie
+    // Por ejemplo, cargar datos adicionales o realizar acciones específicas
+  }, [clientesActivos, actualizarClientes]);
   
   return (
     <>
@@ -237,11 +244,9 @@ export const ClientesPage = () => {
                       <div className="font-bold text-sm xl:text-sm mb-2 text-[#245A95]"></div>
                     </div>
                     <div className="relative" style={{ height: '100px' }}>
-                      
-                        <div className="flex items-center justify-center absolute inset-0 w-full h-full text-[#245A95] font-bold text-3xl">
-                          
+                        <div className="flex items-center justify-center absolute inset-0 w-full h-full text-[#245A95] font-bold text-3xl">  
                         </div>
-                      
+                        
                     </div>
                   </div>  
             </div>
@@ -318,7 +323,7 @@ export const ClientesPage = () => {
             </div>
             {
               !currentRows || currentRows.length === 0 ?  
-              <SkeletonTable/>
+              <SkeletonTable mensaje={"NO SE HAN ENCONTRADO SEDES"}/>
               :
               <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
               <thead className="bg-[#245A95] text-white uppercase">

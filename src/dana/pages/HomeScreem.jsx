@@ -29,7 +29,7 @@ export const HomeScreem = ({titulo}) => {
             <BotonMenu titulo='PROYECTOS' icono='library-outline'/>
           </Link>
           <div className='pt-5'>
-            <p className='text-center text-[#245A95] font-bold'>PROYECTOS-</p>
+            <p className='text-center text-[#245A95] font-bold'>PROYECTOS</p>
           </div>
         </div> : <></>
       }

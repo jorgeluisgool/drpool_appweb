@@ -25,7 +25,7 @@ export const TableProyectos = ({ proyectoAlbercaSeleccionado, proyectoAlbercaDat
         <>
         {
             !currentRows || currentRows.length === 0 ?
-            <SkeletonTable/>
+            <SkeletonTable mensaje={"NO SE HAN ENCONTRADO PROYECTOS"}/>
             :
             <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
                 <thead className="bg-[#245A95] text-white uppercase">

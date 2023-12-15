@@ -6,6 +6,7 @@ import { api } from '../helpers/variablesGlobales'
 import { Dropdown } from 'primereact/dropdown'
 import { DialogConfirmacion } from '../../ui/components/DialogConfirmacion'
 import useAuth from '../hooks/useAuth'
+import { DialogNombreYaExiste } from '../../ui/components/DialogNombreYaExiste'
 
 const opcionesStatus = [
   { label: 'ACTIVO', value: 'ACTIVO' },
@@ -31,6 +32,7 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
   const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
   
   const [coordinadorValue, setCoordinadorValue] = useState(sedeSeleccionada);
+  const [nombreDuplicadoStateModal, setNombreDuplicadoStateModal] = useState(false);
 
   // console.log(listaUsuarios)
   // console.log(sedes)
@@ -84,9 +86,16 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
         })
           .then((response) => response.text())
           .then((responseData) => {
-            setVentanaCarga(false);
-            setModalRegistroGuardado(true);
-            setDialogNuevaSedeForm(false);
+            console.log(responseData)
+
+            if (responseData === "El nombre de la Sede ya se encuentra registrado") {
+              setVentanaCarga(false);
+              setNombreDuplicadoStateModal(true);
+            }else{
+              setVentanaCarga(false);
+              setModalRegistroGuardado(true);
+              setDialogNuevaSedeForm(false);
+            }
           })
           .catch((error) => {
             console.log(error);
@@ -118,6 +127,12 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
   }
   
   return (
+    <>
+    <DialogNombreYaExiste
+      nombreDuplicadoStateModal={nombreDuplicadoStateModal}
+      setNombreDuplicadoStateModal={setNombreDuplicadoStateModal}
+      mensajeNombreDuplicado={"El nombre de la sede ya existe."}
+    />
     <Dialog header='Sede' visible={dialogNuevaSedeForm} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => {setDialogNuevaSedeForm(false); setEditFields(true)}} className='pt-16'>
         <Formik 
           initialValues={sedeSeleccionada === undefined?  initialValues : sedeSeleccionada} 
@@ -573,5 +588,6 @@ export const CrearSedeForm = ({dialogNuevaSedeForm, setDialogNuevaSedeForm, setV
         )}
         </Formik>
     </Dialog> 
+    </>
   )
 }

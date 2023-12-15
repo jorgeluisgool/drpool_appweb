@@ -64,6 +64,11 @@ export const AsistenciaPage = () => {
     
         fetchData();
       }, []);
+
+    const filterSedes = sedes.filter((sede) =>
+      sede.idsede !== 13 && sede.estatus == "ACTIVO"
+    ).reverse();
+
     console.log(listaUsuarios)
     const listUsuarioPorSede = listaUsuarios.filter((usuario) => (usuario.nombre === sedeSeleccionada.coordinador.nombre || usuario.nombre === sedeSeleccionada.operador.nombre))
     
@@ -193,7 +198,7 @@ export const AsistenciaPage = () => {
                                     className="w-full appearance-none focus:outline-none bg-transparent"
                                     name="sede"
                                     value={sedeSeleccionada}
-                                    options={sedes} 
+                                    options={filterSedes} 
                                     optionLabel="nombre"
                                     filter
                                     onChange={(e) => setSedeSeleccionada(e.target.value)}

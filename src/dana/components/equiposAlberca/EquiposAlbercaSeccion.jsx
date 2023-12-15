@@ -51,6 +51,13 @@ export const EquiposAlbercaSeccion = () => {
 
     fetchData();
   }, []);
+  
+  // console.log(sedes)
+  const filterSedes = sedes.filter((sede) =>
+      sede.idsede !== 13 && sede.estatus == "ACTIVO"
+  ).reverse();
+
+  // console.log(filterSedes)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,13 +89,13 @@ export const EquiposAlbercaSeccion = () => {
                     <div className="flex flex-col">
                       <span className='p-float-label relative'>
                           <Dropdown
-                                className="appearance-none focus:outline-none bg-transparent"
-                                name="selectsede"
-                                value={sedeSelected}
-                                options={sedes}
-                                optionLabel='nombre'
-                                filter
-                                onChange={(e) => {setSedeSelected(e.target.value), setSelectAlberca(e)}}
+                            className="appearance-none focus:outline-none bg-transparent"
+                            name="selectsede"
+                            value={sedeSelected}
+                            options={filterSedes}
+                            optionLabel='nombre'
+                            filter
+                            onChange={(e) => {setSedeSelected(e.target.value), setSelectAlberca(e)}}
                           /> 
                           <span className="p-inputgroup-addon border border-gray-300 p-2 rounded-md">
                             <i className="pi pi-search text-[#245A95] font-bold text-2xl"></i>
