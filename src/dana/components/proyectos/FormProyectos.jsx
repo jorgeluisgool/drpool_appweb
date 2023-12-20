@@ -12,6 +12,7 @@ import { addLocale } from 'primereact/api';
 import { format, parse } from 'date-fns';
 import { DialogConfirmacion } from '../../../ui/components/DialogConfirmacion';
 import useAuth from '../../hooks/useAuth';
+import { DialogNombreYaExiste } from '../../../ui/components/DialogNombreYaExiste';
 
 addLocale('es', {
   firstDayOfWeek: 1,
@@ -54,7 +55,7 @@ const opcionesInstrmentosMedicion = [
   { label: 'TURBIDIMETRO', value: 'TURBIDIMETRO' },
 ];
 
-export const FormProyectos = ({ modalCrearEditarProyectos, setModalCrearEditarProyectos, proyectoAlbercaSeleccionado, setVentanaCarga, setModalRegistroGuardado, clienteSelect, setClienteSelect, clientesActivos, sedeSelect, setSedeSelect, sedes, setMensajeNoAlbercasEnSedes, setModalWarning }) => {
+export const FormProyectos = ({ modalCrearEditarProyectos, setModalCrearEditarProyectos, proyectoAlbercaSeleccionado, setVentanaCarga, setModalRegistroGuardado, clienteSelect, setClienteSelect, clientesActivos, sedeSelect, setSedeSelect, sedes, setMensajeNoAlbercasEnSedes, setModalWarning, nombreDuplicadoStateModal, setNombreDuplicadoStateModal }) => {
 
   const { userAuth: usuarioLogiado, setUserAuth } = useAuth();
 
@@ -62,7 +63,6 @@ export const FormProyectos = ({ modalCrearEditarProyectos, setModalCrearEditarPr
   const [fielValue, setFieldValue] = useState();
   const [editFields, setEditFields] = useState(true);
   const [modaAceptarlAbrirCerrar, setModaAceptarlAbrirCerrar] = useState(false);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -135,6 +135,15 @@ export const FormProyectos = ({ modalCrearEditarProyectos, setModalCrearEditarPr
         .then((responseData) => {
             console.log(responseData);
 
+          if (responseData === "El nombre de proyecto ya se encuentra registrado") {
+            setVentanaCarga(false);
+            setNombreDuplicadoStateModal(true);
+          }else{
+            setVentanaCarga(false);
+            setModalRegistroGuardado(true);
+            setModalCrearEditarProyectos(false);
+          }
+
           if(responseData == "se guardo correctamente el proyecto"){
             setModalCrearEditarProyectos(false);
             setVentanaCarga(false);
@@ -174,9 +183,13 @@ export const FormProyectos = ({ modalCrearEditarProyectos, setModalCrearEditarPr
 
 
   return (
-
-
-    <Dialog header={`Proyectos`} visible={modalCrearEditarProyectos} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => { setModalCrearEditarProyectos(false); setEditFields(true) }} className='pt-16'>
+    <>
+    <DialogNombreYaExiste
+      nombreDuplicadoStateModal={nombreDuplicadoStateModal}
+      setNombreDuplicadoStateModal={setNombreDuplicadoStateModal}
+      mensajeNombreDuplicado={"El nombre del proyecto ya existe."}
+    />
+      <Dialog header={`Proyectos`} visible={modalCrearEditarProyectos} baseZIndex={-1} style={{ width: '70vw', height: '40vw' }} onHide={() => { setModalCrearEditarProyectos(false); setEditFields(true) }} className='pt-16'>
       <Formik
         initialValues={proyectoAlbercaSeleccionado === undefined ? initialValues : proyectoAlbercaSeleccionado}
         onSubmit={handleSubmit}
@@ -520,5 +533,6 @@ export const FormProyectos = ({ modalCrearEditarProyectos, setModalCrearEditarPr
         )}
       </Formik>
     </Dialog>
+    </>
   )
 }

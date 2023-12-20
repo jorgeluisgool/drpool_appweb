@@ -24,6 +24,8 @@ export const ProyectosSeccion = () => {
   const [sedeSelect, setSedeSelect] = useState('');
   const [mensajeNoAlbercasEnSedes, setMensajeNoAlbercasEnSedes] = useState('');
   const [modalWarning, setModalWarning] = useState(false);
+
+  const [nombreDuplicadoStateModal, setNombreDuplicadoStateModal] = useState(false);
  
     useEffect(() => {
         const fetchData = async () => {
@@ -85,7 +87,7 @@ export const ProyectosSeccion = () => {
     <>
       {
         ventanaCarga && (
-          <VentanaCarga/>
+          <VentanaCarga mensaje="El generar el proyecto puede demorar algunos minutos"/>
       )}
 
       <DialogRegistroGuardado 
@@ -167,6 +169,8 @@ export const ProyectosSeccion = () => {
               sedes={sedes}
               setMensajeNoAlbercasEnSedes={setMensajeNoAlbercasEnSedes}
               setModalWarning={setModalWarning}
+              nombreDuplicadoStateModal={nombreDuplicadoStateModal}
+              setNombreDuplicadoStateModal={setNombreDuplicadoStateModal}
             />
         </div>
     </>
