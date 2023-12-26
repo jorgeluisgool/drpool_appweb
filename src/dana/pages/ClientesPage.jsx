@@ -99,12 +99,13 @@ export const ClientesPage = () => {
       
         // Después de la lógica, vuelve a ejecutar el efecto
         setDatosCargados(false);
+        
       }, 1000);
     
       // Limpieza del timeout para evitar fugas de memoria
       return () => clearTimeout(timeoutId);
 
-    }, [datosCargados, userAuth, dialogEditatarClienteForm, uploadedImage, ventanaCarga, modalRegistroGuardado, actualizarClientes]);
+    }, [respuestaApiCliente, userAuth, dialogEditatarClienteForm, uploadedImage, ventanaCarga, modalRegistroGuardado, actualizarClientes]);
 
    useEffect(() => {
     const fetchData = async () => {
@@ -168,13 +169,8 @@ export const ClientesPage = () => {
   }, []);
 
   // Función para forzar la recarga del componente
-  const reload = () => setActualizarClientes(prevState => !prevState);
+  //const reload = () => setActualizarClientes(prevState => !prevState);
 
-  useEffect(() => {
-    // Lógica para manejar la recarga del componente cuando clientesActivos cambie
-    // Por ejemplo, cargar datos adicionales o realizar acciones específicas
-  }, [clientesActivos, actualizarClientes]);
-  
   return (
     <>
       {ventanaCarga && (
