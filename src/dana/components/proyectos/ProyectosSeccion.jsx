@@ -87,7 +87,7 @@ export const ProyectosSeccion = () => {
     <>
       {
         ventanaCarga && (
-          <VentanaCarga mensaje="El generar el proyecto puede demorar algunos minutos"/>
+          <VentanaCarga mensaje="Generar el proyecto puede demorar algunos minutos, no actualizar la pagian"/>
       )}
 
       <DialogRegistroGuardado 
