@@ -579,7 +579,7 @@ export const ReporteMensualForm = ({modalNuevoReporteMensual, setModalNuevoRepor
                                                             onClick={() => {
                                                                 setSelectedActivityIndex(index);
                                                                 setSelectedImagesIndex(index);
-                                                                setSelectedImages(values.REPORT_LIST_IMAGES[index].IMAGES);
+                                                                setSelectedImages(imagesForActivities[index]);
                                                                 setModalSeleccionImagenes(true);
                                                             }}
                                                             className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
