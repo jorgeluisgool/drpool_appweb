@@ -83,11 +83,16 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
     const combinedActivities = [...selectedActivities, ...selectedActivitiesInputText];
     const combinedActivitiesFilter = combinedActivities.filter((actividad) => actividad !== undefined  && actividad !== 'OTRA_ACTIVIDAD');
     //console.log(combinedActivitiesFilter);
-    const listIMG = [];
+    
+    var listIMG = [];
+    //const [listIMG, setListIMG] = useState([]);
+
+
     // Inicializa un arreglo vacío para almacenar los valores de REPORT_LIST_IMAGES 
     const reportListImages = [];
 
     // Verifica si rfm.REPORT_LIST_IMAGES es un arreglo y no es nulo
+    
     if (Array.isArray(rfm.REPORT_LIST_IMAGES)) {
       // Recorre los subarreglos de REPORT_LIST_IMAGES
       var index = 0;
@@ -109,12 +114,15 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
           reportEntry.IMAGES = subarray[1]?.IMAGES || [];
           reportEntry.TEXT_IMAGES = subarray[2]?.TEXT_IMAGES || '';
           reportEntry.OBSERVACIONES = subarray[3]?.OBSERVACIONES || '';
-          listIMG.push(reportEntry.IMAGES)
+          listIMG.push(reportEntry.IMAGES);
+          //setListIMG(prevListIMG => [...prevListIMG, reportEntry.IMAGES]);
+          
         }
         // Agrega el objeto al arreglo reportListImages
         reportListImages.push(reportEntry);
         
       });
+      
 
       //console.log(listIMG);
       //setImagesForActivities(listIMG);
@@ -184,17 +192,45 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
       };
 
     const llenarImagesForActivities = () =>{
-      if(imagesForActivities.length == 0 || imagesForActivities.some(item => item === undefined)){
+      /* if(imagesForActivities.length == 0 || imagesForActivities.some(item => item === undefined)){ */
         let cont = 0;
       
-        listIMG.forEach((list) =>{
+        /* listIMG.forEach((list) =>{
+          if(imagesForActivities[cont] === undefined){
+            imagesForActivities[cont] = list;
+          }
+          cont++;
+        }) */
+
+        console.log("state", stateListImg);
+
+      
+        stateListImg.forEach((list) =>{
+          console.log(imagesForActivities[cont]);
           if(imagesForActivities[cont] === undefined){
             imagesForActivities[cont] = list;
           }
           cont++;
         })
+
+       /*  if(stateListImg.length > 0){
+          stateListImg.forEach((list) =>{
+            if(imagesForActivities[cont] === undefined){
+              imagesForActivities[cont] = list;
+            }
+            cont++;
+          })
+        }else{
+          setStateListImg(listIMG);
+          stateListImg.forEach((list) =>{
+            if(imagesForActivities[cont] === undefined){
+              imagesForActivities[cont] = list;
+            }
+            cont++;
+          })
+        } */
       
-      }
+      /* } */
     }
 
     // FUNCION PARA ENVIAR EL FORMULARIO  
@@ -202,7 +238,6 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
 
         setVentanaCarga(true);
         setSelectedImages([]); 
-        
         if(typeof values.FECHA !== "string"){
             const formattedDate = format(values.FECHA, "dd/MM/yy");
             values.FECHA = formattedDate;
@@ -251,6 +286,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         
         // // Actualiza el valor del arreglo de IMAGES para todas las actividades
          values.REPORT_LIST_IMAGES.forEach((report, index) => {
+          console.log(imagesForActivities[index]);
              report.IMAGES = imagesForActivities[index];
          });
 
@@ -273,6 +309,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
   
 
         console.log(listIMG);
+        console.log(stateListImg);
   
         const initialValues2 = {
             idreportemensual: values.idreportemensual,
@@ -293,7 +330,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                         ACTIVITY: values.REPORT_LIST_IMAGES[index].ACTIVITY.replace(/_/g, ' ')
                     },
                     {
-                        IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES === undefined ? (stateListImg.length == 0 ? listIMG[index] : stateListImg[index]) || [] : values.REPORT_LIST_IMAGES[index].IMAGES || []
+                        IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES === undefined ? stateListImg[index] || [] : values.REPORT_LIST_IMAGES[index].IMAGES || []
                     },
                     {
                         TEXT_IMAGES: values.REPORT_LIST_IMAGES[index].TEXT_IMAGES
@@ -332,7 +369,8 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                 setArregloDeTextosPorActividades([]); 
                 setSelectedActivitiesInputText([]);
                 setSelectedActivityIndex([]);
-                listIMG  = [];
+                setStateListImg([]);
+                
     }  
 
     useEffect(() => {
@@ -606,11 +644,20 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                       updatedArregloDeTextos.splice(index, 1);
                                                       return updatedArregloDeTextos;
                                                   });
-                                                  console.log("Antes de splice:", listIMG);
-                                                  //listIMG.splice(index, 1);
-                                                  listIMG.splice(index, 1);
-                                                  console.log("Después de splice:", listIMG);
+
+                                                  setStateListImg(listIMG);
+                                                 
+
+                                                  setStateListImg(prevListIMG => {
+                                                    const updateListIMG = [...prevListIMG];
+                                                    updateListIMG.splice(index, 1);
+                                                    return updateListIMG;
+                                                  }, 
+                                                  )
+                                                  
                                                   llenarImagesForActivities();
+
+                                                  
 
                                                   }}
                                             >
@@ -787,9 +834,9 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                           disabled={disabledEditFormRFM}
                                           onClick={() => {
                                             // Define la nueva actividad con sus propiedades
-
+                                            setStateListImg(listIMG);
                                             llenarImagesForActivities();
-
+                                            
 
                                             const newActivity = {
                                               ACTIVITY: "LIMPIEZA_DE_TRAMPAS_DE_PELO",
@@ -807,7 +854,9 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                             
                                         
                                             // Añade un nuevo subarreglo vacío para esta actividad
-                                            imagesForActivities.push([]);
+                                            //imagesForActivities.push([]);
+                                            //setImagesForActivities(prevState => [...prevState, []]);
+
 
                                             
                                         
@@ -816,8 +865,12 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                         
                                             // Actualiza selectedActivityIndex al índice de la nueva actividad
                                             setSelectedActivityIndex(imagesForActivities.length - 1);
+
+                                            console.log(selectedActivityIndex);
                                             
                                             setSelectedImages([]);
+
+                                            
                                           }}
                                         >
                                       <ion-icon name="add-circle"></ion-icon> Actividad
