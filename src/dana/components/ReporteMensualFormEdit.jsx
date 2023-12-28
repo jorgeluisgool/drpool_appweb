@@ -71,6 +71,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
     const [textoActividadesState, setTextoActividadesState] = useState(textoActividades)
     const [arregloDeTextosPorActividades, setArregloDeTextosPorActividades] = useState([]);
     const [modalTextoImagenesSate, setModalTextoImagenesSate] = useState(false);
+    const [stateListImg, setStateListImg] = useState([]);
 
     const actividadSeleccionada = selectedActivities[0];
     // console.log(selectedActivities[selectedActivityIndex])
@@ -185,13 +186,14 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
     const llenarImagesForActivities = () =>{
       if(imagesForActivities.length == 0 || imagesForActivities.some(item => item === undefined)){
         let cont = 0;
-
-      listIMG.forEach((list) =>{
-        if(imagesForActivities[cont] === undefined){
-          imagesForActivities[cont] = list;
-        }
-        cont++;
-      })
+      
+        listIMG.forEach((list) =>{
+          if(imagesForActivities[cont] === undefined){
+            imagesForActivities[cont] = list;
+          }
+          cont++;
+        })
+      
       }
     }
 
@@ -269,6 +271,8 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
         //        : '';
         //  });
   
+
+        console.log(listIMG);
   
         const initialValues2 = {
             idreportemensual: values.idreportemensual,
@@ -289,7 +293,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                         ACTIVITY: values.REPORT_LIST_IMAGES[index].ACTIVITY.replace(/_/g, ' ')
                     },
                     {
-                        IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES === undefined ? listIMG[index] || [] : values.REPORT_LIST_IMAGES[index].IMAGES || []
+                        IMAGES: values.REPORT_LIST_IMAGES[index].IMAGES === undefined ? (stateListImg.length == 0 ? listIMG[index] : stateListImg[index]) || [] : values.REPORT_LIST_IMAGES[index].IMAGES || []
                     },
                     {
                         TEXT_IMAGES: values.REPORT_LIST_IMAGES[index].TEXT_IMAGES
@@ -328,6 +332,7 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                 setArregloDeTextosPorActividades([]); 
                 setSelectedActivitiesInputText([]);
                 setSelectedActivityIndex([]);
+                listIMG  = [];
     }  
 
     useEffect(() => {
@@ -602,11 +607,10 @@ export const ReporteMensualFormEdit = ({modalReporteMensualEdit, setModalReporte
                                                       return updatedArregloDeTextos;
                                                   });
                                                   console.log("Antes de splice:", listIMG);
+                                                  //listIMG.splice(index, 1);
                                                   listIMG.splice(index, 1);
                                                   console.log("Después de splice:", listIMG);
-
                                                   llenarImagesForActivities();
-
 
                                                   }}
                                             >
