@@ -58,6 +58,25 @@ export const ClienteConfiguracionPage = () => {
     }, 3000);
   };
 
+  const handleDownloadPDFWeb = () => {
+    // Lógica para descargar el archivo PDF
+    const url = '/src/assets/pdf/GUIA_WEB.pdf';
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'GUIA_WEB.pdf';
+    anchor.click();
+  };
+
+  const handleDownloadPDFMovil = () => {
+    // Lógica para descargar el archivo PDF
+    const url = '/src/assets/pdf/GUIA_MOVIL.pdf';
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'GUIA_MOVIL.pdf';
+    anchor.click();
+  };
+
+
   return (
     <>
       <div className="py-8">
@@ -65,7 +84,7 @@ export const ClienteConfiguracionPage = () => {
 
         <div className="grid gap-6 grid-cols-1 md:grid-cols-3 xl:grid-cols-1 mx-4 xl:mx-20">
           <div className="group">
-          <div className="xl:grid xl:grid-cols-2 items-center h-30 overflow-hidden rounded-lg shadow-lg cursor-pointer transition-transform duration-300 ease-in-out transform group-hover:scale-105">
+          <div className="xl:grid xl:grid-cols-2 items-center h-30 overflow-hidden rounded-lg shadow-lg cursor-pointer transition-transform duration-300 ease-in-out transform">
             <img
               className="object-cover h-auto"
               src="https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/LogoClientes%2Flogo-drpool-black.png?alt=media&token=a9161a39-9ed7-472e-af7f-ba8dcd856d62"
@@ -89,26 +108,52 @@ export const ClienteConfiguracionPage = () => {
               </div> 
             </div>
           </div>
- 
-      <div className="bg-white p-6 rounded-b-lg shadow-md">
-        <p className="text-[#245A95] font-bold text-lg mb-2">Nombre de la empresa:</p>
-        <p className="text-gray-600 mb-4">Dr Pool Don't Worry Water</p>
+          <div className="grid gap-6 grid-cols-2 bg-white">
+            <div className="bg-white p-6 rounded-b-lg shadow-md">
+              <p className="text-[#245A95] font-bold text-lg mb-2">Nombre de la empresa:</p>
+              <p className="text-gray-600 mb-4">Dr Pool Don't Worry Water</p>
 
-        <p className="text-[#245A95] font-bold text-lg mb-2">Teléfono de contacto:</p>
-        <p className="text-gray-600 mb-4">(55) 8525 4747</p>
+              <p className="text-[#245A95] font-bold text-lg mb-2">Teléfono de contacto:</p>
+              <p className="text-gray-600 mb-4">(55) 8525 4747</p>
 
-        <p className="text-[#245A95] font-bold text-lg mb-2">Correo electrónico:</p>
-        <p className="text-gray-600 mb-4">ventas@drpool.mx</p>
+              <p className="text-[#245A95] font-bold text-lg mb-2">Correo electrónico:</p>
+              <p className="text-gray-600 mb-4">ventas@drpool.mx</p>
 
-        <p className="text-[#245A95] font-bold text-lg mb-2">Domicilio de las oficinas:</p>
-        <p className="text-gray-600 mb-4">San Francisco #1525, Tlacoquemecatl, Benito Juárez, CDMX, CP. 03200</p>
+              <p className="text-[#245A95] font-bold text-lg mb-2">Domicilio de las oficinas:</p>
+              <p className="text-gray-600 mb-4">San Francisco #1525, Tlacoquemecatl, Benito Juárez, CDMX, CP. 03200</p>
 
-        <p className="text-[#245A95] font-bold text-lg mb-2">RFC:</p>
-        <p className="text-gray-600 mb-4">DPO1907195W1</p>
+              <p className="text-[#245A95] font-bold text-lg mb-2">RFC:</p>
+              <p className="text-gray-600 mb-4">DPO1907195W1</p>
 
-        <p className="text-[#245A95] font-bold text-lg mb-2">Giro comercial:</p>
-        <p className="text-gray-600">Servicios</p>
-      </div>
+              <p className="text-[#245A95] font-bold text-lg mb-2">Giro comercial:</p>
+              <p className="text-gray-600">Servicios</p>
+            </div>
+            <div className="bg-white p-6 rounded-b-lg shadow-md">
+            <h1 className="text-2xl font-black text-[#245A95] mb-8">Material de apoyo</h1>
+            <div className="grid gap-6 grid-cols-2">
+              <div className="">
+              <p className="text-gray-600 mb-4 font-bold"><i className="pi pi-download"></i> Guía:</p>
+                <button
+                  type="button"
+                  onClick={() => handleDownloadPDFWeb()}
+                  className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                >
+                  <i className="pi pi-file-pdf"></i> WEB
+                </button>
+              </div>
+              <div className="">
+              <p className="text-gray-600 mb-4 font-bold"><i className="pi pi-download"></i> Guía:</p>
+                <button
+                  type="button"
+                  onClick={() => handleDownloadPDFMovil()}
+                  className="hover:shadow-slate-600 border h-10 px-4 bg-[#245A95] text-white text-lg font-bold rounded-full shadow-md duration-150 ease-in-out focus:outline-none active:scale-[1.20] transition-all hover:bg-sky-600"
+                >
+                  <i className="pi pi-file-pdf"></i> MOVÍL
+                </button>
+              </div>
+            </div>
+            </div>
+          </div>
     </div>
   </div>
 </div>

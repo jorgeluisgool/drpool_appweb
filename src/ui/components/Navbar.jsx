@@ -33,7 +33,7 @@ export const Navbar = () => {
             icon: 'pi pi-user',
             items: [
               {
-                label: 'configuración',
+                label: 'configuraciones',
                 icon: 'pi pi-cog',
                 command: handleUserOptionClick
               }
@@ -282,8 +282,7 @@ export const Navbar = () => {
                           </div>
                 
                 
-                        } 
-                   
+                        }   
                   onClick={(e) => {menu.current.toggle(e), confirm1}} 
                 />
             </div>

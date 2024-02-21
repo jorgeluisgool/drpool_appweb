@@ -110,7 +110,7 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
         setEditFields={setEditFields}
       />
 
-        <div className="mb-6 transition duration-500 ease-in-out hover:shadow-2xl relative w-full max-w-full rounded overflow-hidden shadow-lg group">
+        <div className="mb-6 transition duration-500 ease-in-out relative w-full max-w-full rounded overflow-hidden group">
         <h1 className='text-2xl font-bold text-[#245A95]'>EQUIPOS</h1>
           <div className='grid grid-cols-6'>
             <h1 className='col-span-6 text-2xl font-bold text-center'>{albercaSelected?.nombrealberca ?? ''}</h1>
@@ -119,13 +119,12 @@ export const TarjetaEquiposProyecto = ({albercaSelected, equipoSelected, tiposEq
             <h1 className='col-span-6 text-lg font-bold text-center text-[#245A95]'>{albercaSelected?.tipoalberca ?? ''}</h1>
           </div>
           <div className="grid grid-cols-6 border m-2">
-            <div className="p-4 border">
-              <div className="flex flex-col items-center">
-                <img className="h-48 w-full object-cover md:w-48" src={albercaSelected?.sede?.cliente?.urllogo ?? ''} alt="Random image" />
-                <h1 className='text-md font-bold text-center text-[#245A95] mt-2'>{albercaSelected?.sede?.nombre ?? ''}</h1>
-              </div>
+          <div className="p-4 border">
+            <div className="flex flex-col items-center">
+              <img className="h-48 w-full object-contain md:w-48" src={albercaSelected?.sede?.cliente?.urllogo ?? ''} alt="Random image" />
+              <h1 className='text-md font-bold text-center text-[#245A95] mt-2'>{albercaSelected?.sede?.nombre ?? ''}</h1>
             </div>
-
+          </div>
             <div className="p-4">
               <div className="uppercase tracking-wide text-lg text-[#245A95] font-semibold">Bombeo</div>
                 {
